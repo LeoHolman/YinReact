@@ -1,0 +1,223 @@
+/** COLORS
+
+Dark red - #9A2D04
+Orange - //#FF8F17//  --->#db7a13
+Background gray - #EDEDED
+Blue - #5E99D3
+
+**/
+
+
+
+
+.active{
+    color:#5E99D3;
+}
+
+
+body{
+    width:70vw;
+    margin:auto;
+    font-family: 'Open Sans', sans-serif;
+    background-color:#EDEDED;
+    line-height: 1.6em;
+}
+
+nav{
+    margin-right:1em;
+    font-family: 'EB Garamond', serif;
+    font-size:1.2em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav li {
+    float: right;
+    font-weight:400;
+}
+
+
+
+nav li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 26px 50px 0px;
+    text-decoration: none;
+}
+
+.link:hover{
+    color:#5E99D3;
+}
+
+h1, h2, h3, h4, h5{
+    font-family: 'EB Garamond', serif;
+}
+
+h1{
+    font-size: 2.1em;
+    font-variant: small-caps;
+}
+
+h2{
+    font-size: 1.7em;
+}
+
+h3{
+    font-size: 1.3em;
+}
+
+h4{
+    font-size: 1em;
+}
+
+a{
+    color:#5E99D3;
+}
+
+a:visited{
+    color:darkblue;
+}
+
+button{
+    border-radius:12px;
+    background-color:#5E99D3;
+    color:white;
+    font-family: 'Open Sans', sans-serif;
+    border:none;
+    font-size:1em;
+    box-shadow: 3px 3px #2b2a2a;
+    height:3em;
+}
+
+
+/** -------- HOME PAGE --------- **/
+/**
+body{
+    background-image: url(../assets/images/beakBackground.svg);
+    background-size:60px;
+    background-repeat:repeat;
+    
+}
+**/
+
+
+
+
+#logo{
+    float:left;
+    margin: 0;
+    font-size: 3em;
+    width:5em;
+    color:black;
+}
+
+#logo:visited{
+    color:black;
+}
+
+#home-intro, #home-about{
+    width:50vw;
+    margin: auto;
+}
+
+#home-intro{
+    margin-top:3em;
+    margin-bottom:2em;
+}
+
+#home-intro a{
+
+    text-align: center;
+}
+
+#mid-wrapper{
+    display:grid;
+    grid-template-columns:70vw;
+    text-decoration: none;
+    text-align:center;
+    
+}
+
+#begin{
+    grid-column:1/2;
+    grid-row:1/2;
+    display:block;
+    text-align:center;
+    margin:auto;
+    padding-bottom:4em;
+    font-size:3em;
+    font-weight:500;
+    color:#9A2D04;
+    height:1.5em;
+    background-image: url(../assets/images/brush7@2x.png);
+    background-repeat: no-repeat;
+    background-position: 0 40px;
+    background-size: contain;
+}
+
+#yin2{
+    grid-column:1/2;
+    grid-row:1/2;
+}
+
+
+#home-about{
+    margin-top:3em;
+    margin-bottom:3em;
+}
+
+footer div{
+    width:50%;
+    margin:8em auto;
+    text-align: center;
+}
+
+/* MEDIA QUERY - 700px*/
+
+@media only screen and (max-width:700px){
+    
+    #home-intro, #home-about{
+        width: 60vw;
+        margin:2em auto;
+    }
+    
+    #begin{
+        font-size:2em;
+    }
+    
+}
+
+@media only screen and (max-width:550px){
+    #main img{
+        display:none;
+    }
+    
+    #mid-wrapper{
+        display:block;
+    }
+    
+    #begin{
+        background-color:#9A2D04;
+        padding:1em;
+        width:auto;
+        margin:0 auto;
+        color:white;
+    }
+    
+    #logo{
+        width:30%;
+    }
+    
+    nav li a{
+        padding:1em;
+    }
+    
+    footer div{
+        width:100%;
+    }
+}

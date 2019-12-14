@@ -1,10 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './css/activities.css';
+import './css/LADirectoryStyle.css';
+import './css/LAstyle.css';
+import './css/style.css';
+import Activity from './pages/Activity';
+import Header from './components/Header';
 import Home from './pages/Home';
 import Lesson from './pages/Lesson';
-import Nav from './components/Nav';
-import Activity from './pages/Activity';
+import Answer from './components/Answer';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -29,7 +34,7 @@ class App extends React.Component{
   render(){
     return (
       <Router>
-        <Nav />
+        <Header />
         <Switch>
           <Route path="/lesson">
             <div className="lesson-wrap">

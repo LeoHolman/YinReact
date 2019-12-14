@@ -7,9 +7,8 @@ class Nav extends Component {
         return(
             <nav>
                 <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/lesson">Lesson</Link></li>
-                    <li><Link to="/activity">Activity</Link></li>
+                    <li><a href="https://yin.rit.edu">Return to Yin </a></li>
+                    <li><Link to="/lesson">Lessons &emsp;|</Link></li>
                 </ul>
             </nav>
         )

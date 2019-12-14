@@ -1,0 +1,20 @@
+.activity-wrap.four-choice .answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-column-gap:4em;
+    grid-row-gap:4em;
+}
+
+.response{
+    display: inline;
+    text-align:center;
+    width:75%;
+    margin:.5em auto;
+    border-radius:20px;
+    background-color:#EDEDED;
+    box-shadow:3px 3px 5px gray;
+}
+
+.response img{
+    max-width:20vw;
+}
