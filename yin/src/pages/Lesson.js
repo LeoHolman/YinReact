@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
-// import addRecordFunction from '../helper/mimicking.js' 
-// import * as df from "./displayFunctions.js";
-// import * as af from "./audioFunctions.js";
-// import * as d3 from '../helper/d3.js'
+import * as d3 from 'd3'
+import * as drawf from '../helper/drawingFunctions'
 
 class Lesson extends Component {
     constructor(props) {
@@ -18,7 +16,11 @@ class Lesson extends Component {
                 // self.innerHTML = "Done"
                 this.processAudio(blob)
                     .then( csvDataLocation => {
-                        console.log(csvDataLocation);
+                        const start = csvDataLocation.search(/(\*\*\*)/)+5
+                        const end = csvDataLocation.search('&&&')
+                        var url = csvDataLocation.substring(start,end)
+                        url = 'https://yin.rit.edu/' + url;
+                        this.drawPitchCurve(url, 800,800);
                     })	
             })
     }
@@ -64,54 +66,71 @@ class Lesson extends Component {
             var csvDataLocation;
             var formData = new FormData();
             formData.append("audioData", audioBlob);
-            // $.ajax({
-            //     url: "https://yin.rit.edu/pages/audioProcessing.php",
-            //     type: "POST",
-            //     crossDomain: true,
-            //     data: formData,
-            //     success: function (response) {
-            //         console.log(response);
-            //     },
-            //     error: function (xhr, status) {
-            //         alert("error");
-            //     }
-            // });
             fetch('https://yin.rit.edu/pages/audioProcessing.php', {
                 method: 'POST', 
-                // mode: 'no-cors',
                 body: formData,
-                headers: {
-                    // 'Access-Control-Allow-Origin': '*',
-                    // 'Access-Control-Allow-Origin': 'https://yin.rit.edu/pages/audioProcessing.php'
-                }
-            }).then((res) => resolve(res.text()));// (response) => resolve(response)
-
-
-            // var xhttp = new XMLHttpRequest();
-            // xhttp.open("POST", "https://yin.rit.edu/pages/audioProcessing.php", true);
-            // xhttp.setRequestHeader('Access-Control-Allow-Origin', '*')
-            // xhttp.setRequestHeader('lalalal', 'loloolo')
-            // xhttp.send(formData);
-            // xhttp.onreadystatechange = function() {
-            // if (this.readyState == 4 && this.status == 200) {
-            //     //put graph display here
-            //     rawResponse = this.responseText;
-            //     var start = rawResponse.indexOf("***") + 3;
-            //     var end = rawResponse.indexOf("&&&");
-            //     csvDataLocation = rawResponse.substring(start, end);
-            //     //console.log(csvDataLocation);
-            //     resolve(csvDataLocation);
-            //         }
-            //     };
+            }).then((res) => resolve(res.text()));
         });
+    }
+
+    drawPitchChart(divID, width, height) {
+        d3.select('#visualization')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .style('background', '#eeeeee')
+            .style('border','3px solid #9A2D04');
+
+        var y = 2;
+        var i;
+        for (i = 0; i < 5; i++) {
+            d3.select('#visualization svg')
+                .append('line')
+                .attr('x1', 0)
+                .attr('y1', y)
+                .attr('x2', width)
+                .attr('y2', y)
+                .style('stroke', '#babbbc')
+                .style('stroke-width', '3px');
+            if (i == 3) {
+                y -= 4;
+            }
+            y += (height / 4);
+        }
+    }
+
+    drawPitchCurve(dataset, width, height, baseline=(height/2), standardDeviation=0, color="red") {
+        d3.selectAll("svg > .userPitch").remove();
+        d3.tsv(dataset, function(__data) {
+        // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
+        // if(isNaN(zScore)){
+        // 	zScore = 0;
+        // }
+        var zScore = 0;
+            d3.select("#visualization svg")
+                .append("circle")
+                .attr("cx", __data.time * (width / 2))
+                .attr("cy", height - ((height/2) + ((__data.frequency - (height/2))))) 
+                .attr("r", 5)
+            .classed("userPitch",true)
+                .style("fill",color);
+        });
+    };
+
+    componentDidMount(){
+        this.drawPitchChart('visualization', 800, 800);
+        console.log('Mounted!')
     }
 
     render(){
         return(
+            <>
+            <div id="visualization"></div>
             <div className={`lesson ${this.props.lessonOpen ? 'open' : 'min'}`} onClick={this.props.toggleLessonActivity}>
                 <h2>Lesson Page</h2>
                 <button onClick={this.addRecordFunction} id="record">Record</button>
             </div>
+            </>
         )
     }
 }
