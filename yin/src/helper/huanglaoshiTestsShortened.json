@@ -1,0 +1,110 @@
+{
+    "test0" : {
+        "id" : "bei1",
+        "audio" : "../assets/sounds/huanglaoshi/bei.wav",
+	"character" : "杯",
+	"pinyin":"bēi"
+    },
+    "test1" : {
+        "id" : "bie2",
+        "audio" : "../assets/sounds/huanglaoshi/bie.wav",
+	"character" : "别",
+	"pinyin":"bié"
+    },
+    "test2" : {
+        "id" : "bing1cha2",
+        "audio" : "../assets/sounds/huanglaoshi/bingcha.wav",
+	"character" : "冰茶",
+	"pinyin":"bīngchá"
+    },
+    "test3" : {
+        "id" : "dian3",
+        "audio" : "../assets/sounds/huanglaoshi/dian.wav",
+	"character" : "点",
+	"pinyin":"diǎn"
+    },
+    "test4" : {
+        "id" : "dou4fu",
+        "audio" : "../assets/sounds/huanglaoshi/doufu.wav",
+	"character" : "豆腐",
+	"pinyin":"dòufu"
+    },
+    "test5" : {
+        "id" : "fang4",
+        "audio" : "../assets/sounds/huanglaoshi/fang.wav",
+	"character" : "放",
+	"pinyin":"fàng"
+    },
+    "test6" : {
+        "id" : "fan4guan3",
+        "audio" : "../assets/sounds/huanglaoshi/fanguan.wav",
+	"character" : "饭馆",
+	"pinyin":"fànguǎn"
+    },
+    "test7" : {
+        "id" : "gou4",
+        "audio" : "../assets/sounds/huanglaoshi/gou.wav",
+	"character" : "够",
+	"pinyin":"gòu"
+    },
+    "test8" : {
+        "id" : "hao3xiang4",
+        "audio" : "../assets/sounds/huanglaoshi/haoxiang.wav",
+	"character" : "好像",
+	"pinyin":"hǎoxiàng"
+    },
+    "test9" : {
+        "id" : "jia1chang2",
+        "audio" : "../assets/sounds/huanglaoshi/jiachang.wav",
+	"character" : "家常",
+	"pinyin":"jiācháng"
+    },
+    "test10" : {
+        "id" : "jiao3zi",
+        "audio" : "../assets/sounds/huanglaoshi/jiaozi.wav",
+	"character" : "饺子",
+	"pinyin":"jiǎozi"
+    },
+    "test11" : {
+        "id" : "ke3",
+        "audio" : "../assets/sounds/huanglaoshi/ke.wav",
+	"character" : "渴",
+	"pinyin":"kě"
+    },
+    "test12" : {
+        "id" : "pan2",
+        "audio" : "../assets/sounds/huanglaoshi/pan.wav",
+	"character" : "盘",
+	"pinyin":"pán"
+    },
+    "test13" : {
+        "id" : "qing1cai4",
+        "audio" : "../assets/sounds/huanglaoshi/qingcai.wav",
+	"character" : "青菜",
+	"pinyin":"qīngcài"
+    },
+    "test14" : {
+        "id" : "shang4cai4",
+        "audio" : "../assets/sounds/huanglaoshi/shangcai.wav",
+	"character" : "上菜",
+	"pinyin":"shàngcài"
+    },
+    "test15" : {
+        "id" : "su4",
+        "audio" : "../assets/sounds/huanglaoshi/su.wav",
+	"character" : "素",
+	"pinyin":"sù"
+    },
+    "test16" : {
+        "id" : "tang1",
+        "audio" : "../assets/sounds/huanglaoshi/tang.wav",
+	"character" : "汤",
+	"pinyin":"tāng"
+    },
+    "test17" : {
+        "id" : "zhuo1zi",
+        "audio" : "../assets/sounds/huanglaoshi/zhuozi.wav",
+	"character" : "桌子",
+	"pinyin":"zhuōzi"
+    }
+}

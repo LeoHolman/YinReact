@@ -1,0 +1,122 @@
+{
+    "test0" : {
+        "id" : "bei1",
+        "audio" : "../assets/sounds/huanglaoshi/bei.wav",
+	"character" : "杯"
+    },
+    "test1" : {
+        "id" : "bie2",
+        "audio" : "../assets/sounds/huanglaoshi/bie.wav",
+	"character" : "别"
+    },
+    "test2" : {
+        "id" : "bing1cha2",
+        "audio" : "../assets/sounds/huanglaoshi/bingcha.wav",
+	"character" : "冰茶"
+    },
+    "test3" : {
+        "id" : "dian3",
+        "audio" : "../assets/sounds/huanglaoshi/dian.wav",
+	"character" : "点"
+    },
+    "test4" : {
+        "id" : "dou4fu",
+        "audio" : "../assets/sounds/huanglaoshi/doufu.wav",
+	"character" : "豆腐"
+    },
+    "test5" : {
+        "id" : "fang4",
+        "audio" : "../assets/sounds/huanglaoshi/fang.wav",
+	"character" : "放"
+    },
+    "test6" : {
+        "id" : "fan4guan3",
+        "audio" : "../assets/sounds/huanglaoshi/fanguan.wav",
+	"character" : "饭馆"
+    },
+    "test7" : {
+        "id" : "gou4",
+        "audio" : "../assets/sounds/huanglaoshi/gou.wav",
+	"character" : "够"
+    },
+    "test8" : {
+        "id" : "hao3xiang4",
+        "audio" : "../assets/sounds/huanglaoshi/haoxiang.wav",
+	"character" : "好像"
+    },
+    "test9" : {
+        "id" : "jia1chang2",
+        "audio" : "../assets/sounds/huanglaoshi/jiachang.wav",
+	"character" : "家常"
+    },
+    "test10" : {
+        "id" : "jiao3zi",
+        "audio" : "../assets/sounds/huanglaoshi/jiaozi.wav",
+	"character" : "饺子"
+    },
+    "test11" : {
+        "id" : "ke3",
+        "audio" : "../assets/sounds/huanglaoshi/ke.wav",
+	"character" : "渴"
+    },
+    "test12" : {
+        "id" : "la4",
+        "audio" : "../assets/sounds/huanglaoshi/la.wav",
+	"character" : "辣"
+    },
+    "test13" : {
+        "id" : "pan2",
+        "audio" : "../assets/sounds/huanglaoshi/pan.wav",
+	"character" : "盘"
+    },
+    "test14" : {
+        "id" : "qing1cai4",
+        "audio" : "../assets/sounds/huanglaoshi/qingcai.wav",
+	"character" : "青菜"
+    },
+    "test15" : {
+        "id" : "rou4",
+        "audio" : "../assets/sounds/huanglaoshi/rou.wav",
+	"character" : "肉"
+    },
+    "test16" : {
+        "id" : "shang4cai4",
+        "audio" : "../assets/sounds/huanglaoshi/shangcai.wav",
+	"character" : "上菜"
+    },
+    "test17" : {
+        "id" : "su4",
+        "audio" : "../assets/sounds/huanglaoshi/su.wav",
+	"character" : "素"
+    },
+    "test18" : {
+        "id" : "tang1",
+        "audio" : "../assets/sounds/huanglaoshi/tang.wav",
+	"character" : "汤"
+    },
+    "test19" : {
+        "id" : "wei4jing1",
+        "audio" : "../assets/sounds/huanglaoshi/weijing.wav",
+	"character" : "味精"
+    },
+    "test20" : {
+        "id" : "wei4zi",
+        "audio" : "../assets/sounds/huanglaoshi/weizi.wav",
+	"character" : "位子"
+    },
+    "test21" : {
+        "id" : "yan2",
+        "audio" : "../assets/sounds/huanglaoshi/yan.wav",
+	"character" : "盐"
+    },
+    "test22" : {
+        "id" : "yi4xie1",
+        "audio" : "../assets/sounds/huanglaoshi/yixie.wav",
+	"character" : "一些"
+    },
+    "test23" : {
+        "id" : "zhuo1zi",
+        "audio" : "../assets/sounds/huanglaoshi/zhuozi.wav",
+	"character" : "桌子"
+    }
+}

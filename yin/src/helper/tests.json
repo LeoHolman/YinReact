@@ -1,0 +1,74 @@
+{
+    "test0" : {
+        "id" : "zhong1",
+        "audio" : "../assets/sounds/test0.mp3",
+        "options" : ["zhōng","zhóng","zhǒng","zhòng"],
+        "correctOption" : "zhōng"
+    },
+    "test1" : {
+        "id" : "ma3",
+        "audio" : "../assets/sounds/test1.mp3",
+        "options" : ["mā","má","mǎ","mà"],
+        "correctOption" : "mǎ"
+    },
+    "test2" : {
+        "id" : "gou3",
+        "audio" : "../assets/sounds/test2.mp3",
+        "options" : ["gōu","góu","gǒu","gòu"],
+        "correctOption" : "gǒu"
+    },
+    "test3" : { 
+        "id" : "mao1",
+        "audio" : "../assets/sounds/test3.mp3",
+        "options" : ["māo","máo","mǎo","mào"],
+        "correctOption" : "māo"
+    },
+    "test4" : {
+        "id" : "fan4",
+        "audio" : "../assets/sounds/test4.mp3",
+        "options" : ["fān","fán","fǎn","fàn"],
+        "correctOption" : "fàn"
+    },
+    "test5" : {
+        "id" : "tian1",
+        "audio" : "../assets/sounds/test5.mp3",
+        "options" : ["tiān","tián","tiǎn","tiàn"],
+        "correctOption" : "tiān"
+    },
+    "test6" : {
+        "id" : "wen2",
+        "audio" : "../assets/sounds/test6.mp3",
+        "options" : ["wēn","wén","wěn","wèn"],
+        "correctOption" : "wén"
+    },
+    "test7" : {
+        "id" : "guo2",
+        "audio" : "../assets/sounds/test7.mp3",
+        "options" : ["gūo","gúo","gǔo","gùo"],
+        "correctOption" : "gúo"
+    },
+    "test8" : {
+        "id" : "si4",
+        "audio" : "../assets/sounds/test8.mp3",
+        "options" : ["sī","sí","sǐ","sì"],
+        "correctOption" : "sì"
+    },
+    "test9" : {
+        "id" : "shi2",
+        "audio" : "../assets/sounds/test9.mp3",
+        "options" : ["shī","shí","shǐ","shì"],
+        "correctOption" : "shí"
+    },
+    "test10" : {
+        "id" : "wu3",
+        "audio" : "../assets/sounds/test10.mp3",
+        "options" : ["wū","wú","wǔ","wù"],
+        "correctOption" : "wǔ"
+    },
+    "test11" : {
+        "id" : "liu4",
+        "audio" : "../assets/sounds/test11.mp3",
+        "options" : ["liū","liú","liǔ","liù"],
+        "correctOption" : "liù"
+    }
+}
