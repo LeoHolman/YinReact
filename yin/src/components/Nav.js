@@ -8,7 +8,7 @@ class Nav extends Component {
             <nav>
                 <ul>
                     <li><a href="https://yin.rit.edu">Return to Yin </a></li>
-                    <li><Link to="/lesson">Lessons &emsp;|</Link></li>
+                    <li><Link to="/activities">Activities &emsp;|</Link></li>
                 </ul>
             </nav>
         )

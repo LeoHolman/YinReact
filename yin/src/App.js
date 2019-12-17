@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Lesson from './pages/Lesson';
 import Answer from './components/Answer';
+import Login from './components/Login';
 
 import {
   BrowserRouter as Router,
@@ -36,12 +37,10 @@ class App extends React.Component{
       <Router>
         <Header />
         <Switch>
-          <Route path="/lesson">
-            <div className="lesson-wrap">
-            <Lesson lessonOpen={this.state.lessonOpen} toggleLessonActivity={this.toggleLessonActivity}/>
-            <Activity number="1" activityOpen={!this.state.lessonOpen} toggleLessonActivity={this.toggleLessonActivity}/>
-            </div>
+          <Route path="/login">
+            <Login />
           </Route>
+          <Route path="/activities/:activityNumber/:hello" component={Activity} />
           <Route path="/">
             <Home />
           </Route>

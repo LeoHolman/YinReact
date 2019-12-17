@@ -6,7 +6,7 @@ import Logo from '../assets/images/newLogo1.png';
 class Header extends Component{
     render(){
         return(
-            <div class="header">
+            <div className="header">
                 <Link to="/"><img src={Logo} id="logo"/></Link>
                 <Nav />
             </div>
