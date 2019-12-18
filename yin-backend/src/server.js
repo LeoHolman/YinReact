@@ -13,6 +13,15 @@ var userSchema = new mongoose.Schema({
     salt: String,
 });
 
+var lessonSchema = new mongoose.Schema({
+    number: String,
+    audios: [{
+        type: String
+    }]
+});
+
+var Lesson = mongoose.model('Lesson', lessonSchema);
+
 var User = mongoose.model('User', userSchema);
 userSchema.methods.generateAuthToken = () => {
     const token = jwt.sign({_id: this._id}, 'myprivatekey');
@@ -42,6 +51,10 @@ function tokenMiddleWare(req, res, next) {
 
 const app = express();
 app.use(bodyParser.json());
+app.get('/*', (req, res, next) =>{
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 app.post('/*', (req, res, next) =>{
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -88,6 +101,34 @@ app.post('/login/', async (req, res) => {
 app.post('/savedata/', (req, res, next) => {
     tokenMiddleWare(req, res, next);
     console.log('success!');
+});
+
+app.post('/addLesson/', (req, res, next) => {
+    const lessonnum = req.body.number;
+    const audios = req.body.audios;
+    const newLesson = new Lesson({number: lessonnum, audios: audios});
+    newLesson.save().then( () => {
+        res.send(`Lesson ${lessonnum} save successfully!`);
+    });
+});
+
+app.get('/getLesson/:lessonnumber', async (req, res, next) => {
+    const lessonnum = req.params.lessonnumber; 
+    try {
+        const lesson = await Lesson.findOne({number: lessonnum});
+        res.send(lesson);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+});
+
+app.get('/allLessons/', async (req, res, next) => {
+    try {
+        const allLessons = await Lesson.find({});
+        res.send(allLessons);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
 })
 
 app.listen(8000, () => console.log('Listening on port 8000'));
