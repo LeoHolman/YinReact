@@ -1,4 +1,5 @@
 import express from 'express';
+const cors = require('cors');
 import bodyParser from 'body-parser';
 import * as argon2 from 'argon2';
 const randomBytes = require('randombytes');
@@ -51,6 +52,7 @@ function tokenMiddleWare(req, res, next) {
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.get('/*', (req, res, next) =>{
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -79,6 +81,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
     const username = req.body.username;
     const userRecord = await User.findOne({username});
     if(!userRecord){
@@ -91,7 +94,7 @@ app.post('/login/', async (req, res) => {
         console.log(userRecord.password);
         console.log(hashedIncomingPassword);
         if (correctPassword){
-            res.send(`Hello! ${userRecord}`);
+            res.send(userRecord);
         } else {
             res.send('Username/passowrd incorrect.');
         }

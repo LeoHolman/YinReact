@@ -9,7 +9,7 @@ import './css/lessons.css';
 // import Answer from './components/Answer';
 import Header from './components/Header';
 import Home from './pages/Home';
-// import Lesson from './pages/Lesson';
+import Lesson from './pages/Lesson';
 import Login from './components/Login';
 import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
@@ -40,13 +40,12 @@ class App extends React.Component{
       <Router>
         <Header />
         <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
+          <Route path="/showLesson/" component={Lesson} />
           {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
           <Route path="/lessons/:lessonNumber/" component={Hexagon} />
           <Route path="/lessons/" component={LessonDirectory} />
           <Route path="/login/" component={Login} />
+
           <Route path="/">
             <Home />
           </Route>
