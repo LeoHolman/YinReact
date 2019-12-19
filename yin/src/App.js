@@ -1,21 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './css/activities.css';
 import './css/LADirectoryStyle.css';
 import './css/LAstyle.css';
 import './css/style.css';
-import Activity from './pages/Activity';
+import './css/lessons.css';
+// import Activity from './pages/Activity';
+// import ActivityDirectory from './pages/ActivityDirectory';
+// import Answer from './components/Answer';
 import Header from './components/Header';
 import Home from './pages/Home';
-import Lesson from './pages/Lesson';
-import Answer from './components/Answer';
+// import Lesson from './pages/Lesson';
 import Login from './components/Login';
+import Hexagon from './components/Hexagon';
+import LessonDirectory from './pages/LessonDirectory';
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  // Link
 } from "react-router-dom";
 
 class App extends React.Component{
@@ -40,7 +43,10 @@ class App extends React.Component{
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/activities/:activityNumber/:hello" component={Activity} />
+          {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
+          <Route path="/lessons/:lessonNumber/" component={Hexagon} />
+          <Route path="/lessons/" component={LessonDirectory} />
+          <Route path="/login/" component={Login} />
           <Route path="/">
             <Home />
           </Route>

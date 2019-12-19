@@ -4,11 +4,14 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            'user': ''
+            'user': {
+                number: '',
+                audios: []
+            }
         };
     }
     async componentDidMount() {
-        const user = await fetch('http://localhost:8000/login/', {
+        fetch('http://localhost:8000/login/', {
             method: 'POST',
             body: JSON.stringify(
                 {
@@ -16,14 +19,17 @@ class Login extends Component {
                     "password":"supersecret"
                 }
             )
+        }).then( (response) => {
+            response.json().then( (user) => {
+                this.setState( {'user': user})
+            })
         });
-        console.log(user.text());
-        this.setState( {'user': user.username})
+        
     }
     render() {
         return(
             <>
-                <p>{this.state.user}</p>
+                <p>{this.state.user.number}</p>
             </>
         )
     }

@@ -20,7 +20,7 @@ export function drawPitchChart(divID, width, height) {
             .attr('y2', y)
             .style('stroke', '#babbbc')
             .style('stroke-width', '3px');
-        if (i == 3) {
+        if (i === 3) {
             y -= 4;
         }
         y += (height / 4);

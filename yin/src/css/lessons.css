@@ -1,0 +1,40 @@
+.lessonCard{
+    background-color:white;
+    margin:1em;
+    box-shadow:lightgray 2px 2px 3px;
+}
+
+
+.lessonCard .meta, .lessonCard .sub{
+    padding:1em;
+}
+
+ul.activityList{
+    text-align: center;
+    list-style:none;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+}
+
+ul.activityList a{
+    text-decoration: none;
+    font-size:3em;
+    font-weight:600;
+    color:white;
+}
+
+ul.activityList a:hover{
+    text-shadow: #db7a13 3px 3px 0px;
+}
+
+.lessonCard .sub{
+    background-color:#5E99D3;
+}
+
+.lessonCard.sub h3{
+    text-align:center;
+}
+
+.hide{
+    display:none;
+}

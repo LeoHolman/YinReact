@@ -12,8 +12,8 @@ import {
 class Activity extends Component{
     render(){
         return(
-            <div className={`activity ${this.props.activityOpen ? 'open' : 'min'}`} onClick={this.props.toggleLessonActivity}>
-                <h2>Activity {this.props.match.params.activityNumber}</h2>
+            <div /*className={`activity ${this.props.activityOpen ? 'open' : 'min'}`} onClick={this.props.toggleLessonActivity}*/>
+                <h2>Activity {this.props.match.params.lessonNumber}</h2>
                 <p>{this.props.match.params.hello}</p>
                
                 <Route path={`/activities/${this.props.match.params.activityNumber}/1`}>

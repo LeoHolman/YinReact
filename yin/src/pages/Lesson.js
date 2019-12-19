@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import $ from 'jquery'
+// import $ from 'jquery'
 import * as d3 from 'd3'
-import * as drawf from '../helper/drawingFunctions'
+// import * as drawf from '../helper/drawingFunctions'
 
 class Lesson extends Component {
     constructor(props) {

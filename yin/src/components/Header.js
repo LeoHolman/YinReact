@@ -7,7 +7,7 @@ class Header extends Component{
     render(){
         return(
             <div className="header">
-                <Link to="/"><img src={Logo} id="logo"/></Link>
+                <Link to="/"><img src={Logo} id="logo" alt="jojo the monkey walking by the yin logo"/></Link>
                 <Nav />
             </div>
         )
