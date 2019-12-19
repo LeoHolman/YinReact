@@ -4,9 +4,9 @@ import Answer from './Answer';
 class FourChoiceQuiz extends Component {
     render(){
         return(
-            <div class="activity-wrap four-choice">
-                <div id="stimuli">Audio goes here</div>
-                <div class = "answers">
+            <div className="activity-wrap four-choice">
+                <div id="stimuli">{this.props.stimuli}</div>
+                <div className = "answers">
                     <Answer number="one" />
                     <Answer number="two" />
                     <Answer number="three" />

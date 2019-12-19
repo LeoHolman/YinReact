@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class Answer extends Component{
     render(){
         return(
-            <div id={'response-'+this.props.number} class="response">{this.chooseImage()}
+            <div id={'response-'+this.props.number} className="response">{this.chooseImage()}
             </div>
         )
     }
