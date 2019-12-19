@@ -13,6 +13,7 @@ import Lesson from './pages/Lesson';
 import Login from './components/Login';
 import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
+import Activity from './pages/Activity';
 
 import {
   BrowserRouter as Router,
@@ -42,7 +43,7 @@ class App extends React.Component{
         <Switch>
           <Route path="/showLesson/" component={Lesson} />
           {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
-          <Route path="/lessons/:lessonNumber/" component={Hexagon} />
+          <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
           <Route path="/lessons/" component={LessonDirectory} />
           <Route path="/login/" component={Login} />
 
