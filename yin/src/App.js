@@ -26,30 +26,63 @@ class App extends React.Component{
   constructor(){
     super();
     this.state={
-      "lessonOpen":true
+      "lessonOpen":true,
+      isLoggedIn: false,
+      username: '',
     }
     this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   toggleLessonActivity(){
     this.setState({lessonOpen: !this.state.lessonOpen});
   }
 
+  submitForm(event, username, password) {
+        event.preventDefault();
+        console.log(username, password);
+        fetch('http://localhost:8000/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    "username":username,
+                    "password":password
+                }
+            )
+        }).then( (response) => {
+            response.text().then( (token) => {
+                this.setState( {isLoggedIn: true});
+                localStorage.setItem('token', token)
+                this.setState( {username: username});
+            })
+        });
+    }
+
   render(){
-    return (
-      <Router>
-        <Header />
+    let logged;
+    if(this.state.isLoggedIn){
+      logged = 
         <Switch>
           <Route path="/showLesson/" component={Lesson} />
           {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
           <Route path="/lessons/:lessonNumber/" component={Hexagon} />
           <Route path="/lessons/" component={LessonDirectory} />
-          <Route path="/login/" component={Login} />
-
+          <Route path="/login/" >
+          </Route>
           <Route path="/">
             <Home />
           </Route>
-        </Switch>
+        </Switch>;
+    } else {
+      logged = <Login submitForm={this.submitForm} />
+    }
+    return (
+      <Router>
+        <Header />
+        {logged}
       </Router>
     );
   }

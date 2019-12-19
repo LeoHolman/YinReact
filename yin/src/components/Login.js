@@ -4,57 +4,35 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            user: {
-                username: ''
-            },
-            username: '',
-            password: ''
-
+            fusername: '',
+            fpassword: '',
         };
         this.handleChange = this.handleChange.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-    }
-    async componentDidMount() {
-        fetch('http://localhost:8000/login/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-                {
-                    "username":"lLeo",
-                    "password":"supersecret"
-                }
-            )
-        }).then( (response) => {
-            response.json().then( (user) => {
-                console.log(user);
-                this.setState( {user: user})
-            })
-        });
-        
+        this.handleForm = this.handleForm.bind(this);
     }
 
     handleChange(event, target) {
-        this.setState(target, event.target.value);
+        this.setState({[target]: event.target.value});
     }
 
-    submitForm() {
-
+    handleForm(event, username, password){
+        event.preventDefault();
+        this.props.submitForm(event, username, password);
+        this.setState( {fusername: '', fpassword: ''});
     }
+
     render() {
         return(
             <>
                 <p>Login:</p>
-                <form id="loginform"  onSubmit={this.submitForm}>
-                    <input id="username" name="username" placeholder="username" value={this.state.value} onChange={e => this.handleChange(e,'username')} />
-                    <input id="password" name="password" placeholder="password" value={this.state.value} onChange={e => this.handleChange(e,'password')}/>
+                <form id="loginform"  onSubmit={e => this.handleForm(e, this.state.fusername, this.state.fpassword )}>
+                    <input id="username" name="username" placeholder="username" value={this.state.value} onChange={e => this.handleChange(e,'fusername')} />
+                    <input id="password" name="password" placeholder="password" type="password" value={this.state.value} onChange={e => this.handleChange(e,'fpassword')}/>
                     <input type="submit" value="Submit" />
                 </form>
             </>
         )
     }
-
 }
 
 export default Login;

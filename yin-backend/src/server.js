@@ -5,6 +5,7 @@ import * as argon2 from 'argon2';
 const randomBytes = require('randombytes');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const PRIVATE_KEY = 'donttellnobody';
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true});
@@ -94,7 +95,8 @@ app.post('/login/', async (req, res) => {
         console.log(userRecord.password);
         console.log(hashedIncomingPassword);
         if (correctPassword){
-            res.send(userRecord);
+            const token = await jwt.sign({user: {username: userRecord.username}}, PRIVATE_KEY);
+            res.send(token);
         } else {
             res.send('Username/passowrd incorrect.');
         }
@@ -124,6 +126,14 @@ app.get('/getLesson/:lessonnumber', async (req, res, next) => {
         res.status(500).send('Something went wrong');
     }
 });
+
+app.get('/getUsername/', (req, res, next) => {
+    if(req.headers.token){
+        const token = req.headers.token;
+        const user = jwt.verify(token, PRIVATE_KEY);
+        return user.username;
+    }
+})
 
 app.get('/allLessons/', async (req, res, next) => {
     try {
