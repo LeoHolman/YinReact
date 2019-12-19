@@ -69,7 +69,6 @@ class App extends React.Component{
       <Router>
         <Header />
         <Switch>
-<<<<<<< HEAD
           {this.state.isLoggedIn ? <> 
               <Route path="/showLesson/" component={Lesson} />
               <Route path="/lessons/:lessonNumber/" component={Hexagon} />
@@ -85,17 +84,6 @@ class App extends React.Component{
                 </Route>
               </>
           }
-=======
-          <Route path="/showLesson/" component={Lesson} />
-          {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
-          <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
-          <Route path="/lessons/" component={LessonDirectory} />
-          <Route path="/login/" component={Login} />
-
-          <Route path="/">
-            <Home />
-          </Route>
->>>>>>> 7403f053e52b7389dc6cd3af6c90eb645cac9d95
         </Switch>
       </Router>
     );
