@@ -18,6 +18,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
   // Link
 } from "react-router-dom";
 
@@ -62,27 +63,27 @@ class App extends React.Component{
     }
 
   render(){
-    let logged;
-    if(this.state.isLoggedIn){
-      logged = 
-        <Switch>
-          <Route path="/showLesson/" component={Lesson} />
-          {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
-          <Route path="/lessons/:lessonNumber/" component={Hexagon} />
-          <Route path="/lessons/" component={LessonDirectory} />
-          <Route path="/login/" >
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>;
-    } else {
-      logged = <Login submitForm={this.submitForm} />
-    }
+    {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
     return (
       <Router>
         <Header />
-        {logged}
+        <Switch>
+          {this.state.isLoggedIn ? <> 
+              <Route path="/showLesson/" component={Lesson} />
+              <Route path="/lessons/:lessonNumber/" component={Hexagon} />
+              <Route path="/lessons/" component={LessonDirectory} />
+              <Route path="/" component={Home} />
+              </>
+            :
+              <>
+                <Route exact path="/" component={Home} />
+                <Redirect from="*" to="/login" />
+                <Route path="/login">
+                  <Login submitForm={this.submitForm} />
+                </Route>
+              </>
+          }
+        </Switch>
       </Router>
     );
   }
