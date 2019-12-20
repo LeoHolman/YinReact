@@ -68,23 +68,26 @@ class App extends React.Component{
     return (
       <Router>
         <Header />
-        <Switch>
+        
           {this.state.isLoggedIn ? <> 
+            <Switch>
               <Route path="/showLesson/" component={Lesson} />
+              <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
               <Route path="/lessons/:lessonNumber/" component={Hexagon} />
               <Route path="/lessons/" component={LessonDirectory} />
               <Route path="/" component={Home} />
+              </Switch>
               </>
             :
               <>
+              <Switch>
                 <Route exact path="/" component={Home} />
-                <Redirect from="*" to="/login" />
-                <Route path="/login">
+                <Route exact path="/*">
                   <Login submitForm={this.submitForm} />
                 </Route>
+              </Switch>
               </>
           }
-        </Switch>
       </Router>
     );
   }
