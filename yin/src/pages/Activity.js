@@ -13,7 +13,8 @@ class Activity extends Component{
     constructor(props){
         super(props)
         this.state = {
-            lesson: []
+            lesson: [], 
+            audios: [],
         }
     }
 
@@ -22,6 +23,15 @@ class Activity extends Component{
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({lesson: result});
+                    }
+                )
+            );
+
+        fetch(`http://localhost:8000/getAudio/${this.props.match.params.lessonNumber}`)
+            .then( (response) => response.json()
+                .then( (result) => {
+                    this.setState({audios: result});
+                    console.log(this.state.audios);
                     }
                 )
             );

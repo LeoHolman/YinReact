@@ -1,7 +1,6 @@
 import React from 'react';
 import './css/activities.css';
 import './css/LADirectoryStyle.css';
-import './css/LAstyle.css';
 import './css/style.css';
 import './css/lessons.css';
 // import Activity from './pages/Activity';

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Answer from './Answer';
 
 class FourChoiceQuiz extends Component {
+
     render(){
         return(
             <div className="activity-wrap four-choice">
