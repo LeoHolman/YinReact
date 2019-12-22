@@ -6,7 +6,8 @@ class TwoChoiceQuiz extends Component {
         super(props);
         this.state = {
             currentStimulus: 0,
-            filePath: "",
+            id: props.stimuli,
+            filePath: props.stimuli,
             word: "",
             correctTone: 0,
             alternateTones:[]
@@ -14,10 +15,15 @@ class TwoChoiceQuiz extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.collectResponse = this.collectResponse.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
+
     }
+
+  
 
     handleClick() {
         this.setState({'currentStimulus': this.state.currentStimulus + 1});
+        console.log("id:" + this.state.id);
+        console.log("File:" + this.state.filePath);
     }
 
     collectResponse(event){

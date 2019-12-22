@@ -38,10 +38,27 @@ class Activity extends Component{
                     var allAudios = [];
                     var i = 0;
                     this.state.audioRes.forEach(function(audio){
-                        allAudios.push([audio.alternateTones, audio._id, audio.audioFile, audio.word, audio.correctTone, audio.lessonName])
+                        allAudios.push([audio._id, audio.audioFile, audio.word, audio.alternateTones, audio.correctTone, audio.lessonName])
+                        // var oneAudio = {
+                        //     id: audio._id,
+                        //     audioFile: audio.audioFile,
+                        //     word: audio.word,
+                        //     alternateTones: audio.alternateTones,
+                        //     correctTone: audio.correctTone,
+                        //     lessonName: audio.lessonName
+
+                        // }
+                        // console.log(oneAudio);
+                        // allAudios.push(oneAudio);
                     })
                     console.log(allAudios);
                     this.setState({audios: allAudios})
+
+                    // var tempRes = this.state.audioRes; 
+                    // for(var i=0, temp; i <tempRes.length; i++){
+                    //     temp = tempRes[i];
+
+                    // }
 
                 }
                 )
