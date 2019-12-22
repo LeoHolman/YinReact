@@ -22,7 +22,19 @@ var lessonSchema = new mongoose.Schema({
     }]
 });
 
+var audioSchema = new mongoose.Schema({
+    audioFile: String, 
+    word: String, 
+    alternateTones:[{
+        type: String
+    }],
+    correctTone: Number, 
+    lessonName: String
+})
+
 var Lesson = mongoose.model('Lesson', lessonSchema);
+
+var Audio = mongoose.model('Audio', audioSchema);
 
 var User = mongoose.model('User', userSchema);
 userSchema.methods.generateAuthToken = () => {
@@ -117,6 +129,18 @@ app.post('/addLesson/', (req, res, next) => {
     });
 });
 
+app.post('/addAudio', (req, res, next) => {
+    const audioFile = req.body.audioFile;
+    const word = req.body.word;
+    const altTones = req.body.alternateTones;
+    const correct = req.body.correctTone;
+    const lessonName = req.body.lessonName;
+    const newAudio = new Audio({audioFile: audioFile, word: word, alternateTones: altTones, correctTone: correct, lessonName: lessonName});
+    newAudio.save().then( () => {
+        res.send(`Audio of ${word} saved successfully!`);
+    });
+});
+
 app.get('/getLesson/:lessonnumber', async (req, res, next) => {
     const lessonnum = req.params.lessonnumber; 
     try {
@@ -143,5 +167,16 @@ app.get('/allLessons/', async (req, res, next) => {
         res.status(500).send('Something went wrong');
     }
 })
+
+app.get('/getAudio/:lessonName', async (req, res, next) => {
+    const query = { lessonName: req.params.lessonName};
+    const lesson = req.params.lessonName;
+    try {
+        const audio = await Audio.find({lessonName: lesson});
+        res.send(audio);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+});
 
 app.listen(8000, () => console.log('Listening on port 8000'));

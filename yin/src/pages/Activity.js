@@ -14,7 +14,8 @@ class Activity extends Component{
         super(props)
         this.state = {
             lesson: [], 
-            audios: [],
+            audioRes: [],
+            audios:[]
         }
     }
 
@@ -30,9 +31,17 @@ class Activity extends Component{
         fetch(`http://localhost:8000/getAudio/${this.props.match.params.lessonNumber}`)
             .then( (response) => response.json()
                 .then( (result) => {
-                    this.setState({audios: result});
+                    this.setState({audioRes: result});
                     console.log(this.state.audios);
-                    }
+                    var allAudios = [];
+                    var i = 0;
+                    this.state.audioRes.forEach(function(audio){
+                        allAudios.push([audio.alternateTones, audio._id, audio.audioFile, audio.word, audio.correctTone, audio.lessonName])
+                    })
+                    console.log(allAudios);
+                    this.setState({audios: allAudios})
+
+                }
                 )
             );
     }
@@ -44,7 +53,7 @@ class Activity extends Component{
                 <h2>Activity {this.props.match.params.activityNumber}</h2>
                
                 <Route path={`/lessons/${this.props.match.params.lessonNumber}/1`}>
-                    <TwoChoiceQuiz stimuli={this.state.lesson.audios}/>
+                    <TwoChoiceQuiz stimuli={this.state.audios}/>
  
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.lessonNumber}/2`}>

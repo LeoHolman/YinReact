@@ -6,6 +6,10 @@ class TwoChoiceQuiz extends Component {
         super(props);
         this.state = {
             currentStimulus: 0,
+            filePath: "",
+            word: "",
+            correctTone: 0,
+            alternateTones:[]
         };
         this.handleClick = this.handleClick.bind(this);
         this.collectResponse = this.collectResponse.bind(this);
