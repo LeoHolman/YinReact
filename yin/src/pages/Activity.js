@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import FourChoiceQuiz from '../components/FourChoiceQuiz';
 import TwoChoiceQuiz from '../components/TwoChoiceQuiz';
+import Lesson from './Lesson';
+import Baseline from '../components/Baseline';
 import {
     BrowserRouter as Router,
     Switch,
@@ -60,10 +62,10 @@ class Activity extends Component{
                     <FourChoiceQuiz stimuli={this.state.lesson.audios}/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.lessonNumber}/3`}>
-
+                    <Baseline />
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.lessonNumber}/4`}>
-
+                    <Baseline />
                 </Route>
 
 

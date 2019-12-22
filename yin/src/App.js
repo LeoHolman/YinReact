@@ -6,11 +6,12 @@ import './css/lessons.css';
 // import Activity from './pages/Activity';
 // import ActivityDirectory from './pages/ActivityDirectory';
 // import Answer from './components/Answer';
+import BaselineExplanation from './components/BaselineExplanation';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Lesson from './pages/Lesson';
 import Login from './components/Login';
-import Hexagon from './components/Hexagon';
+// import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
 import Activity from './pages/Activity';
 
@@ -72,7 +73,7 @@ class App extends React.Component{
             <Switch>
               <Route path="/showLesson/" component={Lesson} />
               <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
-              <Route path="/lessons/:lessonNumber/" component={Hexagon} />
+              {/* <Route path="/lessons/:lessonNumber/" component={Hexagon} /> */}
               <Route path="/lessons/" component={LessonDirectory} />
               <Route path="/" component={Home} />
               </Switch>
@@ -81,6 +82,9 @@ class App extends React.Component{
               <>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="*/explanation">
+                  <BaselineExplanation/>
+                </Route>
                 <Route exact path="/*">
                   <Login submitForm={this.submitForm} />
                 </Route>
