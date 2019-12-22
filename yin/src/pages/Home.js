@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Home.css'
+import '../css/Home.css'
 import yin1 from '../assets/images/yin1.svg'
 import yin2 from '../assets/images/yin2.svg'
 import yin3 from '../assets/images/yin3.svg'
