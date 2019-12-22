@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import Answer from './Answer';
 
 class FourChoiceQuiz extends Component {
-<<<<<<< HEAD
-=======
     constructor(props){
         super(props);
         this.state = {
@@ -23,7 +21,6 @@ class FourChoiceQuiz extends Component {
         this.setState({[questionLabel]: event.target.title});
         this.handleClick();
     }
->>>>>>> b7948eb837e7e8e2a0acd9eaab4cf85f7800707e
 
     render(){
         return(
