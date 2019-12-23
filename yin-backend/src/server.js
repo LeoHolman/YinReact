@@ -32,11 +32,19 @@ var audioSchema = new mongoose.Schema({
     lessonName: String
 })
 
+var userRecordingSchema = new mongoose.Schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    recording: [{time: String, frequency: String}]
+});
+
 var Lesson = mongoose.model('Lesson', lessonSchema);
 
 var Audio = mongoose.model('Audio', audioSchema);
 
 var User = mongoose.model('User', userSchema);
+
+var UserRecording = mongoose.model('UserRecording', userRecordingSchema);
+
 userSchema.methods.generateAuthToken = () => {
     const token = jwt.sign({_id: this._id}, 'myprivatekey');
     return token;
@@ -110,7 +118,7 @@ app.post('/login/', async (req, res) => {
             const token = await jwt.sign({user: {username: userRecord.username}}, PRIVATE_KEY);
             res.send(token);
         } else {
-            res.send('Username/passowrd incorrect.');
+            res.send('Username/password incorrect.');
         }
     }
 });
@@ -177,6 +185,26 @@ app.get('/getAudio/:lessonName', async (req, res, next) => {
     } catch (ex) {
         res.status(500).send('Something went wrong');
     }
+});
+
+app.post('/saveAudio/', async(req, res, next) => {
+    console.log('hit!')
+    res.header('Access-Control-Allow-Origin', '*');
+   if (req.headers.token){
+       const user = await jwt.verify(req.headers.token, PRIVATE_KEY);
+       const dataPayload = await req.body.record;
+       console.log(typeof req.body.record[0].frequency);
+       console.log(req.body.record);
+       try {
+            const newUserRecording = new UserRecording({user: user._id, recording: dataPayload});
+            newUserRecording.save().then( () => {
+                res.send(`Recording saved successfully.`);
+            });
+       } catch (ex) {
+           console.log(ex);
+           res.status(500).send('Something went wrong');
+       }
+   } 
 });
 
 app.listen(8000, () => console.log('Listening on port 8000'));

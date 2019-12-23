@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import FourChoiceQuiz from '../components/FourChoiceQuiz';
 import TwoChoiceQuiz from '../components/TwoChoiceQuiz';
-import Lesson from './Lesson';
 import Baseline from '../components/Baseline';
 import {
     BrowserRouter as Router,

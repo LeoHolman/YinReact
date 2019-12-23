@@ -4,12 +4,11 @@ import './css/LADirectoryStyle.css';
 import './css/style.css';
 import './css/lessons.css';
 // import Activity from './pages/Activity';
-// import ActivityDirectory from './pages/ActivityDirectory';
 // import Answer from './components/Answer';
 import BaselineExplanation from './components/BaselineExplanation';
 import Header from './components/Header';
 import Home from './pages/Home';
-import Lesson from './pages/Lesson';
+import Mimicking from './components/Mimicking';
 import Login from './components/Login';
 // import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
@@ -19,7 +18,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  // Redirect,
   // Link
 } from "react-router-dom";
 
@@ -71,7 +70,7 @@ class App extends React.Component{
         
           {this.state.isLoggedIn ? <> 
             <Switch>
-              <Route path="/showLesson/" component={Lesson} />
+              <Route path="/showLesson/" component={Mimicking} />
               <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
               {/* <Route path="/lessons/:lessonNumber/" component={Hexagon} /> */}
               <Route path="/lessons/" component={LessonDirectory} />

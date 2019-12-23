@@ -3,10 +3,14 @@ import React, { Component } from 'react'
 import * as d3 from 'd3'
 // import * as drawf from '../helper/drawingFunctions'
 
-class Lesson extends Component {
+class Mimicking extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            record: []
+        }
         this.addRecordFunction = this.addRecordFunction.bind(this);
+        this.drawPitchCurve = this.drawPitchCurve.bind(this);
     }
 
     addRecordFunction() {
@@ -20,7 +24,7 @@ class Lesson extends Component {
                         const end = csvDataLocation.search('&&&')
                         var url = csvDataLocation.substring(start,end)
                         url = 'https://yin.rit.edu/' + url;
-                        this.drawPitchCurve(url, 800,800);
+                        this.drawPitchCurve(url, 1100,500);
                     })	
             })
     }
@@ -74,7 +78,7 @@ class Lesson extends Component {
     }
 
     drawPitchChart(divID, width, height) {
-        d3.select('#visualization')
+        d3.select(`#${divID}`)
             .append('svg')
             .attr('width', width)
             .attr('height', height)
@@ -99,27 +103,61 @@ class Lesson extends Component {
         }
     }
 
-    drawPitchCurve(dataset, width, height, baseline=(height/2), standardDeviation=0, color="red") {
+    async drawPitchCurve(dataset, width, height, baseline=(height/2), standardDeviation=0, color="red") {
         d3.selectAll("svg > .userPitch").remove();
-        d3.tsv(dataset, function(__data) {
-        // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
-        // if(isNaN(zScore)){
-        // 	zScore = 0;
-        // }
-        var zScore = 0;
-            d3.select("#visualization svg")
-                .append("circle")
-                .attr("cx", __data.time * (width / 2))
-                .attr("cy", height - ((height/2) + ((__data.frequency - (height/2))))) 
-                .attr("r", 5)
-            .classed("userPitch",true)
-                .style("fill",color);
+        let datarecord = new Array;
+        await d3.tsv(dataset, (__data) => {
+            // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
+            // if(isNaN(zScore)){
+            // 	zScore = 0;
+            // }
+            let point = {time: __data.time, frequency: __data.frequency};
+            datarecord.push(point);
+            var zScore = 0;
+                d3.select("#visualization svg")
+                    .append("circle")
+                    .attr("cx", __data.time * (width / 2))
+                    .attr("cy", height - ((height/2) + ((__data.frequency - (height/2))))) 
+                    .attr("r", 5)
+                .classed("userPitch",true)
+                    .style("fill",color);
+            }
+        );
+        console.log(datarecord);
+        console.log(Array.isArray(datarecord));
+        console.log(datarecord.length);
+        var mock = [
+            {time: 0, frequency: 5},
+            {time: 2, frequency: 5},
+            {time: 3, frequency: 5},
+            {time: 4, frequency: 5},
+            {time: 5, frequency: 5},
+        ]
+        var mock2 = datarecord.slice(0,3);
+        console.log(mock2);
+        var requestPayload = {
+                beep: 'boop',
+                record: datarecord
+            }
+        console.log(requestPayload);
+        console.log(JSON.stringify(requestPayload));
+        fetch('http://localhost:8000/saveAudio', {
+            method: "POST",
+            headers: {
+                token: localStorage.getItem('token'),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestPayload)
+        }).then( (res) => {
+            console.log(`${res.statusText}`)
+        });
+        this.setState({record: datarecord}, () => {
+            console.log(`${this.state.record}`);
         });
     };
 
     componentDidMount(){
-        this.drawPitchChart('visualization', 800, 800);
-        console.log('Mounted!')
+        this.drawPitchChart('visualization', 1100, 500);
     }
 
     render(){
@@ -135,4 +173,4 @@ class Lesson extends Component {
     }
 }
 
-export default Lesson;
+export default Mimicking;
