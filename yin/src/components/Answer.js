@@ -19,7 +19,9 @@ class Answer extends Component{
 
     render(){
         return(
-            <div id={'response-'+this.props.number} onClick={e => this.props.collectResponse(e)} className="response">{this.chooseImage()}
+            <div id={'response-'+this.props.number} onClick={e => this.props.collectResponse(e)} className="response">
+                {this.chooseImage()}
+                <p className="answer-text">{this.props.word}</p>
             </div>
         )
     }
