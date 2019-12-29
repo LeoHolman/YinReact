@@ -6,6 +6,9 @@ const randomBytes = require('randombytes');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const PRIVATE_KEY = 'donttellnobody';
+const path = require('path');
+const fs = require('fs');
+const fileUpload = require('express-fileupload');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true});
@@ -13,6 +16,7 @@ var userSchema = new mongoose.Schema({
     username: String,
     password: String,
     salt: String,
+    is_teacher: Boolean,
 });
 
 var lessonSchema = new mongoose.Schema({
@@ -34,7 +38,7 @@ var audioSchema = new mongoose.Schema({
 
 var userRecordingSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    recording: [{time: String, frequency: String}]
+    recording: [{time: String, frequency: String}],
 });
 
 var Lesson = mongoose.model('Lesson', lessonSchema);
@@ -72,6 +76,7 @@ function tokenMiddleWare(req, res, next) {
 };
 
 const app = express();
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
 app.get('/*', (req, res, next) =>{
@@ -141,7 +146,7 @@ app.post('/addAudio', (req, res, next) => {
     const audioFile = req.body.audioFile;
     const word = req.body.word;
     const altTones = req.body.alternateTones;
-    const correct = req.body.correctTone;
+    const correct = req.body.correct;
     const lessonName = req.body.lessonName;
     const newAudio = new Audio({audioFile: audioFile, word: word, alternateTones: altTones, correctTone: correct, lessonName: lessonName});
     newAudio.save().then( () => {
@@ -207,6 +212,43 @@ app.post('/saveAudio/', async(req, res, next) => {
            res.status(500).send('Something went wrong');
        }
    } 
+});
+
+app.post('/uploadAudio/', (req, res, next) => {
+    // const audioPath = path("uploads", user.username);
+    console.log(req.body);
+    console.log(req.files.audioFile);
+    const audioDirPath = path.join(__dirname, 'uploads', 'test');
+    const audioPath = path.join(audioDirPath, req.files.audioFile.name);
+    const word = req.body.word;
+    const alternateTones = req.body.alternateTones;
+    const correct = req.body.correct;
+    const lessonName = req.body.lessonName;
+    console.log(audioPath);
+        try {
+            if(!fs.existsSync(audioDirPath)){
+                fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
+            let incomingFile = req.files.audioFile;
+            incomingFile.mv(audioPath, (err) => {
+                if(err){
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                const newAudio = new Audio({audioFile: audioPath, word: word, alternateTones: alternateTones, correctTone: correct, lessonName: lessonName});
+                newAudio.save().then( () => {
+                    return res.status(200).send('Upload complete.');
+                });
+            })
+        } catch (ex) {
+            console.log(ex);
+            res.status(500).send('Internal server error');
+        }
+
 });
 
 app.listen(8000, () => console.log('Listening on port 8000'));
