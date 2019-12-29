@@ -26,9 +26,10 @@ class App extends React.Component{
 
   constructor(){
     super();
+    var hasToken = localStorage.token ? true : false;
     this.state={
       "lessonOpen":true,
-      isLoggedIn: false,
+      isLoggedIn: hasToken,
       username: '',
     }
     this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
