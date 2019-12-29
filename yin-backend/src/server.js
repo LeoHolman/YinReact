@@ -197,7 +197,9 @@ app.post('/saveAudio/', async(req, res, next) => {
        console.log(req.body.record);
        try {
             const newUserRecording = new UserRecording({user: user._id, recording: dataPayload});
-            newUserRecording.save().then( () => {
+            newUserRecording.save().then( async () => {
+                const retrieve = await User.findById(newUserRecording.user);
+                console.log(retrieve);
                 res.send(`Recording saved successfully.`);
             });
        } catch (ex) {
