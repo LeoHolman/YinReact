@@ -13,6 +13,7 @@ import Login from './components/Login';
 // import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
 import Activity from './pages/Activity';
+import TeacherInterface from './pages/TeacherInterface';
 
 import {
   BrowserRouter as Router,
@@ -72,6 +73,7 @@ class App extends React.Component{
           {this.state.isLoggedIn ? <> 
             <Switch>
               <Route path="/showLesson/" component={Mimicking} />
+              <Route path="/teacherInterface/" component={TeacherInterface} />
               <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
               {/* <Route path="/lessons/:lessonNumber/" component={Hexagon} /> */}
               <Route path="/lessons/" component={LessonDirectory} />
