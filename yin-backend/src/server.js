@@ -218,38 +218,40 @@ app.post('/uploadAudio/', (req, res, next) => {
     // const audioPath = path("uploads", user.username);
     console.log(req.body);
     console.log(req.files);
-    res.send('ok');
-    // console.log(req.files.audioFile);
-    // const audioDirPath = path.join(__dirname, 'uploads', 'test');
-    // const audioPath = path.join(audioDirPath, req.files.audioFile.name);
-    // const word = req.body.word;
-    // const alternateTones = req.body.alternateTones;
-    // const correct = req.body.correct;
-    // const lessonName = req.body.lessonName;
-    // console.log(audioPath);
-    //     try {
-    //         if(!fs.existsSync(audioDirPath)){
-    //             fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
-    //                 if(err){
-    //                     console.log(err);
-    //                 }
-    //             })
-    //         }
-    //         let incomingFile = req.files.audioFile;
-    //         incomingFile.mv(audioPath, (err) => {
-    //             if(err){
-    //                 console.log(err);
-    //                 return res.status(500).send(err);
-    //             }
-    //             const newAudio = new Audio({audioFile: audioPath, word: word, alternateTones: alternateTones, correctTone: correct, lessonName: lessonName});
-    //             newAudio.save().then( () => {
-    //                 return res.status(200).send('Upload complete.');
-    //             });
-    //         })
-    //     } catch (ex) {
-    //         console.log(ex);
-    //         res.status(500).send('Internal server error');
-    //     }
+    // res.send('ok');
+    console.log(req.files.audioFile);
+    const audioDirPath = path.join(__dirname, 'uploads', 'test');
+    const audioPath = path.join(audioDirPath, req.files.audioFile.name);
+    const word = req.body.word;
+    const alternateTones = req.body.alternateTones;
+    const correct = req.body.correct;
+    const lessonName = req.body.lessonName;
+    console.log(audioPath);
+        try {
+            if(!fs.existsSync(audioDirPath)){
+                fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
+            let incomingFile = req.files.audioFile;
+            incomingFile.mv(audioPath, (err) => {
+                if(err){
+                    console.log(err);
+                    res.status(500).send(err);
+                    return
+                }
+                const newAudio = new Audio({audioFile: audioPath, word: word, alternateTones: alternateTones, correctTone: correct, lessonName: lessonName});
+                newAudio.save().then( () => {
+                    res.status(200).send('Upload complete.');
+                    return
+                });
+            })
+        } catch (ex) {
+            console.log(ex);
+            res.status(500).send('Internal server error');
+        }
 
 });
 
