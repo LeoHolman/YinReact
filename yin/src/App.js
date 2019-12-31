@@ -37,6 +37,13 @@ class App extends React.Component{
     this.submitForm = this.submitForm.bind(this);
   }
 
+  componentDidMount(){
+    window.addEventListener("beforeunload", (ev) =>{
+      ev.preventDefault();
+      localStorage.clear();
+    });
+  }
+
   toggleLessonActivity(){
     this.setState({lessonOpen: !this.state.lessonOpen});
   }
