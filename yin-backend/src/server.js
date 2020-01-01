@@ -11,7 +11,7 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
 
 var wordSchema = new mongoose.Schema({
     audioFile: String, 
@@ -193,10 +193,24 @@ app.post('/lessons/add/', (req, res, next) => {
     });
 });
 
+app.put('/lessons/:name/edit', async (req, res, next) => {
+    const name = req.params.name;
+    const newName = req.body.name;
+    const words = req.body.words;
+    const description = req.body.description;
+    const is_quiz = req.body.is_quiz;
+    const lessonToUpdate = await Lesson.findOne({name});
+    lessonToUpdate.name = newName;
+    lessonToUpdate.words = words;
+    lessonToUpdate.description = description;
+    lessonToUpdate.is_quiz = is_quiz;
+    await lessonToUpdate.save();
+    res.send(`${lessonToUpdate.name} updated successfully.`);
+})
 
 // USER API
 // ===========================================
-app.post('/signup', async (req, res) => {
+app.post('/signup/', async (req, res) => {
     const username = req.body.username;
     const nameUnavailable = await User.findOne({username});
     if(!nameUnavailable){
@@ -233,7 +247,13 @@ app.post('/login/', async (req, res) => {
 
 // RECORDING API
 // ===========================================
-app.post('/recordings/add', async(req, res, next) => {
+app.get('/recordings/:_id', async (req, res, next) => {
+    const _id = req.params._id;
+    const recording = await Recording.findOne({_id});
+    res.send(recording);
+});
+
+app.post('/recordings/add', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     if (req.headers.token){
        const verification = await jwt.verify(req.headers.token, PRIVATE_KEY)
@@ -255,5 +275,31 @@ app.post('/recordings/add', async(req, res, next) => {
 
 // QUIZSCORE API
 // ===========================================
+app.post('/quizScores/add/', async (req, res, next) => {
+    const lesson = req.body.lesson;
+    const user = req.body.user;
+    const score = req.body.score;
+    const maxScore = req.body.maxScore;
+    const recordings = req.body.recordings;
+    try {
+        const newQuizScore = new QuizScore({lesson, user, score, maxScore, recordings});
+        newQuizScore.save().then( () => {
+            res.send('Score saved successfully.');
+        });
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).send('Something went wrong.');
+    }
+});
 
+app.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
+    const username = req.params.username;
+    const lessonname = req.params.lessonname; 
+    const user = await User.findOne({username});
+    const lesson = await Lesson.findOne({name: lessonname});
+    const quizScores = await QuizScore.find({user: user._id, lesson: lesson._id});
+    res.send(quizScores);
+});
+
+//Start application
 app.listen(8000, () => console.log('Listening on port 8000'));
