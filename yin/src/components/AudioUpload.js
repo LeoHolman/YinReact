@@ -42,14 +42,6 @@ class AudioUpload extends Component {
         formData.append('correct', this.state.correct);
         formData.append('lessonName', this.state.lessonName);
         formData.append('audioFile', document.getElementById("audioFileInput").files[0])
-
-            // body: JSON.stringify({
-            //     audioFile: 
-            //     word: this.state.word,
-            //     alternateTones: this.state.alternateTones,
-            //     correct: this.state.correct,
-            //     lessonName: this.state.lessonName
-            // })
         fetch("http://localhost:8000/uploadAudio/", {
             method: "POST",
             body: formData,

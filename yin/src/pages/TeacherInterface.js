@@ -11,7 +11,7 @@ class TeacherInterface extends Component {
     render(){
         return(
             <Switch>
-                <Route path="/teacherInterface/editLessons/:lessonid" component={LessonEdit} />
+                <Route path="/teacherInterface/editLessons/:lessonnumber" component={LessonEdit} />
                 <Route path="/teacherInterface/editLessons/" component={TeacherLessonDirectory} />
                 <Route path="/teacherInterface/uploadAudio/" component={AudioUpload} />
                 <Route path="/teacherInterface/" component={TeacherNav} />

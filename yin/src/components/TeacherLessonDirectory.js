@@ -26,7 +26,7 @@ class TeacherLessonDirectory extends Component {
                     <ul>
                         {this.state.lessons.map( (lesson) => {
                             return <li>
-                                    <Link to={`/teacherInterface/editLessons/${lesson._id}`} key={lesson._id}>{lesson.number}</Link>
+                                    <Link to={`/teacherInterface/editLessons/${lesson.number}`} key={lesson.number} >{lesson.number}</Link>
                                 </li>
                         })}
 

@@ -179,6 +179,15 @@ app.get('/allLessons/', async (req, res, next) => {
     } catch (ex) {
         res.status(500).send('Something went wrong');
     }
+});
+
+app.get('/allAudios', async (req, res, next) => {
+    try {
+        const allAudios = await Audio.find({});
+        res.send(allAudios);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
 })
 
 app.get('/getAudio/:lessonName', async (req, res, next) => {
