@@ -12,6 +12,24 @@ const fileUpload = require('express-fileupload');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true});
+
+var wordSchema = new mongoose.Schema({
+    audioFile: String, 
+    pinyin: String, 
+    correctTone: Number, 
+    character: String,
+});
+
+var lessonSchema = new mongoose.Schema({
+    name: String,
+    words: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Word'
+    }],
+    description: String,
+    is_quiz: Boolean
+});
+
 var userSchema = new mongoose.Schema({
     username: String,
     password: String,
@@ -19,35 +37,29 @@ var userSchema = new mongoose.Schema({
     is_teacher: Boolean,
 });
 
-var lessonSchema = new mongoose.Schema({
-    number: String,
-    audios: [{
-        type: String
-    }]
-});
-
-var audioSchema = new mongoose.Schema({
-    audioFile: String, 
-    word: String, 
-    alternateTones:[{
-        type: String
-    }],
-    correctTone: Number, 
-    lessonName: String
-})
-
-var userRecordingSchema = new mongoose.Schema({
+var recordingSchema = new mongoose.Schema({
+    word: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    recording: [{time: String, frequency: String}],
+    data: [{time: String, frequency: String}],
 });
+
+var quizScoreSchema = new mongoose.Schema({
+    lesson: {type: mongoose.Schema.Types.ObjectId, ref: 'Lesson'},
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    score: Number,
+    maxScore: Number,
+    recordings: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recording'}]
+});
+
+var Word = mongoose.model('Word', wordSchema);
 
 var Lesson = mongoose.model('Lesson', lessonSchema);
 
-var Audio = mongoose.model('Audio', audioSchema);
-
 var User = mongoose.model('User', userSchema);
 
-var UserRecording = mongoose.model('UserRecording', userRecordingSchema);
+var Recording = mongoose.model('Recording', recordingSchema);
+
+var QuizScore = mongoose.model('QuizScore', quizScoreSchema);
 
 userSchema.methods.generateAuthToken = () => {
     const token = jwt.sign({_id: this._id}, 'myprivatekey');
@@ -88,15 +100,108 @@ app.post('/*', (req, res, next) =>{
     next();
 })
 
-app.get('/hello', (req, res) => res.send('Hello'));
+// Not sure what this is, suspect it's a demo to myself to understand middleware
+// app.post('/savedata/', (req, res, next) => {
+//     tokenMiddleWare(req, res, next);
+//     console.log('success!');
+// });
 
+// WORD API
+// ===========================================
+app.post('/words/add/', (req, res, next) => {
+    const audioDirPath = path.join(__dirname, 'uploads', 'test');
+    const audioPath = path.join(audioDirPath, req.files.audioFile.name);
+    const pinyin = req.body.pinyin;
+    const correctTone = req.body.correctTone;
+    const character = req.body.character;
+    try {
+        if(!fs.existsSync(audioDirPath)){
+            fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
+                if(err){
+                    console.log(err);
+                }
+            })
+        }
+        let incomingFile = req.files.audioFile;
+        incomingFile.mv(audioPath, (err) => {
+            if(err){
+                console.log(err);
+                res.status(500).send(err);
+                return
+            }
+            const newWord = new Word({audioFile: audioPath, pinyin, correctTone, character});
+            newWord.save().then( () => {
+                res.status(200).send('Upload complete.');
+                return
+            });
+        })
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/words/all/', async (req, res, next) => {
+    try {
+        const allWords = await Word.find({});
+        res.send(allWords);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+})
+
+app.get('/words/:character/', async (req, res, next) => {
+    const character = req.params.character;
+    try {
+        const word = await Word.find({character});
+        res.send(word);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+});
+
+
+// LESSON API
+// ===========================================
+app.get('/lessons/all/', async (req, res, next) => {
+    try {
+        const allLessons = await Lesson.find({});
+        res.send(allLessons);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+});
+
+app.get('/lessons/:name/', async (req, res, next) => {
+    const name = req.params.name; 
+    try {
+        const lesson = await Lesson.findOne({name});
+        res.send(lesson);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
+});
+
+app.post('/lessons/add/', (req, res, next) => {
+    const name = req.body.name;
+    const words = req.body.words;
+    const description = req.body.description;
+    const is_quiz = req.body.is_quiz;
+    const newLesson = new Lesson({name, words, description, is_quiz});
+    newLesson.save().then( () => {
+        res.send(`${newLesson.name} saved successfully!`);
+    });
+});
+
+
+// USER API
+// ===========================================
 app.post('/signup', async (req, res) => {
     const username = req.body.username;
     const nameUnavailable = await User.findOne({username});
     if(!nameUnavailable){
         const salt = randomBytes(32);
         const hashedPass = await argon2.hash(req.body.password, {salt});
-
         const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex')});
         newUser.save().then( () => {
             res.send(`Hello! ${req.body.username}`)
@@ -117,8 +222,6 @@ app.post('/login/', async (req, res) => {
         const incomingPassword = req.body.password;
         const hashedIncomingPassword = await argon2.hash(incomingPassword, {userSalt}); 
         const correctPassword = await argon2.verify(userRecord.password, incomingPassword);
-        console.log(userRecord.password);
-        console.log(hashedIncomingPassword);
         if (correctPassword){
             const token = await jwt.sign({user: {username: userRecord.username}}, PRIVATE_KEY);
             res.send(token);
@@ -128,92 +231,19 @@ app.post('/login/', async (req, res) => {
     }
 });
 
-app.post('/savedata/', (req, res, next) => {
-    tokenMiddleWare(req, res, next);
-    console.log('success!');
-});
-
-app.post('/addLesson/', (req, res, next) => {
-    const lessonnum = req.body.number;
-    const audios = req.body.audios;
-    const newLesson = new Lesson({number: lessonnum, audios: audios});
-    newLesson.save().then( () => {
-        res.send(`Lesson ${lessonnum} save successfully!`);
-    });
-});
-
-app.post('/addAudio', (req, res, next) => {
-    const audioFile = req.body.audioFile;
-    const word = req.body.word;
-    const altTones = req.body.alternateTones;
-    const correct = req.body.correct;
-    const lessonName = req.body.lessonName;
-    const newAudio = new Audio({audioFile: audioFile, word: word, alternateTones: altTones, correctTone: correct, lessonName: lessonName});
-    newAudio.save().then( () => {
-        res.send(`Audio of ${word} saved successfully!`);
-    });
-});
-
-app.get('/getLesson/:lessonnumber', async (req, res, next) => {
-    const lessonnum = req.params.lessonnumber; 
-    try {
-        const lesson = await Lesson.findOne({number: lessonnum});
-        res.send(lesson);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.get('/getUsername/', (req, res, next) => {
-    if(req.headers.token){
-        const token = req.headers.token;
-        const user = jwt.verify(token, PRIVATE_KEY);
-        return user.username;
-    }
-})
-
-app.get('/allLessons/', async (req, res, next) => {
-    try {
-        const allLessons = await Lesson.find({});
-        res.send(allLessons);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.get('/allAudios', async (req, res, next) => {
-    try {
-        const allAudios = await Audio.find({});
-        res.send(allAudios);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-})
-
-app.get('/getAudio/:lessonName', async (req, res, next) => {
-    const query = { lessonName: req.params.lessonName};
-    const lesson = req.params.lessonName;
-    try {
-        const audio = await Audio.find({lessonName: lesson});
-        res.send(audio);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.post('/saveAudio/', async(req, res, next) => {
-    console.log('hit!')
+// RECORDING API
+// ===========================================
+app.post('/recordings/add', async(req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-   if (req.headers.token){
-       const user = await jwt.verify(req.headers.token, PRIVATE_KEY);
+    if (req.headers.token){
+       const verification = await jwt.verify(req.headers.token, PRIVATE_KEY)
+       const username = verification.user.username;
+       const user = await User.findOne({username});
        const dataPayload = await req.body.record;
-       console.log(typeof req.body.record[0].frequency);
-       console.log(req.body.record);
        try {
-            const newUserRecording = new UserRecording({user: user._id, recording: dataPayload});
-            newUserRecording.save().then( async () => {
-                const retrieve = await User.findById(newUserRecording.user);
-                console.log(retrieve);
+            const newRecording = new Recording({user: user._id, data: dataPayload});
+            newRecording.save().then( async () => {
+                const retrieve = await User.findById(newRecording.user);
                 res.send(`Recording saved successfully.`);
             });
        } catch (ex) {
@@ -223,45 +253,7 @@ app.post('/saveAudio/', async(req, res, next) => {
    } 
 });
 
-app.post('/uploadAudio/', (req, res, next) => {
-    // const audioPath = path("uploads", user.username);
-    console.log(req.body);
-    console.log(req.files);
-    // res.send('ok');
-    console.log(req.files.audioFile);
-    const audioDirPath = path.join(__dirname, 'uploads', 'test');
-    const audioPath = path.join(audioDirPath, req.files.audioFile.name);
-    const word = req.body.word;
-    const alternateTones = req.body.alternateTones;
-    const correct = req.body.correct;
-    const lessonName = req.body.lessonName;
-    console.log(audioPath);
-        try {
-            if(!fs.existsSync(audioDirPath)){
-                fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
-                    if(err){
-                        console.log(err);
-                    }
-                })
-            }
-            let incomingFile = req.files.audioFile;
-            incomingFile.mv(audioPath, (err) => {
-                if(err){
-                    console.log(err);
-                    res.status(500).send(err);
-                    return
-                }
-                const newAudio = new Audio({audioFile: audioPath, word: word, alternateTones: alternateTones, correctTone: correct, lessonName: lessonName});
-                newAudio.save().then( () => {
-                    res.status(200).send('Upload complete.');
-                    return
-                });
-            })
-        } catch (ex) {
-            console.log(ex);
-            res.status(500).send('Internal server error');
-        }
-
-});
+// QUIZSCORE API
+// ===========================================
 
 app.listen(8000, () => console.log('Listening on port 8000'));

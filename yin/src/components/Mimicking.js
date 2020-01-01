@@ -136,12 +136,11 @@ class Mimicking extends Component {
         var mock2 = datarecord.slice(0,3);
         console.log(mock2);
         var requestPayload = {
-                beep: 'boop',
                 record: datarecord
             }
         console.log(requestPayload);
         console.log(JSON.stringify(requestPayload));
-        fetch('http://localhost:8000/saveAudio', {
+        fetch('http://localhost:8000/recordings/add/', {
             method: "POST",
             headers: {
                 token: localStorage.getItem('token'),
