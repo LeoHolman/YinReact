@@ -46,13 +46,12 @@ class TwoChoiceQuiz extends Component {
         var optionArr =[];
         var randomArr = [];
         var word = [];
-        // var count = this.state.optionCount;
-        // this.setState({'optionCount': this.state.optionCount++});
+        
+        
         //randomize the alternate tones 
-        console.log("before randomize: "+this.props.stimuli[this.state.currentStimulus].alternateTones);
         randomArr = this.randomize(stimuli[this.state.currentStimulus].alternateTones);
-        console.log("after randomize: "+randomArr);
         //if all word possibilities were in the randomized array, execute the following
+    
         // for (var i=0; i<randomArr.length; i++){
         //     if (randomArr[i] == this.props.stimuli.correctTone){
         //         word.push(randomArr[i]);

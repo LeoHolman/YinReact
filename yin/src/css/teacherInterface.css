@@ -1,0 +1,63 @@
+#teacher-nav {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+/* 
+#teacher-nav li {
+    margin-top: 7px;
+    list-style: none;
+    float: none;
+    border: solid #5E99D3 2px;
+    color: #5E99D3;
+    border-radius: 25px;
+    box-shadow: 5px 5px black;
+} */
+
+#teacher-nav li{
+    list-style: none;
+    float: none;
+    margin:.5em;
+    border-radius:12px;
+    background-color:#5E99D3;
+    color:white;
+    font-family: 'Open Sans', sans-serif;
+    border:none;
+    font-size:1em;
+    box-shadow: 3px 3px #2b2a2a;
+    height:3em;
+    border:2px solid #5E99D3;
+}
+
+#teacher-nav li a{
+    color:white;
+    text-align:center;
+    padding-right:0;
+
+}
+
+#teacher-nav li:hover{
+    background-color:white;
+    color:#5E99D3;
+}
+
+#teacher-nav li:hover a{
+    color:#5E99D3;
+}
+
+
+/* Teacher Lessons directory */
+
+.lessonCard.teacherCard{
+    border:2px solid #db7a13
+}
+
+
+.teacherCardLink{
+    text-decoration: none;
+    color:black;
+}
+
+.teacherCardLink:visited{
+    color:black;
+}

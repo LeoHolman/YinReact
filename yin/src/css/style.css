@@ -92,8 +92,14 @@ button{
     font-size:1em;
     box-shadow: 3px 3px #2b2a2a;
     height:3em;
+    border:2px solid #5E99D3;
+
 }
 
+button:hover{
+    background-color:white;
+    color:#5E99D3;
+}
 
 /** -------- HOME PAGE --------- **/
 /**
