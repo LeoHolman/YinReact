@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import '../css/teacherNav.css';
+import '../css/teacherInterface.css';
 
 class TeacherNav extends Component {
     render(){
