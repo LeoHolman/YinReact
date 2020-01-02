@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5e0d1997714b063a34f9b567"},"recordings":[{"$oid":"5e0cdf7f813fe438684deb35"},{"$oid":"5e0d195b714b063a34f9b51a"}],"lesson":{"$oid":"5e0cd1e4c39c904bb402b61d"},"user":{"$oid":"5df6dfab85a2675c30218c6d"},"score":{"$numberInt":"1"},"maxScore":{"$numberInt":"2"},"__v":{"$numberInt":"0"}}

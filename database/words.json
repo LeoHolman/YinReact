@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5e0cd4cc753fd9496cf642a9"},"pinyin":"ma1","correctTone":{"$numberInt":"1"},"character":"妈","__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e0cda51a3b5f93a707601d8"},"audioFile":"D:\\Webdev\\YinReact\\yin-backend\\src\\uploads\\test\\ma.m4a","pinyin":"ma1","correctTone":{"$numberInt":"1"},"character":"妈","__v":{"$numberInt":"0"}}

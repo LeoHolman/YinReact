@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5e0cd1e4c39c904bb402b61d"},"words":[],"name":"newApi","description":"this is the new api","is_quiz":true,"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e0cd1f7c39c904bb402b61e"},"words":[{"$oid":"5e0cda51a3b5f93a707601d8"}],"name":"Lesson 2","description":"it is working!!!!!","is_quiz":false,"__v":{"$numberInt":"1"}}
