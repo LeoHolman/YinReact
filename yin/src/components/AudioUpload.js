@@ -53,38 +53,38 @@ class AudioUpload extends Component {
     render() {
         return(
             <>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Audio File:
-                        <input 
+                <form onSubmit={this.handleSubmit} className ="audioForm">
+                    <label for="audioFileInput">
+                       Audio File:
+                    </label>
+                    <input 
                             id="audioFileInput"
                             type="file" 
                             name="audioFile"
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for ="word">
                         Word:
-                        <input 
+                    </label>
+                    <input 
+                            id="word"
                             type="text" 
                             name="word"
                             value={this.state.word}
                             onChange={this.handleInputChange}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for="tone">
                         Correct Tone:
-                        <input 
+                    </label>
+                    <input 
+                            id="tone"
                             type="text"
                             name="correct"
                             value={this.state.correct}
                             onChange={this.handleInputChange}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for="altTone1">
                         Alternate Tone 1:
+                    </label>
                         <input
                             id="altTone1"
                             type="text"
@@ -92,10 +92,9 @@ class AudioUpload extends Component {
                             value={this.state.alternateTones[0]}
                             onChange={this.createAlternateToneArray}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for="altTone2">
                         Alternate Tone 2:
+                    </label>
                         <input
                             id="altTone2"
                             type="text"
@@ -103,10 +102,9 @@ class AudioUpload extends Component {
                             value={this.state.alternateTones[1]}
                             onChange={this.createAlternateToneArray}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for="altTone3">
                         Alternate Tone 3:
+                    </label>
                         <input
                             id="altTone3"
                             type="text"
@@ -114,19 +112,17 @@ class AudioUpload extends Component {
                             value={this.state.alternateTones[2]}
                             onChange={this.createAlternateToneArray}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label for="lesson">
                         Lesson Name:
-                        <input
+                    </label>
+                    <input
+                            id="lesson"
                             type="text"
                             name="lessonName"
                             value={this.state.lessonName}
                             onChange={this.handleInputChange}
                         />
-                    </label>
-                    <br />
-                    <label>
+                    <label id="submitButton">
                         <input
                             type="submit"
                             value="Submit"

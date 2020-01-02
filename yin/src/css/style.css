@@ -79,11 +79,11 @@ a{
     color:#5E99D3;
 }
 
-a:visited{
+/* a:visited{
     color:darkblue;
-}
+} */
 
-button{
+button, input[type=submit]{
     border-radius:12px;
     background-color:#5E99D3;
     color:white;
@@ -93,10 +93,11 @@ button{
     box-shadow: 3px 3px #2b2a2a;
     height:3em;
     border:2px solid #5E99D3;
+    margin:.5em;
 
 }
 
-button:hover{
+button:hover, input[type=submit]:hover{
     background-color:white;
     color:#5E99D3;
 }
@@ -112,7 +113,9 @@ body{
 **/
 
 
-
+.header{
+    margin-bottom:5em;
+}
 
 #logo{
     float:left;
