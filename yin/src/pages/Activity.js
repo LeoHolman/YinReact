@@ -22,7 +22,7 @@ class Activity extends Component{
     }
 
     async componentDidMount() {
-        fetch(`http://localhost:8000/getLesson/${this.props.match.params.lessonNumber}`)
+        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}`)
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({lesson: result});
@@ -30,7 +30,7 @@ class Activity extends Component{
                 )
             );
 
-        fetch(`http://localhost:8000/getAudio/${this.props.match.params.lessonNumber}`)
+        fetch(`http://localhost:8000/getAudio/${this.props.match.params.name}`)
             .then( (response) => response.json()
                 .then( (result) => {
                     console.log(result);
@@ -71,21 +71,21 @@ class Activity extends Component{
     render(){
         return(
             <div /*className={`activity ${this.props.activityOpen ? 'open' : 'min'}`} onClick={this.props.toggleLessonActivity}*/>
-                <h3>Lesson: {this.props.match.params.lessonNumber}</h3>
+                <h3>Lesson: {this.props.match.params.name}</h3>
                 <h2>Activity {this.props.match.params.activityNumber}</h2>
                
-                <Route path={`/lessons/${this.props.match.params.lessonNumber}/1`}>
+                <Route path={`/lessons/${this.props.match.params.name}/1`}>
                     <TwoChoiceQuiz stimuli={this.state.audioRes}  />
                     {/* <Baseline thing={this.state.audioRes} /> */}
  
                 </Route>
-                <Route path={`/lessons/${this.props.match.params.lessonNumber}/2`}>
+                <Route path={`/lessons/${this.props.match.params.name}/2`}>
                     <FourChoiceQuiz stimuli={this.state.lesson.audios}/>
                 </Route>
-                <Route path={`/lessons/${this.props.match.params.lessonNumber}/3`}>
+                <Route path={`/lessons/${this.props.match.params.name}/3`}>
                     <Baseline />
                 </Route>
-                <Route path={`/lessons/${this.props.match.params.lessonNumber}/4`}>
+                <Route path={`/lessons/${this.props.match.params.name}/4`}>
                     <Baseline />
                 </Route>
 

@@ -17,7 +17,7 @@ class LessonDirectory extends Component {
     }
 
     async componentDidMount() {
-        fetch('http://localhost:8000/allLessons/')
+        fetch('http://localhost:8000/lessons/all')
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({allLessons: result});
@@ -31,7 +31,7 @@ class LessonDirectory extends Component {
             <div>
                 <ul>
                     {this.state.allLessons.map( (lesson) => {
-                        return <LessonDirectoryCard LessonName={lesson.number} LessonDesc="Description of the Lesson" link={`/lessons/${lesson.number}/`} key={`${lesson._id}`} />
+                        return <LessonDirectoryCard LessonName={lesson.name} LessonDesc="Description of the Lesson" link={`/lessons/${lesson.name}/`} key={`${lesson._id}`} />
                     })}
                 </ul>
                 
