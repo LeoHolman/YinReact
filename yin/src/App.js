@@ -81,7 +81,7 @@ class App extends React.Component{
               <Switch>
                 <Route path="/showLesson/" component={Mimicking} />
                 <Route path="/teacherInterface/" component={TeacherInterface} />
-                <Route path="/lessons/:lessonNumber/:activityNumber" component={Activity} />
+                <Route path="/lessons/:name/:activityNumber" component={Activity} />
                 {/* <Route path="/lessons/:lessonNumber/" component={Hexagon} /> */}
                 <Route path="/lessons/" component={LessonDirectory} />
                 <Route path="/" component={Home} />
