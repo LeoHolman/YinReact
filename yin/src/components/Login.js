@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../css/login.css';
 
 class Login extends Component {
     constructor(props){
@@ -24,9 +25,11 @@ class Login extends Component {
     render() {
         return(
             <>
-                <p>Login:</p>
                 <form id="loginform"  onSubmit={e => this.handleForm(e, this.state.fusername, this.state.fpassword )}>
-                    <input id="username" name="username" placeholder="username" value={this.state.value} onChange={e => this.handleChange(e,'fusername')} />
+                    <h3>Login</h3>
+                    <label for="username">Username:</label>
+                    <input id="username" name="username" placeholder="username" type="text" value={this.state.value} onChange={e => this.handleChange(e,'fusername')} />
+                    <label for ="password">Password:</label>
                     <input id="password" name="password" placeholder="password" type="password" value={this.state.value} onChange={e => this.handleChange(e,'fpassword')}/>
                     <input type="submit" value="Submit" />
                 </form>
