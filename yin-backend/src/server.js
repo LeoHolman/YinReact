@@ -160,6 +160,16 @@ app.get('/words/:character/', async (req, res, next) => {
     }
 });
 
+app.delete('/words/:character/delete', async (req, res, next) => {
+    const character = req.params.character;
+    try {
+        const wordToDelete = await Word.deleteOne({character});
+        res.send(`${character} deleted successfully.`);
+    } catch (ex) {
+        res.status(500).send('Something went wrong.');
+    }
+})
+
 
 // LESSON API
 // ===========================================
@@ -182,6 +192,13 @@ app.get('/lessons/:name/', async (req, res, next) => {
     }
 });
 
+app.get('/lessons/:name/words/', async (req, res, next) => {
+    const name = req.params.name;
+    const lesson = await Lesson.findOne({name});
+    const words = await Word.find({'_id': { $in: lesson.words}})
+    res.send(words);
+})
+
 app.post('/lessons/add/', (req, res, next) => {
     const name = req.body.name;
     const words = req.body.words;
@@ -193,7 +210,7 @@ app.post('/lessons/add/', (req, res, next) => {
     });
 });
 
-app.put('/lessons/:name/edit', async (req, res, next) => {
+app.put('/lessons/:name/edit/', async (req, res, next) => {
     const name = req.params.name;
     const newName = req.body.name;
     const words = req.body.words;
@@ -206,7 +223,13 @@ app.put('/lessons/:name/edit', async (req, res, next) => {
     lessonToUpdate.is_quiz = is_quiz;
     await lessonToUpdate.save();
     res.send(`${lessonToUpdate.name} updated successfully.`);
-})
+});
+
+app.delete('/lessons/:name/delete/', async (req, res, next) => {
+    const name = req.params.name;
+    const lessonToDelete = await Lesson.deleteOne({name});
+    res.send(`${name} deleted successfully.`);
+});
 
 // USER API
 // ===========================================
