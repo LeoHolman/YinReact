@@ -12,7 +12,9 @@
     border-radius:20px;
     background-color:white;
     box-shadow:3px 3px 5px gray;
-    padding:1em 0 1em 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding:75% 1em 0 1em;
 }
 
 .response img{
@@ -42,4 +44,9 @@
 
 .incorrect h3{
     color: #a50122;
+}
+
+.active {
+    border:5px solid #f0d975;
+    background-color:#faf6e4;
 }

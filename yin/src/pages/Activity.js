@@ -27,7 +27,7 @@ class Activity extends Component{
                 )
             );
 
-        fetch(`http://localhost:8000/getAudio/${this.props.match.params.name}`)
+        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words`)
             .then( (response) => response.json()
                 .then( (result) => {
                     console.log(result);
@@ -36,22 +36,22 @@ class Activity extends Component{
                     var allAudios = [];
                     // var i = 0;
                     console.log(`audio res! ${this.state.audioRes}`);
-                    this.state.audioRes.forEach(function(audio){
-                        allAudios.push([audio._id, "~",audio.audioFile,"~", audio.word,"~", audio.alternateTones,"~", audio.correctTone,"~", audio.lessonName])
-                        // var oneAudio = {
-                        //     id: audio._id,
-                        //     audioFile: audio.audioFile,
-                        //     word: audio.word,
-                        //     alternateTones: audio.alternateTones,
-                        //     correctTone: audio.correctTone,
-                        //     lessonName: audio.lessonName
+                    // this.state.audioRes.forEach(function(audio){
+                    //     allAudios.push([audio._id, "~",audio.audioFile,"~", audio.word,"~", audio.alternateTones,"~", audio.correctTone,"~", audio.lessonName])
+                    //     // var oneAudio = {
+                    //     //     id: audio._id,
+                    //     //     audioFile: audio.audioFile,
+                    //     //     word: audio.word,
+                    //     //     alternateTones: audio.alternateTones,
+                    //     //     correctTone: audio.correctTone,
+                    //     //     lessonName: audio.lessonName
 
-                        // }
-                        // console.log(oneAudio);
-                        // allAudios.push(oneAudio);
-                    })
-                    console.log(allAudios);
-                    this.setState({audios: allAudios})
+                    //     // }
+                    //     // console.log(oneAudio);
+                    //     // allAudios.push(oneAudio);
+                    // })
+                    // console.log(allAudios);
+                    // this.setState({audios: allAudios})
 
                     // var tempRes = this.state.audioRes; 
                     // for(var i=0, temp; i <tempRes.length; i++){
