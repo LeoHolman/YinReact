@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import AudioUpload from '../components/AudioUpload';
-import TeacherNav from '../components/TeacherNav';
-import LessonEdit from '../components/LessonEdit';
-import {Switch, Route, Link} from 'react-router-dom';
-import TeacherLessonDirectory from '../components/TeacherLessonDirectory';
+// import TeacherNav from '../components/TeacherNav';
+import LessonForm from '../components/lessons/LessonForm';
+import LessonEdit from '../components/lessons/LessonEdit';
+import {Switch, Route} from 'react-router-dom';
+import TeacherLessonDirectory from '../components/lessons/TeacherLessonDirectory';
 
 class TeacherInterface extends Component {
 
@@ -11,10 +12,11 @@ class TeacherInterface extends Component {
     render(){
         return(
             <Switch>
-                <Route path="/teacherInterface/editLessons/:lessonnumber" component={LessonEdit} />
-                <Route path="/teacherInterface/editLessons/" component={TeacherLessonDirectory} />
-                <Route path="/teacherInterface/uploadAudio/" component={AudioUpload} />
-                <Route path="/teacherInterface/" component={TeacherNav} />
+                <Route path="/teacherInterface/lessons/:lessonnumber/edit/" component={LessonEdit} />
+                <Route path="/teacherInterface/lessons/add/" component={LessonForm} />
+                <Route path="/teacherInterface/lessons/" component={TeacherLessonDirectory} />
+                <Route path="/teacherInterface/words/add" component={AudioUpload} />
+                <Route path="/teacherInterface/" component={TeacherLessonDirectory} />
             </Switch>
         )
     }

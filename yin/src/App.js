@@ -19,8 +19,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  // Redirect,
-  // Link
 } from "react-router-dom";
 
 class App extends React.Component{
@@ -72,7 +70,6 @@ class App extends React.Component{
     }
 
   render(){
-    {/* <Route path="/activities/:lessonNumber/:activityNumber" component={Activity} /> */}
     return (
       <Router>
         <Header is_teacher={true} />

@@ -31,8 +31,8 @@ class Mimicking extends Component {
 
     record(buttonId) {
         return new Promise(resolve => {
-            var audio;
-            var audioUrl;
+            // var audio;
+            // var audioUrl;
             var audioBlob;
             const recordButton = document.getElementById(buttonId);
             navigator.mediaDevices.getUserMedia({
@@ -66,8 +66,8 @@ class Mimicking extends Component {
 
     async processAudio(audioBlob) {
         return new Promise(resolve => {
-            var rawResponse;
-            var csvDataLocation;
+            // var rawResponse;
+            // var csvDataLocation;
             var formData = new FormData();
             formData.append("audioData", audioBlob);
             fetch('https://yin.rit.edu/pages/audioProcessing.php', {
@@ -96,7 +96,7 @@ class Mimicking extends Component {
                 .attr('y2', y)
                 .style('stroke', '#babbbc')
                 .style('stroke-width', '3px');
-            if (i == 3) {
+            if (i === 3) {
                 y -= 4;
             }
             y += (height / 4);
@@ -105,7 +105,7 @@ class Mimicking extends Component {
 
     async drawPitchCurve(dataset, width, height, baseline=(height/2), standardDeviation=0, color="red") {
         d3.selectAll("svg > .userPitch").remove();
-        let datarecord = new Array;
+        let datarecord = [];
         await d3.tsv(dataset, (__data) => {
             // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
             // if(isNaN(zScore)){
@@ -113,7 +113,7 @@ class Mimicking extends Component {
             // }
             let point = {time: __data.time, frequency: __data.frequency};
             datarecord.push(point);
-            var zScore = 0;
+            // var zScore = 0;
                 d3.select("#visualization svg")
                     .append("circle")
                     .attr("cx", __data.time * (width / 2))
@@ -123,23 +123,9 @@ class Mimicking extends Component {
                     .style("fill",color);
             }
         );
-        console.log(datarecord);
-        console.log(Array.isArray(datarecord));
-        console.log(datarecord.length);
-        var mock = [
-            {time: 0, frequency: 5},
-            {time: 2, frequency: 5},
-            {time: 3, frequency: 5},
-            {time: 4, frequency: 5},
-            {time: 5, frequency: 5},
-        ]
-        var mock2 = datarecord.slice(0,3);
-        console.log(mock2);
         var requestPayload = {
                 record: datarecord
             }
-        console.log(requestPayload);
-        console.log(JSON.stringify(requestPayload));
         fetch('http://localhost:8000/recordings/add/', {
             method: "POST",
             headers: {

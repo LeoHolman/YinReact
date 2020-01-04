@@ -3,10 +3,7 @@ import FourChoiceQuiz from '../components/FourChoiceQuiz';
 import TwoChoiceQuiz from '../components/TwoChoiceQuiz';
 import Baseline from '../components/Baseline';
 import {
-    BrowserRouter as Router,
-    Switch,
     Route,
-    Link
   } from "react-router-dom";
 
 
@@ -37,7 +34,7 @@ class Activity extends Component{
                     this.setState({audioRes: result});
                     console.log(this.state.audios);
                     var allAudios = [];
-                    var i = 0;
+                    // var i = 0;
                     console.log(`audio res! ${this.state.audioRes}`);
                     this.state.audioRes.forEach(function(audio){
                         allAudios.push([audio._id, "~",audio.audioFile,"~", audio.word,"~", audio.alternateTones,"~", audio.correctTone,"~", audio.lessonName])
