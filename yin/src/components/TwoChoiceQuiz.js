@@ -6,11 +6,15 @@ class TwoChoiceQuiz extends Component {
         super(props);
         this.state = {
             currentStimulus: 0,
-            options:[]
+            options:[], 
+            active:"",
+            submitted: false
         };
         this.handleClick = this.handleClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.collectResponse = this.collectResponse.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
+        this.reset = this.reset.bind(this);
         // this.componentDidMount  = this.componentDidMount.bind(this);
         // this.randomTone  = this.randomTone.bind(this);
         // this.randomize = this.randomize.bind(this);
@@ -21,19 +25,52 @@ class TwoChoiceQuiz extends Component {
     // static getStateDerivedFromProps(props, state){
     //     return {stimuli: props.stimuli};
     // }
+    reset(){
+        document.getElementById("nextQuestion").classList.add("hide");
+        document.getElementById("submitAnswer").classList.remove("hide");
+        var responses = document.getElementsByClassName("response");
+        for (var x=0; x<responses.length; x++){
+            responses[x].classList.remove("active");
+            responses[x].classList.remove("correct");
+            responses[x].classList.remove("incorrect");
+        }
+        this.setState({'submitted':false});
+    }
+
 
     handleClick() {
         this.setState({'currentStimulus': this.state.currentStimulus + 1});
+        this.reset();
+    }
+
+    handleSubmit(event){
+        this.setState({'submitted':true});
         var responses = document.getElementsByClassName("response");
         for (var x=0; x<responses.length; x++){
             responses[x].classList.remove("active");
         }
+
+        if(this.state.active==this.props.stimuli[this.state.currentStimulus].correctTone){
+            document.getElementById(this.state.active).classList.add('correct');
+        } else{
+            document.getElementById(this.state.active).classList.add('incorrect');
+        }
+
+        document.getElementById("nextQuestion").classList.remove("hide");
+        document.getElementById("submitAnswer").classList.add("hide");
     }
 
     collectResponse(event){
-        const questionLabel = `question${this.state.currentStimulus}`;
-        this.setState({[questionLabel]: event.target.id});
-        event.target.classList.add("active");
+        if(this.state.submitted==false){
+            const questionLabel = `question${this.state.currentStimulus}`;
+            this.setState({[questionLabel]: event.target.id});
+            this.setState({'active': event.target.id});
+            var responses = document.getElementsByClassName("response");
+            for (var x=0; x<responses.length; x++){
+                responses[x].classList.remove("active");
+            }
+            event.target.classList.add("active");
+        }
     }
 
     // randomize(a){
@@ -154,7 +191,8 @@ class TwoChoiceQuiz extends Component {
                             {/* <Answer number={this.randomTone(this.props.stimuli, 0)} collectResponse={this.collectResponse} />
                             <Answer number={this.randomTone(this.props.stimuli, 1)} collectResponse={this.collectResponse}/> */}
                         </div>
-                        <button onClick={this.handleClick}>Next</button>
+                        <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
+                        <button onClick={this.handleClick} className="hide" id="nextQuestion">Next</button>
                         </>
                         :
                         <p>All done!</p>
