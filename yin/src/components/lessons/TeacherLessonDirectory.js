@@ -22,19 +22,25 @@ class TeacherLessonDirectory extends Component {
         return(
             <>
                 {this.state.lessons && 
-                    <ul>
-                        {this.state.lessons.map( (lesson) => {
-                            return <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherCardLink">
-                                <div className="teacherCard lessonCard">
-                                    <div className="meta" onClick={this.toggleActivityList}>
-                                        <h2>Lesson: {lesson.name}</h2>
-                                        <p>{this.state.lessons.description}</p>
+                    <>
+                        <Link to={'/teacherInterface/lessons/add'}>
+                            Add a Lesson
+                        </Link>
+                        <h1>Lessons:</h1>
+                        <ul>
+                            {this.state.lessons.map( (lesson) => {
+                                return <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherCardLink">
+                                    <div className="teacherCard lessonCard">
+                                        <div className="meta" onClick={this.toggleActivityList}>
+                                            <h2>Lesson: {lesson.name}</h2>
+                                            <p>{lesson.description}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                                
-                        })}
-                    </ul>
+                                </Link>
+                                    
+                            })}
+                        </ul>
+                    </>
                 }
             </>
         )
