@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import FourChoiceQuiz from '../components/FourChoiceQuiz';
-import TwoChoiceQuiz from '../components/TwoChoiceQuiz';
+import ChoiceQuiz from '../components/ChoiceQuiz';
 import Baseline from '../components/Baseline';
 import {
     Route,
@@ -72,12 +71,12 @@ class Activity extends Component{
                 <h2>Activity {this.props.match.params.activityNumber}</h2>
                
                 <Route path={`/lessons/${this.props.match.params.name}/1`}>
-                    <TwoChoiceQuiz stimuli={this.state.audioRes}  />
+                    <ChoiceQuiz stimuli={this.state.audioRes} choices="2" />
                     {/* <Baseline thing={this.state.audioRes} /> */}
  
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/2`}>
-                    <FourChoiceQuiz stimuli={this.state.lesson.audios}/>
+                    <ChoiceQuiz stimuli={this.state.audioRes} choices="4"/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/3`}>
                     <Baseline />

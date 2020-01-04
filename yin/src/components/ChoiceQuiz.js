@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Answer from './Answer';
 
-class TwoChoiceQuiz extends Component {
+class ChoiceQuiz extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -18,7 +18,7 @@ class TwoChoiceQuiz extends Component {
         this.nextQuestion = this.nextQuestion.bind(this);
         this.reset = this.reset.bind(this);
         // this.componentDidMount  = this.componentDidMount.bind(this);
-        this.randomTones  = this.randomTones.bind(this);
+        this.chooseTones  = this.chooseTones.bind(this);
         this.randomize = this.randomize.bind(this);
         this.displayAnswers = this.displayAnswers.bind(this);
     }
@@ -89,61 +89,63 @@ class TwoChoiceQuiz extends Component {
         return a;
     }
 
-    randomTones(correct){
+    chooseTones(correct){
         var optionArr =[];
         var randomArr = [1,2,3,4];
-        var word = [];
+        //to pair words with tones under their graphs, uncomment word-related code 
+        // var word = [];
         
+        //Two choice quiz needs randomized 
+        if(this.props.choices==2){
+            //randomize the alternate tones 
+            randomArr = this.randomize(randomArr);
         
-        //randomize the alternate tones 
-        console.log("before random "+randomArr);
-        randomArr = this.randomize(randomArr);
-        console.log("after random "+randomArr);
-        console.log(correct);
-        //if all word possibilities were in the randomized array, execute the following
-    
-        for (var i=0; i<randomArr.length; i++){
-            if (randomArr[i] == correct){
-                console.log("correct hit");
-                // word.push(randomArr[i]);
-                // word.push(randomArr[i].charAt(randomArr[i].length-1));
-                optionArr.push(randomArr[i]);
-                randomArr.splice(i, 1); 
-                console.log("after splice "+randomArr);
-                // word = [];
+            for (var i=0; i<randomArr.length; i++){
+                if (randomArr[i] == correct){
+                    console.log("correct hit");
+                    // word.push(randomArr[i]);
+                    // word.push(randomArr[i].charAt(randomArr[i].length-1));
+                    optionArr.push(randomArr[i]);
+                    randomArr.splice(i, 1); 
+                    console.log("after splice "+randomArr);
+                    // word = [];
+                }
             }
+            optionArr.push(randomArr[0]);
+
+            //Push the first entry in the randomized array, whatever it is
+            //this assumes the randomized array only holds incorrect options
+            // word.push(randomArr[0]);
+            // word.push(randomArr[0].charAt(randomArr[0].length-1));
+            // optionArr.push(word);
+            // word = [];
+
+            // //Push the correct answer to the array
+            // word.push(this.props.stimuli[this.state.currentStimulus].word);
+            // word.push(JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone));
+            // optionArr.push(word);
+            // word = [];
+
+            // //randomize the two options
+            // optionArr = this.randomize(optionArr);
+
+            // if(stimuli[this.state.currentStimulus]){
+            //     word.push(stimuli[this.state.currentStimulus].word);
+            //     optionArr.push(word);
+            //     word=[];
+            //     for (var i=0; i<2; i++){
+            //         word.push(stimuli[this.state.currentStimulus].alternateTones[i]);
+            //         optionArr.push(word);
+            //         word=[];
+            //     }
+            //     // this.setState({'options': optionArr});
+            //     // console.log('in random' + stimuli[this.state.currentStimulus].word);
+
+            // }``
+        } else {
+            optionArr = randomArr;
         }
-        optionArr.push(randomArr[0]);
-
-        //Push the first entry in the randomized array, whatever it is
-        //this assumes the randomized array only holds incorrect options
-        // word.push(randomArr[0]);
-        // word.push(randomArr[0].charAt(randomArr[0].length-1));
-        // optionArr.push(word);
-        // word = [];
-
-        // //Push the correct answer to the array
-        // word.push(this.props.stimuli[this.state.currentStimulus].word);
-        // word.push(JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone));
-        // optionArr.push(word);
-        // word = [];
-
-        // //randomize the two options
-        // optionArr = this.randomize(optionArr);
-
-        // if(stimuli[this.state.currentStimulus]){
-        //     word.push(stimuli[this.state.currentStimulus].word);
-        //     optionArr.push(word);
-        //     word=[];
-        //     for (var i=0; i<2; i++){
-        //         word.push(stimuli[this.state.currentStimulus].alternateTones[i]);
-        //         optionArr.push(word);
-        //         word=[];
-        //     }
-        //     // this.setState({'options': optionArr});
-        //     // console.log('in random' + stimuli[this.state.currentStimulus].word);
-
-        // }
+        
         console.log('randomize final options '+optionArr);
         if(this.state.options === undefined || this.state.options == 0){
             this.setState({'options': optionArr});
@@ -151,7 +153,7 @@ class TwoChoiceQuiz extends Component {
     }
 
     displayAnswers(correct){
-        this.randomTones(correct);
+        this.chooseTones(correct);
         const answers = this.state.options.map( (opt) =>
             <Answer number = {JSON.stringify(opt)} key ={opt[1]} collectResponse={this.collectResponse} />
         );
@@ -201,4 +203,4 @@ class TwoChoiceQuiz extends Component {
 }
 
 
-export default TwoChoiceQuiz;
+export default ChoiceQuiz;
