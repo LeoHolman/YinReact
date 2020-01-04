@@ -8,7 +8,9 @@ class TwoChoiceQuiz extends Component {
             currentStimulus: 0,
             options:[], 
             active:"",
-            submitted: false
+            submitted: false,
+            answers:[],
+            score:0
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,8 +18,9 @@ class TwoChoiceQuiz extends Component {
         this.nextQuestion = this.nextQuestion.bind(this);
         this.reset = this.reset.bind(this);
         // this.componentDidMount  = this.componentDidMount.bind(this);
-        // this.randomTone  = this.randomTone.bind(this);
-        // this.randomize = this.randomize.bind(this);
+        this.randomTones  = this.randomTones.bind(this);
+        this.randomize = this.randomize.bind(this);
+        this.displayAnswers = this.displayAnswers.bind(this);
     }
 
 
@@ -35,6 +38,7 @@ class TwoChoiceQuiz extends Component {
             responses[x].classList.remove("incorrect");
         }
         this.setState({'submitted':false});
+        this.setState({'options':[]});
     }
 
 
@@ -52,6 +56,7 @@ class TwoChoiceQuiz extends Component {
 
         if(this.state.active==this.props.stimuli[this.state.currentStimulus].correctTone){
             document.getElementById(this.state.active).classList.add('correct');
+            this.setState({'score':this.state.score+1});
         } else{
             document.getElementById(this.state.active).classList.add('incorrect');
         }
@@ -63,7 +68,7 @@ class TwoChoiceQuiz extends Component {
     collectResponse(event){
         if(this.state.submitted==false){
             const questionLabel = `question${this.state.currentStimulus}`;
-            this.setState({[questionLabel]: event.target.id});
+            this.setState({'answers':[questionLabel, event.target.id ]});
             this.setState({'active': event.target.id});
             var responses = document.getElementsByClassName("response");
             for (var x=0; x<responses.length; x++){
@@ -73,73 +78,82 @@ class TwoChoiceQuiz extends Component {
         }
     }
 
-    // randomize(a){
-    //     var j, x, i;
-    //     for (i = a.length - 1; i > 0; i--) {
-    //         j = Math.floor(Math.random() * (i + 1));
-    //         x = a[i];
-    //         a[i] = a[j];
-    //         a[j] = x;
-    //     }
-    //     return a;
-    // }
+    randomize(a){
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
 
-    // randomTone(stimuli){
-    //     var optionArr =[];
-    //     var randomArr = [];
-    //     var word = [];
+    randomTones(correct){
+        var optionArr =[];
+        var randomArr = [1,2,3,4];
+        var word = [];
         
         
-    //     //randomize the alternate tones 
-    //     randomArr = this.randomize(stimuli[this.state.currentStimulus].alternateTones);
-    //     //if all word possibilities were in the randomized array, execute the following
+        //randomize the alternate tones 
+        console.log("before random "+randomArr);
+        randomArr = this.randomize(randomArr);
+        console.log("after random "+randomArr);
+        console.log(correct);
+        //if all word possibilities were in the randomized array, execute the following
     
-    //     // for (var i=0; i<randomArr.length; i++){
-    //     //     if (randomArr[i] == this.props.stimuli.correctTone){
-    //     //         word.push(randomArr[i]);
-    //     //         word.push(randomArr[i].charAt(randomArr[i].length-1));
-    //     //         optionArr.push(word);
-    //     //         randomArr = randomArr.splice(i, 1); 
-    //     //         word = [];
-    //     //     }
-    //     // }
+        for (var i=0; i<randomArr.length; i++){
+            if (randomArr[i] == correct){
+                console.log("correct hit");
+                // word.push(randomArr[i]);
+                // word.push(randomArr[i].charAt(randomArr[i].length-1));
+                optionArr.push(randomArr[i]);
+                randomArr.splice(i, 1); 
+                console.log("after splice "+randomArr);
+                // word = [];
+            }
+        }
+        optionArr.push(randomArr[0]);
 
-    //     //Push the first entry in the randomized array, whatever it is
-    //     //this assumes the randomized array only holds incorrect options
-    //     word.push(randomArr[0]);
-    //     word.push(randomArr[0].charAt(randomArr[0].length-1));
-    //     optionArr.push(word);
-    //     word = [];
+        //Push the first entry in the randomized array, whatever it is
+        //this assumes the randomized array only holds incorrect options
+        // word.push(randomArr[0]);
+        // word.push(randomArr[0].charAt(randomArr[0].length-1));
+        // optionArr.push(word);
+        // word = [];
 
-    //     //Push the correct answer to the array
-    //     word.push(this.props.stimuli[this.state.currentStimulus].word);
-    //     word.push(JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone));
-    //     optionArr.push(word);
-    //     word = [];
+        // //Push the correct answer to the array
+        // word.push(this.props.stimuli[this.state.currentStimulus].word);
+        // word.push(JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone));
+        // optionArr.push(word);
+        // word = [];
 
-    //     //randomize the two options
-    //     optionArr = this.randomize(optionArr);
+        // //randomize the two options
+        // optionArr = this.randomize(optionArr);
 
-    //     // if(stimuli[this.state.currentStimulus]){
-    //     //     word.push(stimuli[this.state.currentStimulus].word);
-    //     //     optionArr.push(word);
-    //     //     word=[];
-    //     //     for (var i=0; i<2; i++){
-    //     //         word.push(stimuli[this.state.currentStimulus].alternateTones[i]);
-    //     //         optionArr.push(word);
-    //     //         word=[];
-    //     //     }
-    //     //     // this.setState({'options': optionArr});
-    //     //     // console.log('in random' + stimuli[this.state.currentStimulus].word);
+        // if(stimuli[this.state.currentStimulus]){
+        //     word.push(stimuli[this.state.currentStimulus].word);
+        //     optionArr.push(word);
+        //     word=[];
+        //     for (var i=0; i<2; i++){
+        //         word.push(stimuli[this.state.currentStimulus].alternateTones[i]);
+        //         optionArr.push(word);
+        //         word=[];
+        //     }
+        //     // this.setState({'options': optionArr});
+        //     // console.log('in random' + stimuli[this.state.currentStimulus].word);
 
-    //     // }
-    //     return optionArr;
-    // }
+        // }
+        console.log('randomize final options '+optionArr);
+        if(this.state.options === undefined || this.state.options == 0){
+            this.setState({'options': optionArr});
+        }
+    }
 
-    displayAnswers(optionArr){
-        console.log(optionArr);
-        const answers = optionArr.map( (opt) =>
-            <Answer number = {JSON.stringify(opt.correctTone)} key ={opt[1]} collectResponse={this.collectResponse} />
+    displayAnswers(correct){
+        this.randomTones(correct);
+        const answers = this.state.options.map( (opt) =>
+            <Answer number = {JSON.stringify(opt)} key ={opt[1]} collectResponse={this.collectResponse} />
         );
         return (<>{answers}</>);
     }
@@ -149,22 +163,7 @@ class TwoChoiceQuiz extends Component {
     //     var number = word.charAt(word.length-1);
     //     return number;
     // }
-
-
-    // async componentDidMount(){
-    //     // await this.props.stimuli; 
-    //     // this.randomTone();
-    //     // if (this.props.stimuli){
-    //     //     this.randomTone();
-    //     // }
-    //     // this.setState({'stimuli': this.props.stimuli})
-    //     // .then( () => {
-    //     //     // this.randomTone();
-    //     //     console.log(this.state.options);
-    //     // });
-
-    // }
-
+ 
     
 
     nextQuestion(){
@@ -187,15 +186,13 @@ class TwoChoiceQuiz extends Component {
                         
                         </div>
                         <div className = "answers">
-                            {this.displayAnswers(this.props.stimuli)}
-                            {/* <Answer number={this.randomTone(this.props.stimuli, 0)} collectResponse={this.collectResponse} />
-                            <Answer number={this.randomTone(this.props.stimuli, 1)} collectResponse={this.collectResponse}/> */}
+                            {this.displayAnswers(this.props.stimuli[this.state.currentStimulus].correctTone)}
                         </div>
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
                         <button onClick={this.handleClick} className="hide" id="nextQuestion">Next</button>
                         </>
                         :
-                        <p>All done!</p>
+                        <p>Your score is: {this.state.score}</p>
                 }
             </div>
         )
