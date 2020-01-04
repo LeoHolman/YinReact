@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Redirect} from 'react-router-dom';
 
 class LessonForm extends Component{
     constructor(props){
@@ -7,8 +8,10 @@ class LessonForm extends Component{
             name: '',
             description: '',
             words: [],
+            wordKeys: [],
             is_quiz: false,
-            all_words: []
+            all_words: [],
+            form_complete: false
         }
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,13 +22,13 @@ class LessonForm extends Component{
     }
 
     async componentDidMount(){
-        this.fetchAllWords();
-        this.setState({}); 
+        const all_words = await this.fetchAllWords();
+        this.setState({all_words})
     }
 
     async fetchAllWords(){
         const all_words = await (await fetch('http://localhost:8000/words/all/')).json();
-        this.setState({all_words})
+        return all_words;
     }
 
     handleInputChange(event){
@@ -42,21 +45,41 @@ class LessonForm extends Component{
     handleSelectChange(event){
         const options = event.target.options;
         var selected = [];
+        var selected_keys = [];
         for(let i = 0; i < options.length; i++){
             if(options[i].selected){
                 selected.push(options[i].value);
+                selected_keys.push(options[i].id);
             }
         }
         this.setState({words:selected});
+        this.setState({wordKeys:selected_keys});
     }
 
-    handleSubmit(){
-
+    handleSubmit(event){
+        event.preventDefault();
+        fetch('http://localhost:8000/lessons/add',{
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: this.state.name,
+                description: this.state.description,
+                words: this.state.wordKeys,
+                is_quiz: this.state.is_quiz
+            })
+        }).then( () => {
+            this.setState({form_complete: true})
+        });
     }
 
     render(){
         return(
             <>
+                {this.state.form_complete &&
+                    <Redirect to='/teacherInterface/' />
+                }
                 {this.props.match.params &&
                     <>
                         {this.props.editing ?
@@ -93,7 +116,7 @@ class LessonForm extends Component{
                                     onChange={this.handleSelectChange}
                                 >
                                     {this.state.all_words && this.state.all_words.map( (word) => {
-                                        return <option key={word._id} value={word.character}>{word.character}</option>
+                                        return <option key={word._id} id={word._id} value={word.character}>{word.character}</option>
                                     })}
                                 </select>
                             </label>
@@ -108,7 +131,7 @@ class LessonForm extends Component{
                                     onChange={this.handleCheckboxChange}
                                 />
                             </label>
-
+                            <input type="submit" value="Submit" />
                         </form>
                     </>
                 }

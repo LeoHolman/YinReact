@@ -91,20 +91,6 @@ const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
-app.get('/*', (req, res, next) =>{
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
-app.post('/*', (req, res, next) =>{
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-})
-
-// Not sure what this is, suspect it's a demo to myself to understand middleware
-// app.post('/savedata/', (req, res, next) => {
-//     tokenMiddleWare(req, res, next);
-//     console.log('success!');
-// });
 
 // WORD API
 // ===========================================
@@ -200,6 +186,7 @@ app.get('/lessons/:name/words/', async (req, res, next) => {
 })
 
 app.post('/lessons/add/', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
     const name = req.body.name;
     const words = req.body.words;
     const description = req.body.description;
