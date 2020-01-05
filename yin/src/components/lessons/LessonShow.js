@@ -39,6 +39,11 @@ class LessonShow extends Component{
                 <p>{this.state.lesson.description}</p>
                 <h3>Words:</h3>
                 <ul>{this.getWords(this.state.lesson.words)}    </ul>
+                {this.state.lesson.is_quiz ? 
+                    <p id="is_quiz">This lesson is a quiz.</p>
+                :
+                    <p>This is a lesson, not a quiz.</p>
+                }
             </div>
         )
     }

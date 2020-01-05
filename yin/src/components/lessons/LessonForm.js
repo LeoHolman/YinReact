@@ -28,6 +28,7 @@ class LessonForm extends Component{
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.matchWord = this.matchWord.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.deleteLesson = this.deleteLesson.bind(this);
     }
 
     async componentDidMount(){
@@ -68,10 +69,37 @@ class LessonForm extends Component{
         this.setState({wordKeys:selected_keys});
     }
 
+    deleteLesson(){
+        const method = 'DELETE';
+        const url = `http://localhost:8000/lessons/${this.props.name}/delete`;
+
+        fetch(url,{
+            method: method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: this.state.name
+            })
+        }).then( () => {
+            console.log("deleted");
+        });
+
+    }
+
     handleSubmit(event){
+        console.log("in handle");
         event.preventDefault();
-        const method = this.props.editing ? 'PUT' : 'POST';
-        fetch('http://localhost:8000/lessons/add',{
+        var method = this.props.editing ? 'PUT' : 'POST';
+        var url = 'http://localhost:8000/lessons/add/';
+        if(this.props.editing && this.state.name ===this.props.name){
+            url = `http://localhost:8000/lessons/${this.state.name}/edit`;
+        } else if (this.props.editing && this.state.name !== this.props.name){
+            this.deleteLesson();
+            method = "POST";
+        }
+        console.log(url);
+        fetch(url,{
             method: method,
             headers: {
                 "Content-Type": "application/json"
@@ -83,6 +111,7 @@ class LessonForm extends Component{
                 is_quiz: this.state.is_quiz
             })
         }).then( () => {
+            console.log("success");
             this.setState({form_complete: true})
         });
     }
