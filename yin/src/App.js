@@ -6,6 +6,7 @@ import './css/lessons.css';
 // import Activity from './pages/Activity';
 // import Answer from './components/Answer';
 import BaselineExplanation from './components/BaselineExplanation';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Mimicking from './components/Mimicking';
@@ -97,6 +98,7 @@ class App extends React.Component{
                 </Switch>
               </>
           }
+        <Footer />
       </Router>
     );
   }
