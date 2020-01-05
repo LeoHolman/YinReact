@@ -59,7 +59,7 @@ class ChoiceQuiz extends Component {
             responses[x].classList.remove("active");
         }
 
-        if(this.state.active==this.props.stimuli[this.state.currentStimulus].correctTone){
+        if(this.state.active===this.props.stimuli[this.state.currentStimulus].correctTone){
             document.getElementById(this.state.active).classList.add('correct');
             this.setState({'score':this.state.score+1});
             this.setState({'status':"correct"});
@@ -76,7 +76,7 @@ class ChoiceQuiz extends Component {
     }
 
     collectResponse(event){
-        if(this.state.submitted==false){
+        if(this.state.submitted===false){
             const questionLabel = `question${this.state.currentStimulus}`;
             this.setState({'answers':[questionLabel, event.target.id ]});
             this.setState({'active': event.target.id});
@@ -106,12 +106,12 @@ class ChoiceQuiz extends Component {
         // var word = [];
         
         //Two choice quiz needs randomized 
-        if(this.props.choices==2){
+        if(this.props.choices===2){
             //randomize the alternate tones 
             randomArr = this.randomize(randomArr);
         
             for (var i=0; i<randomArr.length; i++){
-                if (randomArr[i] == correct){
+                if (randomArr[i] === correct){
                     console.log("correct hit");
                     // word.push(randomArr[i]);
                     // word.push(randomArr[i].charAt(randomArr[i].length-1));
@@ -157,7 +157,7 @@ class ChoiceQuiz extends Component {
         }
         
         console.log('randomize final options '+optionArr);
-        if(this.state.options === undefined || this.state.options == 0){
+        if(this.state.options === undefined || this.state.options === 0){
             this.setState({'options': optionArr});
         }
     }

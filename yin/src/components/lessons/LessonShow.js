@@ -21,7 +21,7 @@ class LessonShow extends Component{
     }
 
     getWords(words){
-        if (words === undefined || words == 0){
+        if (words === undefined || words === 0){
             return (<p>This lesson has no words yet.</p>);
         }else{
             const mapped = words.map((word) => <li>word</li>);

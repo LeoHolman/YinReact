@@ -26,7 +26,7 @@ class SignUp extends Component{
     handlePasswordChange(){
         // var attribute = event.target.name;
         // var value = event.target.value;
-        if(this.state.password != this.state.password2){
+        if(this.state.password !== this.state.password2){
             console.log("error");
             this.setState({"errorMessage": "Your passwords do not match."})
             this.setState({"preventSubmit": true});
@@ -44,7 +44,7 @@ class SignUp extends Component{
         var attribute = event.target.name;
         var value = event.target.value;
         this.setState({[attribute]: value}, () =>{
-            if (attribute == "password" || attribute =="password2"){
+            if (attribute === "password" || attribute ==="password2"){
                 this.handlePasswordChange();
             }
         });
@@ -73,7 +73,7 @@ class SignUp extends Component{
                 })
             }).then( async (response) => {
                 const message = await response.text();
-                if (message =="Username taken, please try another."){
+                if (message ==="Username taken, please try another."){
                     this.setState({"errorMessage": message})
                 }else{
                     this.setState({form_complete: true})
