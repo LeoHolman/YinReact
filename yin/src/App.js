@@ -52,7 +52,6 @@ class App extends React.Component{
 
   submitForm(event, username, password) {
         event.preventDefault();
-        console.log(username, password);
         fetch('http://localhost:8000/login/', {
             method: 'POST',
             headers: {
