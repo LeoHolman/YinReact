@@ -4,20 +4,17 @@ import {Redirect} from 'react-router-dom';
 class LessonForm extends Component{
     constructor(props){
         super(props);
-        const startName = this.props.name ? this.props.name : '';
-        const startDescription = this.props.description ? this.props.description : '';
-        const startWords = this.props.words ? this.props.words : [];
-        const startIsQuiz = this.props.is_quiz ? this.props.is_quiz : false;
 
         this.state = {
-            name: this.props.name,
-            description: startDescription,
-            words: startWords,
+            name: props.name || '',
+            description: props.description || '',
+            words: props.words || [],
             wordKeys: [],
-            is_quiz: startIsQuiz,
+            is_quiz: props.is_quiz || false,
             all_words: [],
             form_complete: false
         }
+        console.log(props);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -28,8 +25,10 @@ class LessonForm extends Component{
 
     async componentDidMount(){
         const all_words = await this.fetchAllWords();
+        // const {name, description, words, is_quiz, editing} = this.props;
         this.setState({all_words});
-        this.setState({name: this.startName});
+        // this.setState({name, description, words, is_quiz, editing});
+        // this.setState({name});
     }
 
     async fetchAllWords(){

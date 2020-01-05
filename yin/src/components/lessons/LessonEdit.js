@@ -18,7 +18,9 @@ class LessonEdit extends Component{
     render(){
         return(
             <>
+            {this.state.lesson.name &&
                 <LessonForm name={this.state.lesson.name} description={this.state.lesson.description} words={this.state.lesson.words} is_quiz={this.state.lesson.is_quiz} editing={true} />
+            }
             </>
         )
     }

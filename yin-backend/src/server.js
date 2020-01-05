@@ -161,7 +161,7 @@ app.delete('/words/:character/delete', async (req, res, next) => {
 // ===========================================
 app.get('/lessons/all/', async (req, res, next) => {
     try {
-        const allLessons = await Lesson.find({});
+        const allLessons = await Lesson.find({}).populate('words');
         res.send(allLessons);
     } catch (ex) {
         res.status(500).send('Something went wrong');
@@ -171,7 +171,7 @@ app.get('/lessons/all/', async (req, res, next) => {
 app.get('/lessons/:name/', async (req, res, next) => {
     const name = req.params.name; 
     try {
-        const lesson = await Lesson.findOne({name});
+        const lesson = await (await Lesson.findOne({name})).populated('words');
         res.send(lesson);
     } catch (ex) {
         res.status(500).send('Something went wrong');
