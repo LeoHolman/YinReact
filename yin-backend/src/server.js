@@ -2,6 +2,7 @@ import express from 'express';
 const cors = require('cors');
 import bodyParser from 'body-parser';
 import * as argon2 from 'argon2';
+import { read } from 'fs';
 const randomBytes = require('randombytes');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
@@ -91,12 +92,15 @@ const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static('/'));
 
 // WORD API
 // ===========================================
 app.post('/words/add/', (req, res, next) => {
-    const audioDirPath = path.join(__dirname, 'uploads', 'test');
+    const relativeBase = path.join('uploads', 'test');
+    const audioDirPath = path.join(__dirname, relativeBase);
     const audioPath = path.join(audioDirPath, req.files.audioFile.name);
+    const storePath = path.join(relativeBase, req.files.audioFile.name);
     const pinyin = req.body.pinyin;
     const correctTone = req.body.correctTone;
     const character = req.body.character;
@@ -115,7 +119,7 @@ app.post('/words/add/', (req, res, next) => {
                 res.status(500).send(err);
                 return
             }
-            const newWord = new Word({audioFile: audioPath, pinyin, correctTone, character});
+            const newWord = new Word({audioFile: storePath, pinyin, correctTone, character});
             newWord.save().then( () => {
                 res.status(200).send('Upload complete.');
                 return
@@ -154,8 +158,7 @@ app.delete('/words/:character/delete', async (req, res, next) => {
     } catch (ex) {
         res.status(500).send('Something went wrong.');
     }
-})
-
+});
 
 // LESSON API
 // ===========================================
@@ -171,7 +174,7 @@ app.get('/lessons/all/', async (req, res, next) => {
 app.get('/lessons/:name/', async (req, res, next) => {
     const name = req.params.name; 
     try {
-        const lesson = await (await Lesson.findOne({name})).populated('words');
+        const lesson = await (await Lesson.findOne({name})).populate('words');
         res.send(lesson);
     } catch (ex) {
         res.status(500).send('Something went wrong');
@@ -310,6 +313,12 @@ app.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
     const quizScores = await QuizScore.find({user: user._id, lesson: lesson._id});
     res.send(quizScores);
 });
+
+// STATIC FILES
+//================================================
+app.get('/static/uploads/:dirname/:filename', async (req, res, next) => {
+    res.sendFile(path.resolve('src', 'uploads', req.params.dirname, req.params.filename));
+})
 
 //Start application
 app.listen(8000, () => console.log('Listening on port 8000'));
