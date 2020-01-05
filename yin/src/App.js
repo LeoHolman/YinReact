@@ -17,6 +17,7 @@ import LessonDirectory from './pages/LessonDirectory';
 import LessonShow from './components/lessons/LessonShow';
 import Activity from './pages/Activity';
 import TeacherInterface from './pages/TeacherInterface';
+import SignUp from './pages/SignUp';
 
 import {
   BrowserRouter as Router,
@@ -92,6 +93,9 @@ class App extends React.Component{
               <>
                 <Switch>
                   <Route exact path="/" component={Home} />
+                  <Route exact path="/SignUp">
+                    <SignUp />
+                  </Route>
                   <Route exact path="*/explanation">
                     <BaselineExplanation/>
                   </Route>
