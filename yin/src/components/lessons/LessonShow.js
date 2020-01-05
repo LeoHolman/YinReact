@@ -32,13 +32,13 @@ class LessonShow extends Component{
 
     render(){
         return(
-            <div className ="lesson">
+            <div className ="lesson show">
+                <Link to={`/teacherInterface/lessons/${this.state.lesson.name}/edit/`} key={this.state.lesson.name} className="teacherEditLink">Edit Lesson</Link>
                 <h2>{this.state.lesson.name}</h2>
                 <h3>Description:</h3>
                 <p>{this.state.lesson.description}</p>
                 <h3>Words:</h3>
                 <ul>{this.getWords(this.state.lesson.words)}    </ul>
-                <Link to={`/teacherInterface/lessons/${this.state.lesson.name}/edit/`} key={this.state.lesson.name} className="teacherEditLink">Edit Lesson</Link>
             </div>
         )
     }

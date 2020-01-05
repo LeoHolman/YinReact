@@ -1,3 +1,14 @@
+/** COLORS
+
+Dark red - #9A2D04
+Orange - //#FF8F17//  --->#db7a13
+Background gray - #EDEDED
+Blue - #5E99D3
+Dark blue - #245484 (sufficient contrast with white text)
+
+**/
+
+
 .lessonCard{
     background-color:white;
     margin:1em;
@@ -29,7 +40,8 @@ ul.activityList a:hover{
 }
 
 .lessonCard .sub{
-    background-color:#5E99D3;
+    background-color:#245484;
+    color:white;
 }
 
 .lessonCard.sub h3{

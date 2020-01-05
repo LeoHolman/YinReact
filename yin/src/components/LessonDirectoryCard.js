@@ -25,7 +25,7 @@ class LessonDirectoryCard extends Component {
                     <p>{this.props.LessonDesc}</p>
                 </div>
                 <div className = {`sub activityListContainer ${this.state.activityOpen ? '' : 'hide'} `}>
-                    <h3>Activities</h3>
+                    <h2>Activities</h2>
                     <ul className="activityList">
                         <li><Link to={`${this.props.link}1`}>1<br /></Link><span>Distinguishing</span></li>
                         <li><Link to={`${this.props.link}2`}>2<br /></Link><span>Identifying</span></li>

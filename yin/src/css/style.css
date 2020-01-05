@@ -4,6 +4,7 @@ Dark red - #9A2D04
 Orange - //#FF8F17//  --->#db7a13
 Background gray - #EDEDED
 Blue - #5E99D3
+Dark blue - #245484 (sufficient contrast with white text)
 
 **/
 
@@ -56,6 +57,7 @@ nav li a {
 
 h1, h2, h3, h4, h5{
     font-family: 'EB Garamond', serif;
+    letter-spacing: .03em;
 }
 
 h1{
@@ -215,11 +217,11 @@ form input[type=text], form input[type=password]{
     border-radius:3px 3px 0 0;
     padding:3px;
     background-color:white;
-    border-bottom:2px solid #db7a13;
+    border-bottom:2px solid #245484;
 }
 
 form input[type=text]:focus{
-    background-color: #db7a13;
+    background-color: #245484;
     outline:none;
     color:white;
 }

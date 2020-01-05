@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Answer from './Answer';
+import FeedbackBox from './FeedbackBox';
 
 class ChoiceQuiz extends Component {
     constructor(props){
@@ -10,7 +11,8 @@ class ChoiceQuiz extends Component {
             active:"",
             submitted: false,
             answers:[],
-            score:0
+            score:0,
+            status:""
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +33,9 @@ class ChoiceQuiz extends Component {
     reset(){
         document.getElementById("nextQuestion").classList.add("hide");
         document.getElementById("submitAnswer").classList.remove("hide");
+        document.getElementById("feedback-box").style.visibility="hidden";
+
+
         var responses = document.getElementsByClassName("response");
         for (var x=0; x<responses.length; x++){
             responses[x].classList.remove("active");
@@ -57,12 +62,17 @@ class ChoiceQuiz extends Component {
         if(this.state.active==this.props.stimuli[this.state.currentStimulus].correctTone){
             document.getElementById(this.state.active).classList.add('correct');
             this.setState({'score':this.state.score+1});
+            this.setState({'status':"correct"});
         } else{
             document.getElementById(this.state.active).classList.add('incorrect');
+            this.setState({'status':"incorrect"});
         }
 
         document.getElementById("nextQuestion").classList.remove("hide");
         document.getElementById("submitAnswer").classList.add("hide");
+        console.log("right before");
+        document.getElementById("feedback-box").style.visibility="visible";
+        console.log("right after");
     }
 
     collectResponse(event){
@@ -174,11 +184,13 @@ class ChoiceQuiz extends Component {
 
     render(){
         return(
-            <div className="activity-wrap two-choice">
+            <>
+            
                 
                 {this.props.stimuli && 
                     this.props.stimuli.length > this.state.currentStimulus ? 
-                        <>
+                    <>
+                    <div className="activity-wrap two-choice">
                         <div className="stimuli">
                             <audio controls id = "audio-clip" >
                                 <source id="audioSource" src={this.props.stimuli[this.state.currentStimulus].audioFile} type="audio/mpeg" />
@@ -190,13 +202,18 @@ class ChoiceQuiz extends Component {
                         <div className = "answers">
                             {this.displayAnswers(this.props.stimuli[this.state.currentStimulus].correctTone)}
                         </div>
+                    </div>
+                    <div className="feedbackContainer">
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
                         <button onClick={this.handleClick} className="hide" id="nextQuestion">Next</button>
-                        </>
+                        <FeedbackBox status = {this.state.status} />
+                    </div>
+                    </>
+                    
                         :
                         <p>Your score is: {this.state.score}</p>
                 }
-            </div>
+            </>
         )
     }
 
