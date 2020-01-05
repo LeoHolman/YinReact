@@ -13,6 +13,7 @@ import Mimicking from './components/Mimicking';
 import Login from './components/Login';
 // import Hexagon from './components/Hexagon';
 import LessonDirectory from './pages/LessonDirectory';
+import LessonShow from './components/lessons/LessonShow';
 import Activity from './pages/Activity';
 import TeacherInterface from './pages/TeacherInterface';
 
@@ -80,7 +81,7 @@ class App extends React.Component{
                 <Route path="/showLesson/" component={Mimicking} />
                 <Route path="/teacherInterface/" component={TeacherInterface} />
                 <Route path="/lessons/:name/:activityNumber" component={Activity} />
-                {/* <Route path="/lessons/:lessonNumber/" component={Hexagon} /> */}
+                <Route path="/lessons/:name/" component={LessonShow} />
                 <Route path="/lessons/" component={LessonDirectory} />
                 <Route path="/" component={Home} />
               </Switch>
