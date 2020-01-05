@@ -1,3 +1,11 @@
+/* 
+COLORS -- 
+Dark red - #9A2D04
+Orange - //#FF8F17//  --->#db7a13
+Background gray - #EDEDED
+Blue - #5E99D3
+*/
+
 #teacher-nav {
     width: 50%;
     margin: 0 auto;
@@ -49,7 +57,8 @@
 /* Teacher Lessons directory */
 
 .lessonCard.teacherCard{
-    border:2px solid #db7a13
+    box-shadow:5px 5px 0px #9A2D04;
+    padding:1em;
 }
 
 
@@ -67,5 +76,23 @@
 }
 
 
+.lesson.show{
+    background-color:white;
+    margin:1em;
+    width:80%;
+    padding:2em;
+    box-shadow:5px 5px 0px #9A2D04;
+}
+
+.lesson.show h3{
+    margin-top:2.5em;
+}
 
 
+.lesson.show h3, .lesson.show p{
+    margin-left:1em;
+}
+
+.teacherEditLink{
+    float:right;
+}
