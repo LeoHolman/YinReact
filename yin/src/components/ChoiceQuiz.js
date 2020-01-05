@@ -179,8 +179,14 @@ class ChoiceQuiz extends Component {
     
 
     nextQuestion(){
+        this.refs.audio.pause();
+        this.refs.audio.load();
+        console.log("loaded after next question");
+        console.log(this.refs.audio);
         this.handleClick();
+
     }
+
 
     render(){
         return(
@@ -192,7 +198,7 @@ class ChoiceQuiz extends Component {
                     <>
                     <div className="activity-wrap two-choice">
                         <div className="stimuli">
-                            <audio controls id = "audio-clip" >
+                            <audio controls id = "audio-clip" ref="audio" >
                                 <source id="audioSource" src={`http://localhost:8000/static/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
                                 Audio not working!
                             </audio>
@@ -205,7 +211,7 @@ class ChoiceQuiz extends Component {
                     </div>
                     <div className="feedbackContainer">
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
-                        <button onClick={this.handleClick} className="hide" id="nextQuestion">Next</button>
+                        <button onClick={this.nextQuestion} className="hide" id="nextQuestion">Next</button>
                         <FeedbackBox status = {this.state.status} />
                     </div>
                     </>
