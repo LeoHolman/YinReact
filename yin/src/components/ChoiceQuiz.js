@@ -193,7 +193,7 @@ class ChoiceQuiz extends Component {
                     <div className="activity-wrap two-choice">
                         <div className="stimuli">
                             <audio controls id = "audio-clip" >
-                                <source id="audioSource" src={`http://localhost:8000/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
+                                <source id="audioSource" src={`http://localhost:8000/static/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
                                 Audio not working!
                             </audio>
                             <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p>
