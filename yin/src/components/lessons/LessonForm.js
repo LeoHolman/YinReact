@@ -10,7 +10,7 @@ class LessonForm extends Component{
         const startIsQuiz = this.props.is_quiz ? this.props.is_quiz : false;
 
         this.state = {
-            name: startName,
+            name: this.props.name,
             description: startDescription,
             words: startWords,
             wordKeys: [],
@@ -28,7 +28,8 @@ class LessonForm extends Component{
 
     async componentDidMount(){
         const all_words = await this.fetchAllWords();
-        this.setState({all_words})
+        this.setState({all_words});
+        this.setState({name: this.startName});
     }
 
     async fetchAllWords(){
@@ -83,39 +84,40 @@ class LessonForm extends Component{
     render(){
         return(
             <>
-                {this.state.form_complete &&
+                {this.state.form_complete ?
                     <Redirect to='/teacherInterface/' />
-                }
-                {this.props.match && this.props.match.params &&
+                :
                     <>
                         {this.props.editing ?
                          <h1>Editing {this.props.name}</h1>
                         :
                          <h1>New lesson</h1>}
                         <form onSubmit={this.handleSubmit}>
-                            <label>
+                            <label htmlFor="name">
                                 Name:
+                            </label>
                                 <input 
+                                    id="name"
                                     type="text"
                                     name="name"
-                                    value={this.state.number}
+                                    value={this.state.name}
                                     onChange={this.handleInputChange}
                                 />
-                            </label>
-                            <br />
-                            <label>
+                            <label htmlFor="description">
                                 Description:
+                            </label>
                                 <input 
+                                    id="description"
                                     type="text"
                                     name="description"
                                     value={this.state.description}
                                     onChange={this.handleInputChange}
                                 />
-                            </label>
-                            <br />
-                            <label>
+                            <label htmlFor="words">
                                 Words
+                            </label>
                                 <select
+                                    id="words"
                                     multiple={true}
                                     name="words"
                                     value={this.state.words}
@@ -125,18 +127,17 @@ class LessonForm extends Component{
                                         return <option key={word._id} id={word._id} value={word.character}>{word.character}</option>
                                     })}
                                 </select>
-                            </label>
-                            <br />
-                            <label>
+                            <label htmlFor="is_quiz">
                                 Is this lesson a quiz?:
+                            </label>
                                 <input 
+                                    id="is_quiz"
                                     checked={!!this.state.is_quiz}
                                     type="checkbox"
                                     name="is_quiz"
                                     value={this.state.is_quiz}
                                     onChange={this.handleCheckboxChange}
                                 />
-                            </label>
                             <input type="submit" value="Submit" />
                         </form>
                     </>
