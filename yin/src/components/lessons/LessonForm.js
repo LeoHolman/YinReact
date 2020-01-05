@@ -4,12 +4,17 @@ import {Redirect} from 'react-router-dom';
 class LessonForm extends Component{
     constructor(props){
         super(props);
+        const startName = this.props.name ? this.props.name : '';
+        const startDescription = this.props.description ? this.props.description : '';
+        const startWords = this.props.words ? this.props.words : [];
+        const startIsQuiz = this.props.is_quiz ? this.props.is_quiz : false;
+
         this.state = {
-            name: '',
-            description: '',
-            words: [],
+            name: startName,
+            description: startDescription,
+            words: startWords,
             wordKeys: [],
-            is_quiz: false,
+            is_quiz: startIsQuiz,
             all_words: [],
             form_complete: false
         }
@@ -58,8 +63,9 @@ class LessonForm extends Component{
 
     handleSubmit(event){
         event.preventDefault();
+        const method = this.props.editing ? 'PUT' : 'POST';
         fetch('http://localhost:8000/lessons/add',{
-            method: 'POST',
+            method: method,
             headers: {
                 "Content-Type": "application/json"
             },
@@ -80,7 +86,7 @@ class LessonForm extends Component{
                 {this.state.form_complete &&
                     <Redirect to='/teacherInterface/' />
                 }
-                {this.props.match.params &&
+                {this.props.match && this.props.match.params &&
                     <>
                         {this.props.editing ?
                          <h1>Editing {this.props.name}</h1>
@@ -136,7 +142,6 @@ class LessonForm extends Component{
                     </>
                 }
             </>
-
         )
     }
 }

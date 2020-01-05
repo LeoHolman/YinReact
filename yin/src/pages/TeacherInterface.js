@@ -12,7 +12,7 @@ class TeacherInterface extends Component {
     render(){
         return(
             <Switch>
-                <Route path="/teacherInterface/lessons/:lessonnumber/edit/" component={LessonEdit} />
+                <Route path="/teacherInterface/lessons/:name/edit/" component={LessonEdit} />
                 <Route path="/teacherInterface/lessons/add/" component={LessonForm} />
                 <Route path="/teacherInterface/lessons/" component={TeacherLessonDirectory} />
                 <Route path="/teacherInterface/words/add" component={AudioUpload} />
