@@ -4,11 +4,16 @@ import {Redirect} from 'react-router-dom';
 class LessonForm extends Component{
     constructor(props){
         super(props);
-
+        console.log(`some words! ${props.words}`)
+        var startingWords;
+        startingWords = props.words.map((word) => {
+            console.log(word.character);
+            return word.character;
+        });
         this.state = {
             name: props.name || '',
             description: props.description || '',
-            words: props.words || [],
+            words: startingWords || [],
             wordKeys: [],
             is_quiz: props.is_quiz || false,
             all_words: [],
@@ -21,6 +26,8 @@ class LessonForm extends Component{
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.fetchAllWords = this.fetchAllWords.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.matchWord = this.matchWord.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
     async componentDidMount(){
@@ -80,6 +87,31 @@ class LessonForm extends Component{
         });
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.words !== this.props.words){
+            const newWords = this.props.words.map( (word) => {
+                return word.character;
+            })
+            this.setState({words:newWords});
+        }
+    }
+
+    matchWord(word){
+        for(var i=0; i<this.state.words.length; i++){
+            if (this.state.words[i]._id===word){
+                console.log(true);
+                return true;
+                
+            }else{
+                console.log(false);
+                return false;
+                
+            }
+        }
+
+    }
+
+
     render(){
         return(
             <>
@@ -121,10 +153,12 @@ class LessonForm extends Component{
                                     name="words"
                                     value={this.state.words}
                                     onChange={this.handleSelectChange}
+                                    size="7"
                                 >
                                     {this.state.all_words && this.state.all_words.map( (word) => {
-                                        return <option key={word._id} id={word._id} value={word.character}>{word.character}</option>
+                                        return <option  key={word._id} id={word._id} value={word.character}>{word.character}</option>
                                     })}
+                                
                                 </select>
                             <label htmlFor="is_quiz">
                                 Is this lesson a quiz?:
