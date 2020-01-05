@@ -6,6 +6,7 @@ import './css/lessons.css';
 // import Activity from './pages/Activity';
 // import Answer from './components/Answer';
 import BaselineExplanation from './components/BaselineExplanation';
+import Baseline from './components/Baseline';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -79,6 +80,7 @@ class App extends React.Component{
           {this.state.isLoggedIn ? <> 
               <Switch>
                 <Route path="/showLesson/" component={Mimicking} />
+                <Route path="/baseline/" component={Baseline} />
                 <Route path="/teacherInterface/" component={TeacherInterface} />
                 <Route path="/lessons/:name/:activityNumber" component={Activity} />
                 <Route path="/lessons/:name/" component={LessonShow} />

@@ -36,6 +36,7 @@ var userSchema = new mongoose.Schema({
     password: String,
     salt: String,
     is_teacher: Boolean,
+    baseline: Number
 });
 
 var recordingSchema = new mongoose.Schema({
@@ -229,7 +230,7 @@ app.post('/signup/', async (req, res) => {
     if(!nameUnavailable){
         const salt = randomBytes(32);
         const hashedPass = await argon2.hash(req.body.password, {salt});
-        const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex')});
+        const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex'), baseline: req.body.baseline});
         newUser.save().then( () => {
             res.send(`Hello! ${req.body.username}`)
         });
