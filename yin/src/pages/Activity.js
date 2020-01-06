@@ -31,10 +31,8 @@ class Activity extends Component{
                 .then( (result) => {
                     console.log(result);
                     this.setState({audioRes: result});
-                    console.log(this.state.audios);
-                    var allAudios = [];
+                    // var allAudios = [];
                     // var i = 0;
-                    console.log(`audio res! ${this.state.audioRes}`);
                     // this.state.audioRes.forEach(function(audio){
                     //     allAudios.push([audio._id, "~",audio.audioFile,"~", audio.word,"~", audio.alternateTones,"~", audio.correctTone,"~", audio.lessonName])
                     //     // var oneAudio = {

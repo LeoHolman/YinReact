@@ -5,8 +5,8 @@ class FeedbackBox extends Component{
 render(){
     return(
         <div id ="feedback-box" className={`feedbackBox ${this.props.status}`}>
-            {this.props.status == "correct" ?
-                <p>Good!</p>
+            {this.props.status === "correct" ?
+                <p>Correct!</p>
             :
                 <p>Incorrect.</p>
             
