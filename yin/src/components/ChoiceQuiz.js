@@ -157,7 +157,7 @@ class ChoiceQuiz extends Component {
         }
         
         console.log('randomize final options '+optionArr);
-        if(this.state.options === undefined || this.state.options === 0){
+        if(this.state.options === undefined || this.state.options.length<1){
             this.setState({'options': optionArr});
         }
     }
@@ -165,7 +165,7 @@ class ChoiceQuiz extends Component {
     displayAnswers(correct){
         this.chooseTones(correct);
         const answers = this.state.options.map( (opt) =>
-            <Answer number = {JSON.stringify(opt)} key ={opt[1]} collectResponse={this.collectResponse} />
+            <Answer number = {JSON.stringify(opt)} key ={opt} collectResponse={this.collectResponse} />
         );
         return (<>{answers}</>);
     }

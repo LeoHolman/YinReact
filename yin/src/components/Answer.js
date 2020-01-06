@@ -36,7 +36,7 @@ class Answer extends Component{
             <>
             {this.props.number && 
                 <div id={this.props.number} onClick={e => this.props.collectResponse(e)} className="response" style={{backgroundImage: `url(${this.chooseImage()})`}}>
-                    <span class="background-image" role="img" aria-label={this.props.number}></span>
+                    <span className ="background-image" role="img" aria-label={this.props.number}></span>
                     {/* {this.chooseImage()} */}
                     {/* <p className="answer-text">{this.props.number[0]}</p> */}
                 </div>
