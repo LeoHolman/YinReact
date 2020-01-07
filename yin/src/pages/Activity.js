@@ -84,7 +84,7 @@ class Activity extends Component{
                     <Baseline />
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
-                    <Quiz activities={[1,2,4]} stimuli={this.state.audioRes}/>
+                    <Quiz activities={[1,2,4]} stimuli={this.state.audioRes} lesson = {this.state.lesson.name}/>
                 </Route>
 
 

@@ -23,6 +23,7 @@ class ChoiceQuiz extends Component {
         this.chooseTones  = this.chooseTones.bind(this);
         this.randomize = this.randomize.bind(this);
         this.displayAnswers = this.displayAnswers.bind(this);
+        this.reportScore = this.reportScore.bind(this);
     }
 
 
@@ -59,7 +60,7 @@ class ChoiceQuiz extends Component {
             responses[x].classList.remove("active");
         }
 
-        if(this.state.active===this.props.stimuli[this.state.currentStimulus].correctTone){
+        if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
             document.getElementById(this.state.active).classList.add('correct');
             this.setState({'score':this.state.score+1});
             this.setState({'status':"correct"});
@@ -70,9 +71,7 @@ class ChoiceQuiz extends Component {
 
         document.getElementById("nextQuestion").classList.remove("hide");
         document.getElementById("submitAnswer").classList.add("hide");
-        console.log("right before");
         document.getElementById("feedback-box").style.visibility="visible";
-        console.log("right after");
     }
 
     collectResponse(event){
@@ -112,12 +111,10 @@ class ChoiceQuiz extends Component {
         
             for (var i=0; i<randomArr.length; i++){
                 if (randomArr[i] === correct){
-                    console.log("correct hit");
                     // word.push(randomArr[i]);
                     // word.push(randomArr[i].charAt(randomArr[i].length-1));
                     optionArr.push(randomArr[i]);
                     randomArr.splice(i, 1); 
-                    console.log("after splice "+randomArr);
                     // word = [];
                 }
             }
@@ -156,7 +153,6 @@ class ChoiceQuiz extends Component {
             optionArr = randomArr;
         }
         
-        console.log('randomize final options '+optionArr);
         if(this.state.options === undefined || this.state.options.length<1){
             this.setState({'options': optionArr});
         }
@@ -176,12 +172,14 @@ class ChoiceQuiz extends Component {
     //     return number;
     // }
  
+    reportScore(){
+        this.props.reportScore(this.state.score, this.props.stimuli.length, this.props.choices);
+    }
     
 
     nextQuestion(){
         this.refs.audio.pause();
         this.refs.audio.load();
-        console.log("loaded after next question");
         console.log(this.refs.audio);
         this.handleClick();
 
@@ -217,7 +215,17 @@ class ChoiceQuiz extends Component {
                     </>
                     
                         :
+                        <>
+                        {this.props.quiz==="true" ?
+                            <>
+                            <p>You've completed this section of the quiz.</p>
+                            <button onClick={this.reportScore}>Next section</button>
+                            </>
+                        :
                         <p>Your score is: {this.state.score}</p>
+                        }
+                        </>
+                        
                 }
             </>
         )
