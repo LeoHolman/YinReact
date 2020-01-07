@@ -32,7 +32,7 @@ class TeacherLessonDirectory extends Component {
                                 return <Link to={`/lessons/${lesson.name}/`} key={lesson.name} className="teacherCardLink">
                                     <div className="teacherCard lessonCard">
                                         <div className="meta" onClick={this.toggleActivityList}>
-                                            <h2>Lesson: {lesson.name}</h2>
+                                            <h2>{lesson.is_quiz ? 'Quiz: ' : 'Lesson: '}{lesson.name}</h2>
                                             <p>{lesson.description}</p>
                                             <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherEditLink">Edit Lesson</Link>
                                         </div>

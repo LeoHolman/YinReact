@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ChoiceQuiz from '../components/ChoiceQuiz';
 import Baseline from '../components/Baseline';
+import Quiz from '../components/Quiz';
 import {
     Route,
   } from "react-router-dom";
@@ -81,6 +82,9 @@ class Activity extends Component{
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/4`}>
                     <Baseline />
+                </Route>
+                <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
+                    <Quiz activities={[1,2,4]} stimuli={this.state.audioRes}/>
                 </Route>
 
 

@@ -4,16 +4,16 @@ import {Redirect} from 'react-router-dom';
 class LessonForm extends Component{
     constructor(props){
         super(props);
-        console.log(`some words! ${props.words}`)
-        var startingWords;
-        startingWords = props.words.map((word) => {
-            console.log(word.character);
-            return word.character;
-        });
+        // console.log(`some words! ${props.words}`)
+        // var startingWords;
+        // startingWords = props.words.map((word) => {
+        //     console.log(word.character);
+        //     return word.character;
+        // });
         this.state = {
             name: props.name || '',
             description: props.description || '',
-            words: startingWords || [],
+            words: props.words || [],
             wordKeys: [],
             is_quiz: props.is_quiz || false,
             all_words: [],

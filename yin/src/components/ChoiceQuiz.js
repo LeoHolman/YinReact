@@ -106,7 +106,7 @@ class ChoiceQuiz extends Component {
         // var word = [];
         
         //Two choice quiz needs randomized 
-        if(this.props.choices===2){
+        if(this.props.choices==='2'){
             //randomize the alternate tones 
             randomArr = this.randomize(randomArr);
         
