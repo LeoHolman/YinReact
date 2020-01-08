@@ -93,7 +93,7 @@ const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static('/'));
+app.use(express.static('src/uploads'));
 
 // WORD API
 // ===========================================
@@ -101,7 +101,7 @@ app.post('/words/add/', (req, res, next) => {
     const relativeBase = path.join('uploads', 'test');
     const audioDirPath = path.join(__dirname, relativeBase);
     const audioPath = path.join(audioDirPath, req.files.audioFile.name);
-    const storePath = path.join(relativeBase, req.files.audioFile.name);
+    const storePath = path.join('test', req.files.audioFile.name);
     const pinyin = req.body.pinyin;
     const correctTone = req.body.correctTone;
     const character = req.body.character;
@@ -175,9 +175,18 @@ app.get('/lessons/all/', async (req, res, next) => {
 app.get('/lessons/:name/', async (req, res, next) => {
     const name = req.params.name; 
     try {
-        const lesson = await (await Lesson.findOne({name})).populate('words');
-        res.send(lesson);
+        // const lesson = await (await )
+        Lesson.findOne({name})
+        .populate('words')
+        .exec( (err, _lesson) => {
+            if (err){
+                console.log(err);
+                res.status(500).send('Something went wrong');
+            }
+            res.send(_lesson);
+        });
     } catch (ex) {
+        console.log(ex);
         res.status(500).send('Something went wrong');
     }
 });
@@ -315,11 +324,11 @@ app.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
     res.send(quizScores);
 });
 
-// STATIC FILES
-//================================================
-app.get('/static/uploads/:dirname/:filename', async (req, res, next) => {
-    res.sendFile(path.resolve('src', 'uploads', req.params.dirname, req.params.filename));
-})
+// // STATIC FILES
+// //================================================
+// app.get('/static/uploads/:dirname/:filename', async (req, res, next) => {
+//     res.sendFile(path.resolve('src', 'uploads', req.params.dirname, req.params.filename));
+// })
 
 //Start application
 app.listen(8000, () => console.log('Listening on port 8000'));

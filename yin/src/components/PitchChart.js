@@ -10,7 +10,6 @@ class PitchChart extends Component {
     }
     
     drawPitchChart(divID, width, height) {
-        console.log('called!');
         d3.select(`#${divID}`)
             .append('svg')
             .attr('width', width)
@@ -39,10 +38,8 @@ class PitchChart extends Component {
         d3.selectAll("svg > .userPitch").remove();
         let datarecord = [];
         const parsedData = d3.tsvParse(dataset);
-        console.log(parsedData);
         // console.log(parsedData);
         parsedData.map((__data) => {
-            console.log(__data);
             // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
             // if(isNaN(zScore)){
             // 	zScore = 0;

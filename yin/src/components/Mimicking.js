@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import Recorder from './Recorder';
 import PitchChart from './PitchChart';
+import AudioPlayer from './AudioPlayer';
 
 class Mimicking extends Component {
     constructor(props) {
         super(props);
         this.state = {
             record: [],
-            userDataset: ''
+            userDataset: '',
+            lesson: {}
         }
         this.passDataToState = this.passDataToState.bind(this);
     }
@@ -32,7 +34,9 @@ class Mimicking extends Component {
         // });
     }
 
-    componentDidMount(){
+    async componentDidMount(){
+        var lesson = await (await fetch('http://localhost:8000/lessons/newApi/')).json();
+        this.setState({lesson});
     }
 
     passDataToState(dataset){
@@ -43,6 +47,9 @@ class Mimicking extends Component {
         return(
             
             <>
+                {this.state.lesson._id && 
+                    <AudioPlayer audioFile={`http://localhost:8000/${this.state.lesson.words[0].audioFile}`} />
+                }
                 <PitchChart dataset={this.state.userDataset} />
                 <Recorder outputFunction={this.passDataToState} />
             </>
