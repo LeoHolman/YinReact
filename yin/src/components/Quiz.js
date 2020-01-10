@@ -8,11 +8,11 @@ class Quiz extends Component{
         super(props)
         this.state = {
             activity1:{
-                score: new Number(),
+                score: null,
                 maxpoints: new Number()
             },
             activity2:{
-                score: new Number(),
+                score: null,
                 maxpoints: new Number()
             },
             activity3:{
@@ -25,11 +25,12 @@ class Quiz extends Component{
         }
         this.captureScore = this.captureScore.bind(this);
         this.advance = this.advance.bind(this);
+        this.recordScore = this.recordScore.bind(this);
     }
 
-    async sendScore(activity){
-        const sum_score = null;
-        const sum_total_score = null;
+    async recordScore(){
+        var sum_score = null;
+        var sum_total_score = null;
         const user_token = localStorage.token;
         if(this.state.activity1.score && this.state.activity2.score){
             sum_score = this.state.activity1.score + this.state.activity2.score;
@@ -42,20 +43,9 @@ class Quiz extends Component{
             sum_total_score = this.state.activity2.max_score;
 
         }
-
-        var response = await fetch('http://localhost:8000/quizScores/add/', {
-            method: 'POST',
-            headers: {"Content-Type":"application/json"},
-            
-            body:{
-                "lesson": this.props.lesson,
-                "user": user_token,
-                "score": sum_score,
-                "sum_total_score": sum_total_score,
-                "recordings": this.state.recordings || ''
-            }
-        });
-        console.log("response" + response.text());
+        var array1 = this.state.activity3.recordings;
+        var allRecordings = array1.concat(this.state.activity4.recordings);
+        this.props.sendScore(sum_score, sum_total_score, allRecordings);        
     }
 
     async getEntries(){
@@ -70,16 +60,22 @@ class Quiz extends Component{
     advance(num){
 
         for (var i=num; i<5; i++){
-            if (this.includes(i+1)){
-                this.setState({"current":i+1});
+            var next=i+1;
+            if (this.includes(next)){
+                this.setState({"current":next});
                 break;
+            }else if (next===5){
+                this.setState({"current":5});
+                this.recordScore();
             }
         }
         
-        if(this.state.current===5){
-            this.setState({"current":5});
-            this.sendScore();
-        }
+       
+        if(this.state.current ===5){
+
+        }    
+  
+        
 
     }
 
@@ -89,10 +85,10 @@ class Quiz extends Component{
         this.setState({[activity]:{
             "score": score, 
             "max_score": max_score
-        }});
-        this.advance(activitynum);
-        console.log("num"+ activitynum);
-        console.log("score: "+score);
+        }}, () => {
+            this.advance(activitynum);
+        });
+
     }
 
     includes(num){

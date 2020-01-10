@@ -56,3 +56,8 @@ ul.activityList a:hover{
     text-decoration: none !important;
     color:black;
 }
+
+.feedbackContainer #error{
+    text-align:right;
+    color:darkred;
+}

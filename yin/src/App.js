@@ -82,7 +82,7 @@ class App extends React.Component{
                 <Route path="/showLesson/" component={Mimicking} />
                 <Route path="/baseline/" component={Baseline} />
                 <Route path="/teacherInterface/" component={TeacherInterface} />
-                <Route path="/lessons/:name/:activityNumber" component={Activity} />
+                <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity {...props} user={this.state.username} />} />
                 <Route path="/lessons/:name/" component={LessonShow} />
                 <Route path="/lessons/" component={LessonDirectory} />
                 <Route path="/" component={Home} />
