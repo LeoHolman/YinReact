@@ -83,7 +83,7 @@ class Activity extends Component{
                 "lesson": this.props.match.params.name,
                 "user": this.props.user,
                 "score": score,
-                "sum_total_score": sum_total,
+                "maxScore": sum_total,
                 "recordings": recordings || ''
             })
         });

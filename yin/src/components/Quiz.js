@@ -22,7 +22,9 @@ class Quiz extends Component{
                 recordings:[]
             },
             current:this.props.activities[0],
-            prev: false
+            prev: false,
+            sum_score: 0,
+            sum_total_score: 0
         }
         this.captureScore = this.captureScore.bind(this);
         this.advance = this.advance.bind(this);
@@ -52,17 +54,19 @@ class Quiz extends Component{
         var sum_score = null;
         var sum_total_score = null;
         const user_token = localStorage.token;
-        if(this.state.activity1.score && this.state.activity2.score){
+        if(this.includes(1) && this.includes(2)){
             sum_score = this.state.activity1.score + this.state.activity2.score;
             sum_total_score = this.state.activity1.max_score + this.state.activity2.max_score;
-        } else if(this.state.activity1.score){
+        } else if(this.includes(1)){
             sum_score = this.state.activity1.score;
             sum_total_score = this.state.activity1.max_score;
-        } else if (this.state.activity2.score){
+        } else if (this.includes(2)){
             sum_score = this.state.activity2.score;
             sum_total_score = this.state.activity2.max_score;
 
         }
+        this.setState({sum_score:sum_score});
+        this.setState({sum_total_score:sum_total_score});
         var array1 = this.state.activity3.recordings;
         var allRecordings = array1.concat(this.state.activity4.recordings);
         this.props.sendScore(sum_score, sum_total_score, allRecordings);        
@@ -113,6 +117,10 @@ class Quiz extends Component{
         return false;
     }
     
+    toPercent(num1,num2){
+        var percent= num1/num2 *100;
+        return percent;
+    }
     //to-do
     //need to lift state up from quizzes to here; when a quiz is finished, score needs to come up, and current needs to be updated to the next activity in this.props.activities (might not be the next sequentially)
 
@@ -148,7 +156,10 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities  && this.state.current===5 ?
-                        <p>You've completed this quiz!</p>
+                        <div id="score">
+                        <h3>You've completed this quiz!</h3>
+                        <p>Your combined score on the multiple choice sections is {this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
+                        </div>
                         :
                         ""
                     }
