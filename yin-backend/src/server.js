@@ -11,6 +11,10 @@ const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const d3 = require('d3');
+const session = require('express-session');
+const SESSION_KEY = 'keyboardcatfire99999999';
+const MongoStore = require('connect-mongo')(session);
+const cookieParser = require('cookie-parser');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -108,6 +112,28 @@ app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('src/uploads'));
+app.use(cookieParser());
+app.use(session({
+    'secret': SESSION_KEY,
+    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1:8000', secure:false},
+}));
+
+app.get('/sessions/', (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    if(req.session.page_views){
+        req.session.page_views++;
+        console.log(req.session.page_views);
+        res.send(`Seen ${req.session.page_views}`)
+    } else {
+        req.session.page_views = 1;
+        console.log('Session set');
+        console.log(req.sessionID);
+        res.send('Welcome');
+    }
+})
 
 // WORD API
 // ===========================================
@@ -273,7 +299,7 @@ app.post('/signup/', async (req, res) => {
     }
 });
 
-app.post('/login/', async (req, res) => {
+app.post('/login/', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     const username = req.body.username;
     const userRecord = await User.findOne({username});
@@ -285,12 +311,16 @@ app.post('/login/', async (req, res) => {
         const hashedIncomingPassword = await argon2.hash(incomingPassword, {userSalt}); 
         const correctPassword = await argon2.verify(userRecord.password, incomingPassword);
         if (correctPassword){
-            const token = await jwt.sign({user: {username: userRecord.username}}, PRIVATE_KEY);
-            res.send(token);
+            req.session.user = userRecord._id;
+            res.status(204).send();
         } else {
             res.send('Username/password incorrect.');
         }
     }
+});
+
+app.post('/user/baseline/add/', async (req, res, next) => {
+
 });
 
 // RECORDING API
