@@ -15,6 +15,10 @@ Dark blue - #245484 (sufficient contrast with white text)
     box-shadow:lightgray 2px 2px 3px;
 }
 
+.lessonCard:hover{
+    box-shadow:#db7a13 2px 2px 3px;
+}
+
 
 .lessonCard .meta, .lessonCard .sub{
     padding:1em;

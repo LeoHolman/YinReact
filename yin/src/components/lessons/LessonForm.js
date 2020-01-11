@@ -16,6 +16,7 @@ class LessonForm extends Component{
             words: props.words || [],
             wordKeys: [],
             is_quiz: props.is_quiz || false,
+            quiz_sections: props.quiz_sections || [],
             all_words: [],
             form_complete: false
         }
@@ -29,6 +30,8 @@ class LessonForm extends Component{
         this.matchWord = this.matchWord.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.deleteLesson = this.deleteLesson.bind(this);
+        this.is_checked = this.is_checked.bind(this);
+        this.handleSectionChange = this.handleSectionChange.bind(this);
     }
 
     async componentDidMount(){
@@ -53,6 +56,24 @@ class LessonForm extends Component{
     handleCheckboxChange(){
         var prevState = this.state.is_quiz;
         this.setState({is_quiz: !prevState})
+    }
+
+    handleSectionChange(num){
+        console.log(this.state.quiz_sections);
+        var array = this.state.quiz_sections; 
+        var index = null;
+        if(this.is_checked(num)){
+            index = array.indexOf(num); 
+            // delete array[index];
+            array.splice(index,1);
+        }else{
+            array.push(num);
+        }
+
+
+        this.setState({quiz_sections:array});
+        
+
     }
 
     handleSelectChange(event){
@@ -108,7 +129,8 @@ class LessonForm extends Component{
                 name: this.state.name,
                 description: this.state.description,
                 words: this.state.wordKeys,
-                is_quiz: this.state.is_quiz
+                is_quiz: this.state.is_quiz,
+                quizSections: this.state.quiz_sections
             })
         }).then( () => {
             console.log("success");
@@ -140,6 +162,17 @@ class LessonForm extends Component{
 
     }
 
+
+    is_checked(num){
+        if(this.props.quiz_sections || this.state.quiz_sections){
+            for (var i=0; i<this.state.quiz_sections.length; i++){
+                if(this.state.quiz_sections[i]===num){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     render(){
         return(
@@ -192,14 +225,59 @@ class LessonForm extends Component{
                             <label htmlFor="is_quiz">
                                 Is this lesson a quiz?:
                             </label>
-                                <input 
+                            <input 
                                     id="is_quiz"
                                     checked={!!this.state.is_quiz}
                                     type="checkbox"
                                     name="is_quiz"
                                     value={this.state.is_quiz}
                                     onChange={this.handleCheckboxChange}
-                                />
+                            />
+                            {this.state.is_quiz ? 
+                                <>
+                                    <h3>Which activities would you like in this quiz?</h3>
+                                    <label htmlFor="sec_one">Activity 1: Distinguishing (2-choice quiz)</label>
+                                    <input 
+                                        id="sec_one"
+                                        // checked={this.is_checked(1)}
+                                        type="checkbox"
+                                        name="sec_one"
+                                        value="1"
+                                        onClick={() => this.handleSectionChange(1)}
+                                    />
+                                    <label htmlFor="sec_two">Activity 2: Identifying (4-choice quiz)</label>
+                                    <input 
+                                        id="sec_two"
+                                        // checked={this.is_checked(2)}
+                                        type="checkbox"
+                                        name="sec_two"
+                                        value="2"
+                                        onChange={() => this.handleSectionChange(2)}
+                                    />
+                                    <label htmlFor="sec_three">Activity 3: Mimicking (record with teacher example)</label>
+                                    <input 
+                                        id="sec_three"
+                                        // checked={this.is_checked(3)}
+                                        type="checkbox"
+                                        name="sec_three"
+                                        value="3"
+                                        onChange={() => this.handleSectionChange(3)}
+                                    />
+                                    <label htmlFor="sec_four">Activity 4: Producing (record without teacher example)</label>
+                                    <input 
+                                        id="sec_four"
+                                        // checked={this.is_checked(3)}
+                                        type="checkbox"
+                                        name="sec_four"
+                                        value="4"
+                                        onChange={() => this.handleSectionChange(4)}
+                                    />
+
+                                </>
+                                :
+                                <>
+                                </>
+                            }
                             <input type="submit" value="Submit" />
                         </form>
                     </>

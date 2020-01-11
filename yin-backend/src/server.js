@@ -29,7 +29,7 @@ var lessonSchema = new mongoose.Schema({
     }],
     description: String,
     is_quiz: Boolean,
-    quizSections:[Number]
+    quizSections:[{type:Number}]
 });
 
 var userSchema = new mongoose.Schema({
@@ -205,7 +205,8 @@ app.post('/lessons/add/', (req, res, next) => {
     const words = req.body.words;
     const description = req.body.description;
     const is_quiz = req.body.is_quiz;
-    const newLesson = new Lesson({name, words, description, is_quiz});
+    const quizSections = req.body.quizSections;
+    const newLesson = new Lesson({name, words, description, is_quiz, quizSections});
     newLesson.save().then( () => {
         res.send(`${newLesson.name} saved successfully!`);
     });
