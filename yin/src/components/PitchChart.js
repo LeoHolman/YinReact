@@ -34,16 +34,10 @@ class PitchChart extends Component {
         }
     }
     
-    async drawPitchCurve(dataset, width, height, {baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization"} = {}) {
-        console.log(typeof dataset);
-        console.log(chartID);
-        // d3.selectAll("svg > .userPitch").remove();
+    drawPitchCurve(dataset, width, height, {baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization"} = {}) {
         let datarecord = [];
         const parsedData = d3.tsvParse(dataset);
-        // console.log(parsedData);
         parsedData.map((__data) => {
-            console.log(__data);
-            console.log(color);
             // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
             // if(isNaN(zScore)){
             // 	zScore = 0;
@@ -53,8 +47,6 @@ class PitchChart extends Component {
             // var zScore = 0;
             var x = __data.time * (width / 2);
             var y = height - ((height/2) + ((__data.frequency - (height/2))));
-            console.log(x);
-            console.log(y);
             d3.select(`#${chartID} svg`)
                 .append("circle")
                 .attr("cx", x)
@@ -72,14 +64,17 @@ class PitchChart extends Component {
 
     componentDidMount(){
         this.drawPitchChart('__visualization', 1100, 500);
-        this.props.dataset.forEach(async (curve) => {
-            await this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+        this.props.dataset.map( (curve) => {
+            this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
         });
     }
 
     componentDidUpdate(){
-        this.drawPitchCurve(this.props.dataset, 1100, 500);
-
+        d3.selectAll("svg").remove();
+        this.drawPitchChart('__visualization', 1100, 500);
+        this.props.dataset.map( (curve) => {
+            this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+        });
     }
 
     render(){

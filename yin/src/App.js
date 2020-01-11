@@ -34,9 +34,11 @@ class App extends React.Component{
       "lessonOpen":true,
       isLoggedIn: hasToken,
       username: '',
+      baseline: -1
     }
     this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.setBaseline = this.setBaseline.bind(this);
   }
 
   componentDidMount(){
@@ -48,6 +50,10 @@ class App extends React.Component{
 
   toggleLessonActivity(){
     this.setState({lessonOpen: !this.state.lessonOpen});
+  }
+
+  setBaseline(value){
+    this.setState({baseline: value});
   }
 
   submitForm(event, username, password) {
@@ -82,7 +88,7 @@ class App extends React.Component{
                 <Route path="/showLesson/" component={Mimicking} />
                 <Route path="/baseline/" component={Baseline} />
                 <Route path="/teacherInterface/" component={TeacherInterface} />
-                <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity {...props} user={this.state.username} />} />
+                <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity {...props} setBaseline={this.setBaseline} user={this.state.username} />} />
                 <Route path="/lessons/:name/" component={LessonShow} />
                 <Route path="/lessons/" component={LessonDirectory} />
                 <Route path="/" component={Home} />

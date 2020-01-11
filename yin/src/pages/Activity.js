@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ChoiceQuiz from '../components/ChoiceQuiz';
 import Baseline from '../components/Baseline';
 import Quiz from '../components/Quiz';
+import Mimicking from '../components/Mimicking';
 import {
     Route,
   } from "react-router-dom";
@@ -103,7 +104,11 @@ class Activity extends Component{
                     <ChoiceQuiz stimuli={this.state.audioRes} choices="4"/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/3`}>
-                    <Baseline />
+                    {this.props.baseline == -1 ?
+                        <Mimicking />
+                    :
+                        <Baseline outputFunction={this.props.setBaseline} />
+                    }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/4`}>
                     <Baseline />
