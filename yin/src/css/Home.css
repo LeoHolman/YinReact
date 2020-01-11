@@ -1,3 +1,75 @@
+/** COLORS
+
+Dark red - #9A2D04
+Orange - //#FF8F17//  --->#db7a13
+Background gray - #EDEDED
+Blue - #5E99D3
+Dark blue - #245484 (sufficient contrast with white text)
+
+**/
+
 .homeHeader {
     color: orange;
+}
+
+.classroom #img-container{
+    background-image: url(../assets/images/WalkingJoJo.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-bottom:50vh;
+    opacity:.1;
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100vw;
+    height:20vh;
+    z-index:-100;
+}
+
+.classroom h2{
+    text-align:center;
+    margin-bottom:2em;
+}
+
+.classroom #summary{
+    margin-bottom:3em;
+}
+
+.classroom .intro{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-column-gap:2em;
+}
+
+.classroom .intro div{
+    /* border:1px solid #464646; */
+    background-color:rgb(255,255,255,.7);
+    box-shadow:2px 2px 3px lightgray;
+}
+
+
+.classroom .intro p{
+    padding:10px;
+}
+
+.classroom .intro h3{
+    color:white;
+    font-family:'Open Sans', sans-serif;
+    font-weight:500;
+    padding:.5em;
+    text-align:center;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.classroom .intro #students h3{
+    color:#db7a13;
+}
+
+.classroom .intro #teachers h3{
+    color:#9A2D04; 
+}
+
+.classroom .intro img{
+    width:100%;
 }

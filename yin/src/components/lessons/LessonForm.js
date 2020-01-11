@@ -16,7 +16,7 @@ class LessonForm extends Component{
             words: props.words || [],
             wordKeys: [],
             is_quiz: props.is_quiz || false,
-            quiz_sections: props.quiz_sections || [],
+            quiz_sections: props.quiz_sections || [1,2,3,4],
             all_words: [],
             form_complete: false
         }
@@ -239,7 +239,7 @@ class LessonForm extends Component{
                                     <label htmlFor="sec_one">Activity 1: Distinguishing (2-choice quiz)</label>
                                     <input 
                                         id="sec_one"
-                                        // checked={this.is_checked(1)}
+                                        checked={this.is_checked(1)}
                                         type="checkbox"
                                         name="sec_one"
                                         value="1"
@@ -248,7 +248,7 @@ class LessonForm extends Component{
                                     <label htmlFor="sec_two">Activity 2: Identifying (4-choice quiz)</label>
                                     <input 
                                         id="sec_two"
-                                        // checked={this.is_checked(2)}
+                                        checked={this.is_checked(2)}
                                         type="checkbox"
                                         name="sec_two"
                                         value="2"
@@ -257,7 +257,7 @@ class LessonForm extends Component{
                                     <label htmlFor="sec_three">Activity 3: Mimicking (record with teacher example)</label>
                                     <input 
                                         id="sec_three"
-                                        // checked={this.is_checked(3)}
+                                        checked={this.is_checked(3)}
                                         type="checkbox"
                                         name="sec_three"
                                         value="3"
@@ -266,7 +266,7 @@ class LessonForm extends Component{
                                     <label htmlFor="sec_four">Activity 4: Producing (record without teacher example)</label>
                                     <input 
                                         id="sec_four"
-                                        // checked={this.is_checked(3)}
+                                        checked={this.is_checked(4)}
                                         type="checkbox"
                                         name="sec_four"
                                         value="4"

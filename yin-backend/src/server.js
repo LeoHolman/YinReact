@@ -264,11 +264,13 @@ app.put('/lessons/:name/edit/', async (req, res, next) => {
     const words = req.body.words;
     const description = req.body.description;
     const is_quiz = req.body.is_quiz;
+    const quizSections = req.body.quizSections;
     const lessonToUpdate = await Lesson.findOne({name});
     lessonToUpdate.name = newName;
     lessonToUpdate.words = words;
     lessonToUpdate.description = description;
     lessonToUpdate.is_quiz = is_quiz;
+    lessonToUpdate.quizSections = quizSections;
     await lessonToUpdate.save();
     res.send(`${lessonToUpdate.name} updated successfully.`);
 });
