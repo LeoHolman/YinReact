@@ -51,7 +51,7 @@ class Mimicking extends Component {
                 }
                 {this.state.lesson._id && <PitchChart dataset={[[String(this.state.lesson.words[0].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
                 }
-                <Recorder outputFunction={this.passDataToState} />
+                <Recorder label="Record" outputFunction={this.passDataToState} />
             </>
         )
     }

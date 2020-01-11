@@ -104,10 +104,10 @@ class Activity extends Component{
                     <ChoiceQuiz stimuli={this.state.audioRes} choices="4"/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/3`}>
-                    {this.props.baseline == -1 ?
-                        <Mimicking />
-                    :
+                    {Boolean(this.props.baseline) == false ?
                         <Baseline outputFunction={this.props.setBaseline} />
+                    :
+                        <Mimicking />
                     }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/4`}>
