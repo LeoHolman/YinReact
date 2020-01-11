@@ -10,6 +10,7 @@ const PRIVATE_KEY = 'donttellnobody';
 const path = require('path');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
+const d3 = require('d3');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -19,6 +20,10 @@ var wordSchema = new mongoose.Schema({
     pinyin: String, 
     correctTone: Number, 
     character: String,
+    native_recording: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'NativeRecording'
+    }
 });
 
 var lessonSchema = new mongoose.Schema({
@@ -46,6 +51,12 @@ var recordingSchema = new mongoose.Schema({
     data: [{time: String, frequency: String}],
 });
 
+var nativeRecordingSchema = new mongoose.Schema({
+    data: String
+});
+
+var Recording = mongoose.model('Recording', recordingSchema);
+
 var quizScoreSchema = new mongoose.Schema({
     lesson: {type: mongoose.Schema.Types.ObjectId, ref: 'Lesson'},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
@@ -61,6 +72,8 @@ var Lesson = mongoose.model('Lesson', lessonSchema);
 var User = mongoose.model('User', userSchema);
 
 var Recording = mongoose.model('Recording', recordingSchema);
+
+var NativeRecording = mongoose.model('NativeRecording', nativeRecordingSchema);
 
 var QuizScore = mongoose.model('QuizScore', quizScoreSchema);
 
@@ -145,8 +158,11 @@ app.get('/words/all/', async (req, res, next) => {
 app.get('/words/:character/', async (req, res, next) => {
     const character = req.params.character;
     try {
-        const word = await Word.find({character});
-        res.send(word);
+        const word = await Word.find({character})
+        .populate('native_recording')
+        .exec( (err, _word) => {
+            res.send(_word);
+        });
     } catch (ex) {
         res.status(500).send('Something went wrong');
     }
@@ -178,7 +194,12 @@ app.get('/lessons/:name/', async (req, res, next) => {
     try {
         // const lesson = await (await )
         Lesson.findOne({name})
-        .populate('words')
+        .populate({
+            path:'words', 
+            populate: {
+                path: 'native_recording'
+            }
+        })
         .exec( (err, _lesson) => {
             if (err){
                 console.log(err);
@@ -329,11 +350,29 @@ app.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
     res.send(quizScores);
 });
 
-// // STATIC FILES
-// //================================================
-// app.get('/static/uploads/:dirname/:filename', async (req, res, next) => {
-//     res.sendFile(path.resolve('src', 'uploads', req.params.dirname, req.params.filename));
-// })
+//NATIVE RECORDING API
+//==========================================
+app.post('/nativeRecording/add/', async (req,res,next) => {
+    const data = new String(req.files.recording.data);
+    const incomingword = req.body.word;
+    try{
+        const word = await Word.findOne({'_id': incomingword});
+        try{
+            let newNativeRecording = new NativeRecording({data});
+            newNativeRecording.save();
+            word.native_recording = newNativeRecording.id;
+            word.save();
+            res.send(data);
+
+        } catch (ex) {
+            console.log(ex);
+            res.status(500).send(ex);
+        }
+
+    } catch (ex) {
+        res.status(404).send('Word not found');
+    }
+})
 
 //Start application
 app.listen(8000, () => console.log('Listening on port 8000'));

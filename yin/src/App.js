@@ -66,7 +66,7 @@ class App extends React.Component{
         }).then( (response) => {
             response.text().then( (token) => {
                 this.setState( {isLoggedIn: true});
-                localStorage.setItem('token', token)
+                localStorage.setItem('token', token);
                 this.setState( {username: username});
             })
         });

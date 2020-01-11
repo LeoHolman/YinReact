@@ -34,12 +34,16 @@ class PitchChart extends Component {
         }
     }
     
-    async drawPitchCurve(dataset, width, height, baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization") {
-        d3.selectAll("svg > .userPitch").remove();
+    async drawPitchCurve(dataset, width, height, {baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization"} = {}) {
+        console.log(typeof dataset);
+        console.log(chartID);
+        // d3.selectAll("svg > .userPitch").remove();
         let datarecord = [];
         const parsedData = d3.tsvParse(dataset);
         // console.log(parsedData);
         parsedData.map((__data) => {
+            console.log(__data);
+            console.log(color);
             // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);    
             // if(isNaN(zScore)){
             // 	zScore = 0;
@@ -47,10 +51,14 @@ class PitchChart extends Component {
             let point = {time: __data.time, frequency: __data.frequency};
             datarecord.push(point);
             // var zScore = 0;
+            var x = __data.time * (width / 2);
+            var y = height - ((height/2) + ((__data.frequency - (height/2))));
+            console.log(x);
+            console.log(y);
             d3.select(`#${chartID} svg`)
                 .append("circle")
-                .attr("cx", __data.time * (width / 2))
-                .attr("cy", height - ((height/2) + ((__data.frequency - (height/2))))) 
+                .attr("cx", x)
+                .attr("cy", y) 
                 .attr("r", 5)
                 .classed("userPitch",true)
                 .style("fill",color);
@@ -64,7 +72,9 @@ class PitchChart extends Component {
 
     componentDidMount(){
         this.drawPitchChart('__visualization', 1100, 500);
-        this.drawPitchCurve(this.props.dataset, 1100, 500);
+        this.props.dataset.forEach(async (curve) => {
+            await this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+        });
     }
 
     componentDidUpdate(){
