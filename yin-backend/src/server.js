@@ -118,10 +118,11 @@ app.use(session({
     store: new MongoStore({mongooseConnection: mongoose.connection}),
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1:8000'},
+    cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1:8000', secure:false},
 }));
 
 app.get('/sessions/', (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
     if(req.session.page_views){
         req.session.page_views++;
         console.log(req.session.page_views);
