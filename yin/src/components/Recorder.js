@@ -83,7 +83,7 @@ class Recorder extends Component {
     render() {
         return(
             <>
-                <button onClick={this.addRecordFunction} id="__record_button">Record</button>
+                <button onClick={this.addRecordFunction} id="__record_button">{this.props.label}</button>
             </>
         )
     }
