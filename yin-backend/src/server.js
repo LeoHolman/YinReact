@@ -28,7 +28,8 @@ var lessonSchema = new mongoose.Schema({
         ref: 'Word'
     }],
     description: String,
-    is_quiz: Boolean
+    is_quiz: Boolean,
+    quizSections:[Number]
 });
 
 var userSchema = new mongoose.Schema({
