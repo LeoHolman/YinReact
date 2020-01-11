@@ -29,13 +29,13 @@ class Activity extends Component{
                 )
             );
 
-        fetch(`http://localhost:8000/quizScores/${this.props.user}/${this.props.match.params.name}`)
-            .then( (response) => response.json()
-                .then( (result) => {
-                    this.setState({userScores: result});
-                    }
-                )
-            );
+        // fetch(`http://localhost:8000/quizScores/${this.props.user}/${this.props.match.params.name}`)
+        //     .then( (response) => response.json()
+        //         .then( (result) => {
+        //             this.setState({userScores: result});
+        //             }
+        //         )
+        //     );
 
         fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words`)
             .then( (response) => response.json()

@@ -300,8 +300,6 @@ app.post('/recordings/add', async (req, res, next) => {
 // ===========================================
 app.post('/quizScores/add/', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    console.log(req.body.lesson);
-    console.log(req.body.user);
     const fulllesson = await Lesson.findOne({"name": req.body.lesson}).exec();
     const lesson = fulllesson.id;
     const fulluser = await User.findOne({"username": req.body.user}).exec();
