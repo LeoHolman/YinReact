@@ -14,8 +14,10 @@ class Activity extends Component{
             lesson: [], 
             audioRes: [],
             audios:[],
-            audioParse: []
+            audioParse: [],
+            userScores:[]
         }
+        this.sendScore = this.sendScore.bind(this);
     }
 
     async componentDidMount() {
@@ -26,6 +28,14 @@ class Activity extends Component{
                     }
                 )
             );
+
+        // fetch(`http://localhost:8000/quizScores/${this.props.user}/${this.props.match.params.name}`)
+        //     .then( (response) => response.json()
+        //         .then( (result) => {
+        //             this.setState({userScores: result});
+        //             }
+        //         )
+        //     );
 
         fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words`)
             .then( (response) => response.json()
@@ -63,6 +73,21 @@ class Activity extends Component{
             );
     }
 
+    sendScore(score, sum_total, recordings){
+        fetch('http://localhost:8000/quizScores/add/', {
+            method: 'POST',
+            headers: {"Content-Type":"application/json"},
+            
+            body:JSON.stringify({
+                "lesson": this.props.match.params.name,
+                "user": this.props.user,
+                "score": score,
+                "sum_total_score": sum_total,
+                "recordings": recordings || ''
+            })
+        });
+    }
+
     render(){
         return(
             <div /*className={`activity ${this.props.activityOpen ? 'open' : 'min'}`} onClick={this.props.toggleLessonActivity}*/>
@@ -84,7 +109,7 @@ class Activity extends Component{
                     <Baseline />
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
-                    <Quiz activities={[1,2,4]} stimuli={this.state.audioRes} lesson = {this.state.lesson.name}/>
+                    <Quiz activities={[1,2]} stimuli={this.state.audioRes} lesson = {this.state.lesson.name} username={this.props.user} sendScore={this.sendScore}/>
                 </Route>
 
 

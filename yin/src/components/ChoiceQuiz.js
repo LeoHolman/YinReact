@@ -12,7 +12,8 @@ class ChoiceQuiz extends Component {
             submitted: false,
             answers:[],
             score:0,
-            status:""
+            status:"",
+            error:""
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -45,6 +46,7 @@ class ChoiceQuiz extends Component {
         }
         this.setState({'submitted':false});
         this.setState({'options':[]});
+        this.setState({'active':""});
     }
 
 
@@ -54,24 +56,30 @@ class ChoiceQuiz extends Component {
     }
 
     handleSubmit(event){
-        this.setState({'submitted':true});
-        var responses = document.getElementsByClassName("response");
-        for (var x=0; x<responses.length; x++){
-            responses[x].classList.remove("active");
+        if(this.state.active !==""){
+            this.setState({'submitted':true});
+            var responses = document.getElementsByClassName("response");
+            for (var x=0; x<responses.length; x++){
+                responses[x].classList.remove("active");
+            }
+    
+            if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
+                document.getElementById(this.state.active).classList.add('correct');
+                this.setState({'score':this.state.score+1});
+                this.setState({'status':"correct"});
+            } else{
+                document.getElementById(this.state.active).classList.add('incorrect');
+                this.setState({'status':"incorrect"});
+            }
+    
+            document.getElementById("nextQuestion").classList.remove("hide");
+            document.getElementById("submitAnswer").classList.add("hide");
+            document.getElementById("feedback-box").style.visibility="visible";
+            this.setState({'error':""});
+        }else{
+            this.setState({'error':"Please select an option."});
         }
-
-        if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
-            document.getElementById(this.state.active).classList.add('correct');
-            this.setState({'score':this.state.score+1});
-            this.setState({'status':"correct"});
-        } else{
-            document.getElementById(this.state.active).classList.add('incorrect');
-            this.setState({'status':"incorrect"});
-        }
-
-        document.getElementById("nextQuestion").classList.remove("hide");
-        document.getElementById("submitAnswer").classList.add("hide");
-        document.getElementById("feedback-box").style.visibility="visible";
+        
     }
 
     collectResponse(event){
@@ -180,7 +188,6 @@ class ChoiceQuiz extends Component {
     nextQuestion(){
         this.refs.audio.pause();
         this.refs.audio.load();
-        console.log(this.refs.audio);
         this.handleClick();
 
     }
@@ -197,7 +204,7 @@ class ChoiceQuiz extends Component {
                     <div className="activity-wrap two-choice">
                         <div className="stimuli">
                             <audio controls id = "audio-clip" ref="audio" >
-                                <source id="audioSource" src={`http://localhost:8000/static/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
+                                <source id="audioSource" src={`http://localhost:8000/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
                                 Audio not working!
                             </audio>
                             <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p>
@@ -211,10 +218,11 @@ class ChoiceQuiz extends Component {
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
                         <button onClick={this.nextQuestion} className="hide" id="nextQuestion">Next</button>
                         <FeedbackBox status = {this.state.status} />
+                        <p id="error">{this.state.error}</p>
                     </div>
                     </>
                     
-                        :
+                    :
                         <>
                         {this.props.quiz==="true" ?
                             <>
@@ -222,7 +230,10 @@ class ChoiceQuiz extends Component {
                             <button onClick={this.reportScore}>Next section</button>
                             </>
                         :
-                        <p>Your score is: {this.state.score}</p>
+                        <>
+                            <h2>Activity complete!</h2>
+                            <p>Your score is: {this.state.score}</p>
+                        </>
                         }
                         </>
                         

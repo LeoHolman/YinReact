@@ -33,7 +33,8 @@ var lessonSchema = new mongoose.Schema({
         ref: 'Word'
     }],
     description: String,
-    is_quiz: Boolean
+    is_quiz: Boolean,
+    quizSections:[Number]
 });
 
 var userSchema = new mongoose.Schema({
@@ -320,8 +321,11 @@ app.post('/recordings/add', async (req, res, next) => {
 // QUIZSCORE API
 // ===========================================
 app.post('/quizScores/add/', async (req, res, next) => {
-    const lesson = req.body.lesson;
-    const user = req.body.user;
+    res.header('Access-Control-Allow-Origin', '*');
+    const fulllesson = await Lesson.findOne({"name": req.body.lesson}).exec();
+    const lesson = fulllesson.id;
+    const fulluser = await User.findOne({"username": req.body.user}).exec();
+    const user = fulluser.id;
     const score = req.body.score;
     const maxScore = req.body.maxScore;
     const recordings = req.body.recordings;

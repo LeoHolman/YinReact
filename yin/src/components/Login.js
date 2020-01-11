@@ -8,6 +8,7 @@ class Login extends Component {
         this.state = {
             fusername: '',
             fpassword: '',
+            error:""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleForm = this.handleForm.bind(this);
@@ -19,8 +20,13 @@ class Login extends Component {
 
     handleForm(event, username, password){
         event.preventDefault();
-        this.props.submitForm(event, username, password);
-        this.setState( {fusername: '', fpassword: ''});
+        if(username !== "" && password !==""){
+            this.props.submitForm(event, username, password);
+            this.setState( {fusername: '', fpassword: ''});
+        }else{
+            this.setState({'error':'Please fill out all fields.'});
+        }
+
     }
 
     render() {
@@ -33,6 +39,7 @@ class Login extends Component {
                     <label htmlFor ="password">Password:</label>
                     <input id="password" name="password" placeholder="password" type="password" value={this.state.value} onChange={e => this.handleChange(e,'fpassword')}/>
                     <input type="submit" value="Submit" />
+                    <p>{this.state.error}</p>
                 </form>
                 <Link to="/SignUp">Don't have an account? Sign up.</Link>
             </>
