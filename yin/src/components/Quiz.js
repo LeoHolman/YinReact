@@ -148,7 +148,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities  && this.state.current===5 ?
-                        <p>Thank you for completing this quiz.</p>
+                        <p>You've completed this quiz!</p>
                         :
                         ""
                     }

@@ -27,7 +27,8 @@ class LessonEdit extends Component{
                 description={this.state.lesson.description} 
                 words={this.state.words} 
                 is_quiz={this.state.lesson.is_quiz} 
-                editing={true} />
+                editing={true}
+                quiz_sections={this.state.lesson.quizSections} />
             }
             </>
         )
