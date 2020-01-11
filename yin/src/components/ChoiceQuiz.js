@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Answer from './Answer';
 import FeedbackBox from './FeedbackBox';
+import {Link} from 'react-router-dom';
 
 class ChoiceQuiz extends Component {
     constructor(props){
@@ -233,6 +234,7 @@ class ChoiceQuiz extends Component {
                         <>
                             <h2>Activity complete!</h2>
                             <p>Your score is: {this.state.score}</p>
+                            <Link to="../">Return to Lessons & Quizzes</Link>
                         </>
                         }
                         </>

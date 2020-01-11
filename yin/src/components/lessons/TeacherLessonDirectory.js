@@ -35,6 +35,8 @@ class TeacherLessonDirectory extends Component {
                                             <h2>{lesson.is_quiz ? 'Quiz: ' : 'Lesson: '}{lesson.name}</h2>
                                             <p>{lesson.description}</p>
                                             <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherEditLink">Edit Lesson</Link>
+                                            <Link to={`/teacherInterface/lessons/${lesson.name}/delete/`} key={`delete${lesson.name}`} className="teacherDeleteLink">Delete Lesson</Link>
+
                                         </div>
                                     </div>
                                 </Link>
