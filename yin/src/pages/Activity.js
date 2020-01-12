@@ -3,6 +3,7 @@ import ChoiceQuiz from '../components/ChoiceQuiz';
 import Baseline from '../components/Baseline';
 import Quiz from '../components/Quiz';
 import Mimicking from '../components/Mimicking';
+import Production from '../components/Production';
 import {
     Route,
   } from "react-router-dom";
@@ -103,14 +104,18 @@ class Activity extends Component{
                     <ChoiceQuiz stimuli={this.state.audioRes} choices="4"/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/3`}>
-                    {Boolean(this.props.baseline) == false ?
+                    {Boolean(this.props.baseline) === false ?
                         <Baseline outputFunction={this.props.setBaseline} />
                     :
                         <Mimicking lesson={this.state.lesson} />
                     }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/4`}>
-                    <Baseline />
+                    {Boolean(this.props.baseline) === false ?
+                        <Baseline outputFunction={this.props.setBaseline} />
+                    :
+                        <Production lesson={this.state.lesson} />
+                    }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
                     <Quiz activities={this.state.lesson.quizSections} stimuli={this.state.audioRes} lesson = {this.state.lesson.name} fullLesson={this.state.lesson} username={this.props.user} sendScore={this.sendScore}/>

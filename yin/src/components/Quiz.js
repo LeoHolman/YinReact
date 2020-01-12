@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ChoiceQuiz from './ChoiceQuiz';
 import Mimicking from './Mimicking';
+import Production from './Production';
 
 class Quiz extends Component{
     constructor(props){
@@ -151,7 +152,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <p>[Activity 4 goes here]</p>
+                        <Production lesson={this.props.fullLesson} username={this.props.username} />
                         :
                         ""
                     }
