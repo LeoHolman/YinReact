@@ -34,7 +34,8 @@ class App extends React.Component{
       "lessonOpen":true,
       isLoggedIn: hasToken,
       username: '',
-      baseline: 0
+      baseline: 0,
+      error:""
     }
     this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -70,12 +71,18 @@ class App extends React.Component{
                 }
             )
         }).then( (response) => {
-            response.text().then( (token) => {
+            if (response.status ===401){
+              this.setState({error:"Username or password is incorrect."});
+            }else{
+              response.text().then( (token) => {
+                this.setState({error:""});
                 this.setState( {isLoggedIn: true});
                 localStorage.setItem('token', token);
                 this.setState( {username: username});
-            })
-        });
+              })
+            }
+          })
+        
     }
 
   render(){
@@ -105,7 +112,7 @@ class App extends React.Component{
                     <BaselineExplanation/>
                   </Route>
                   <Route exact path="/*">
-                    <Login submitForm={this.submitForm} />
+                    <Login submitForm={this.submitForm} error={this.state.error}/>
                   </Route>
                 </Switch>
               </>

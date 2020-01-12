@@ -304,7 +304,8 @@ app.post('/login/', async (req, res, next) => {
     const username = req.body.username;
     const userRecord = await User.findOne({username});
     if(!userRecord){
-        res.send('Username/password incorrect');
+        res.status(401).send('Username/password incorrect');
+        console.log("Not found");
     } else {
         const userSalt = userRecord.salt;
         const incomingPassword = req.body.password;
@@ -314,7 +315,7 @@ app.post('/login/', async (req, res, next) => {
             req.session.user = userRecord._id;
             res.status(204).send();
         } else {
-            res.send('Username/password incorrect.');
+            res.status(401).send('Username/password incorrect.');
         }
     }
 });
