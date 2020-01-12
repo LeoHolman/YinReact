@@ -81,9 +81,7 @@ class PitchChart extends Component {
         return(
             <>
                 <div id="__visualization"> 
-
                 </div>
-
             </>
         )
     }

@@ -12,7 +12,7 @@ class Activity extends Component{
     constructor(props){
         super(props)
         this.state = {
-            lesson: [], 
+            lesson: {}, 
             audioRes: [],
             audios:[],
             audioParse: [],
@@ -41,7 +41,6 @@ class Activity extends Component{
         fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words`)
             .then( (response) => response.json()
                 .then( (result) => {
-                    console.log(result);
                     this.setState({audioRes: result});
                     // var allAudios = [];
                     // var i = 0;
@@ -107,7 +106,7 @@ class Activity extends Component{
                     {Boolean(this.props.baseline) == false ?
                         <Baseline outputFunction={this.props.setBaseline} />
                     :
-                        <Mimicking />
+                        <Mimicking lesson={this.state.lesson} />
                     }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/4`}>

@@ -52,7 +52,7 @@ var userSchema = new mongoose.Schema({
 var recordingSchema = new mongoose.Schema({
     word: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    data: [{time: String, frequency: String}],
+    data: String,
 });
 
 var nativeRecordingSchema = new mongoose.Schema({
@@ -118,11 +118,11 @@ app.use(session({
     store: new MongoStore({mongooseConnection: mongoose.connection}),
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1:8000', secure:false},
+    // cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1', secure:false },//sameSite: false
 }));
 
 app.get('/sessions/', (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
+    // res.cookie('hello','world');
     if(req.session.page_views){
         req.session.page_views++;
         console.log(req.session.page_views);
@@ -331,24 +331,23 @@ app.get('/recordings/:_id', async (req, res, next) => {
     res.send(recording);
 });
 
-app.post('/recordings/add', async (req, res, next) => {
+app.post('/recordings/add/', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    if (req.headers.token){
-       const verification = await jwt.verify(req.headers.token, PRIVATE_KEY)
-       const username = verification.user.username;
-       const user = await User.findOne({username});
-       const dataPayload = await req.body.record;
-       try {
-            const newRecording = new Recording({user: user._id, data: dataPayload});
-            newRecording.save().then( async () => {
-                const retrieve = await User.findById(newRecording.user);
-                res.send(`Recording saved successfully.`);
-            });
-       } catch (ex) {
-           console.log(ex);
-           res.status(500).send('Something went wrong');
-       }
-   } 
+    console.log('hit');
+    const username = req.body.username;
+    const user = await User.findOne({username});
+    const dataset = await req.body.dataset;
+    try {
+        const newRecording = new Recording({user: user._id, data: dataset});
+        newRecording.save().then( async () => {
+            console.log('recordingsave');
+            // const retrieve = await User.findById(newRecording.user);
+            res.send(`Recording saved successfully.`);
+        });
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).send('Something went wrong');
+    }
 });
 
 // QUIZSCORE API
