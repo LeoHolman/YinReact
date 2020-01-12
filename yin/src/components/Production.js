@@ -55,9 +55,23 @@ class Mimicking extends Component {
             <>
                 {this.props.lesson.words[this.state.currentStimuli] ?
                     <>
-                        <AudioPlayer audioFile={`http://localhost:8000/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                        {this.state.allowAdvance ?
+                            <AudioPlayer audioFile={`http://localhost:8000/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                        :
+                            <></>
+                        }
                         <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
-                        <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
+                        <PitchChart 
+                            dataset={this.state.allowAdvance ? [
+                                [String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],
+                                [String(this.state.userDataset), 'red']
+                            ]
+                            :
+                            [
+                                [String(this.state.userDataset), 'red']
+                            ]
+                        }
+                        />
                         <Recorder label="Record" outputFunction={this.passDataToState} />
                         <button onClick={this.nextWord}>Next {this.props.lesson.words.length - 1 === this.state.currentStimuli ?
                             "Section"
