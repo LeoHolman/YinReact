@@ -17,7 +17,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     padding:75% 1em 0 1em;
-    border:5px solid white;
+    border:1px solid white;
 }
 
 .response img{
@@ -30,27 +30,28 @@
     margin:1.5em;
 }
 
-.correct{
-    border:5px solid #237a36;
+.positive{
+    border:1px solid #237a36;
     background-color:rgb(35,122,54,.15);
 }
 
-.correct h3{
+.positive h3{
     color:#237a36;
 }
 
 
-.incorrect{
-    border:5px solid #a50122;
+.negative{
+    border:1px solid #a50122;
     background-color:rgb(165,1,34,.15);
+
 }
 
-.incorrect h3{
+.negative h3{
     color: #a50122;
 }
 
 .active {
-    border:5px solid #f0d975;
+    border:1px solid #f0d975;
     background-color:#faf6e4;
 }
 
@@ -72,6 +73,8 @@
     visibility:hidden;
     grid-column:1/2;
     grid-row:1/2;
+    padding:0 2em 0 1em;
+    margin:1em 1em 1em 5em;
 }
 
 #score{

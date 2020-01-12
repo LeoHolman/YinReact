@@ -14,7 +14,9 @@ class ChoiceQuiz extends Component {
             answers:[],
             score:0,
             status:"",
-            error:""
+            error:"",
+            feedback_heading:"",
+            feedback:""
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -65,12 +67,17 @@ class ChoiceQuiz extends Component {
             }
     
             if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
-                document.getElementById(this.state.active).classList.add('correct');
+                document.getElementById(this.state.active).classList.add('positive');
                 this.setState({'score':this.state.score+1});
-                this.setState({'status':"correct"});
+                this.setState({'status':"positive"});
+                this.setState({feedback_heading: 'Correct!'});
+                this.setState({'feedback':`You selected tone ${this.state.active}, which is the correct answer.`});
             } else{
-                document.getElementById(this.state.active).classList.add('incorrect');
-                this.setState({'status':"incorrect"});
+                document.getElementById(this.state.active).classList.add('negative');
+                this.setState({'status':"negative"});
+                this.setState({feedback_heading: 'Incorrect.'});
+                this.setState({'feedback':`You selected tone ${this.state.active}, when it should've been tone ${this.props.stimuli[this.state.currentStimulus].correctTone}.`});
+
             }
     
             document.getElementById("nextQuestion").classList.remove("hide");
@@ -219,7 +226,7 @@ class ChoiceQuiz extends Component {
                     <div className="feedbackContainer">
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
                         <button onClick={this.nextQuestion} className="hide" id="nextQuestion">Next</button>
-                        <FeedbackBox status = {this.state.status} />
+                        <FeedbackBox status = {this.state.status} heading={this.state.feedback_heading} content={this.state.feedback}/>
                         <p id="error">{this.state.error}</p>
                     </div>
                     </>
