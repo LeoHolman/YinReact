@@ -93,9 +93,11 @@ Blue - #5E99D3
     margin-left:1em;
 }
 
-.teacherEditLink{
+.teacherEditLink, .teacherDeleteLink{
     float:right;
+    padding-left:20px;
 }
+
 
 #is_quiz{
     margin-top:4em;

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Answer from './Answer';
 import FeedbackBox from './FeedbackBox';
+import {Link} from 'react-router-dom';
 
 class ChoiceQuiz extends Component {
     constructor(props){
@@ -107,6 +108,7 @@ class ChoiceQuiz extends Component {
     }
 
     chooseTones(correct){
+
         var optionArr =[];
         var randomArr = [1,2,3,4];
         //to pair words with tones under their graphs, uncomment word-related code 
@@ -227,13 +229,14 @@ class ChoiceQuiz extends Component {
                         {this.props.quiz==="true" ?
                             <>
                             <p>You've completed this section of the quiz.</p>
-                            <button onClick={this.reportScore}>Next section</button>
+                            <button onClick={this.reportScore}>Continue</button>
                             </>
                         :
-                        <>
+                        <div id="score">
                             <h2>Activity complete!</h2>
-                            <p>Your score is: {this.state.score}</p>
-                        </>
+                            <p>Your score is: {this.state.score} out of {this.props.stimuli.length}</p>
+                            <Link to="../">Return to Lessons & Quizzes</Link>
+                        </div>
                         }
                         </>
                         

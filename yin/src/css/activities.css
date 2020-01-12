@@ -73,3 +73,10 @@
     grid-column:1/2;
     grid-row:1/2;
 }
+
+#score{
+    background-color:white;
+    width:50%;
+    margin:0 auto;
+    padding:2em;
+}
