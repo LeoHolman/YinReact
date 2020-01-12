@@ -112,7 +112,7 @@ class App extends React.Component{
                     <BaselineExplanation/>
                   </Route>
                   <Route exact path="/*">
-                    <Login submitForm={this.submitForm} error={this.state.error}/>
+                    <Login submitForm={this.submitForm} error={this.state.error} />
                   </Route>
                 </Switch>
               </>

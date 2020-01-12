@@ -12,7 +12,7 @@ class Home extends Component {
             <>
                 <div id = "main" className ="classroom">
                     <div id="img-container"></div>
-                   <h2>Welcome to Yin classroom!</h2>
+                   <h2>Welcome to Yin Classroom!</h2>
                    <p id="summary">Yin Classroom is a companion to Yin to facilitate using Yin's tools and activities in the classroom.
                         Teachers can create lessons to correspond with classroom curriculum, upload audio for vocabulary lists, and add quizzes to test their students.
                        Students can practice the words they'll actually need to know for class, and take quizzes at their convenience.

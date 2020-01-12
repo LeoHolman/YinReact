@@ -30,6 +30,8 @@ class LessonShow extends Component{
 
     }
 
+
+
     render(){
         return(
             <div className ="lesson show">
