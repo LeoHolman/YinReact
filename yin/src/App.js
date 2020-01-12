@@ -29,7 +29,7 @@ class App extends React.Component{
 
   constructor(){
     super();
-    var hasToken = localStorage.token ? true : false;
+    const hasToken = localStorage.token ? true : false;
     this.state={
       "lessonOpen":true,
       isLoggedIn: hasToken,

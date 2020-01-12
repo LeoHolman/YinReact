@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ChoiceQuiz from './ChoiceQuiz';
-import Baseline from './Baseline';
 import Mimicking from './Mimicking';
 
 class Quiz extends Component{
@@ -146,7 +145,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <p>[Activity 3 goes here]</p>
+                        <Mimicking lesson={this.props.stimuli} />
                         :
                         ""
                     }
