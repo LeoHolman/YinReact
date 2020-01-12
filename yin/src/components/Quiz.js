@@ -4,7 +4,8 @@ import Mimicking from './Mimicking';
 
 class Quiz extends Component{
     constructor(props){
-        super(props)
+        super(props);
+        console.log(props);
         this.state = {
             activity1:{
                 score: null,
@@ -20,7 +21,8 @@ class Quiz extends Component{
             activity4:{
                 recordings:[]
             },
-            current:this.props.activities[0],
+            current: null,
+            // current:0,
             prev: false,
             sum_score: 0,
             sum_total_score: 0
@@ -28,12 +30,15 @@ class Quiz extends Component{
         this.captureScore = this.captureScore.bind(this);
         this.advance = this.advance.bind(this);
         this.recordScore = this.recordScore.bind(this);
-        this.getScores = this.getScores.bind(this);
+        this.initialize= this.initialize.bind(this);
     }
 
-    getScores(){
-        
-            console.log(`http://localhost:8000/quizScores/${this.props.username}/${this.props.lesson}`)
+    initialize(){
+            if(this.props.activities){
+                if(this.state.current===null){
+                    this.setState({current:this.props.activities[0]});
+                }
+            }
 
             fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.lesson}`)
                 .then( (response) => response.json()
@@ -86,10 +91,6 @@ class Quiz extends Component{
             }
         }
         
-       
-        if(this.state.current ===5){
-
-        }    
   
         
 
@@ -126,7 +127,7 @@ class Quiz extends Component{
     render(){
         return(
             <>
-                {this.props.lesson && this.state.prev===false ? this.getScores() : ""}
+                {this.props.lesson && this.state.prev===false ? this.initialize() : ""}
                 {this.state.prev===true ? 
                     <>
                         <h3>You've already taken this quiz.</h3>
