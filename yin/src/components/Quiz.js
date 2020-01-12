@@ -146,7 +146,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <Mimicking lesson={this.props.stimuli} />
+                        <Mimicking lesson={this.props.fullLesson} username={this.props.username} />
                         :
                         ""
                     }

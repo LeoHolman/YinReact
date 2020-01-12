@@ -70,6 +70,7 @@ class PitchChart extends Component {
     }
 
     componentDidUpdate(){
+        console.log('PitchChartUpdate');
         d3.selectAll("svg").remove();
         this.drawPitchChart('__visualization', 1100, 500);
         this.props.dataset.map( (curve) => {

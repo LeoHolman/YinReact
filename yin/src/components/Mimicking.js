@@ -25,14 +25,16 @@ class Mimicking extends Component {
             body: JSON.stringify({username, dataset})
         }).then( (res) => {
             console.log(`${res.statusText}`)
-            this.setState({allowAdvance: true});
         });
     }
 
     passDataToState(dataset){
-        this.setState({userDataset: dataset});
+        this.setState({
+            userDataset: dataset,
+            allowAdvance: true
+        });
         if(this.props.lesson.is_quiz){
-            this.uploadRecording(dataset);
+            this.uploadRecording(dataset, this.props.username);
         }
     }
 
@@ -40,6 +42,7 @@ class Mimicking extends Component {
         if(this.state.allowAdvance){
             this.setState({
                 currentStimuli: this.state.currentStimuli + 1,
+                userDataset: '',
                 allowAdvance: false
             })
         } else {
@@ -50,12 +53,17 @@ class Mimicking extends Component {
     render(){
         return(
             <>
-                {this.props.lesson.words[this.state.currentStimuli] ? 
+                {this.props.lesson.words[this.state.currentStimuli] ?
                     <>
                         <AudioPlayer audioFile={`http://localhost:8000/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                        <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
                         <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
                         <Recorder label="Record" outputFunction={this.passDataToState} />
-                        <button onClick={this.nextWord}>Next Word</button>
+                        <button onClick={this.nextWord}>Next {this.props.lesson.words.length - 1 === this.state.currentStimuli ?
+                            "Section"
+                            :
+                            "Word"
+                        }</button>
                     </>
                     :
                     <p>Lesson complete!</p>
