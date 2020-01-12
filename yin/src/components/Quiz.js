@@ -41,7 +41,7 @@ class Quiz extends Component{
                 }
             }
 
-            fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.lesson}`)
+            fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.fullLesson.name}`)
                 .then( (response) => response.json()
                     .then( (result) => {
                         console.log("result" + JSON.stringify(result));
@@ -128,7 +128,7 @@ class Quiz extends Component{
     render(){
         return(
             <>
-                {this.props.lesson && this.state.prev===false ? this.initialize() : ""}
+                {this.props.fullLesson && this.state.prev===false ? this.initialize() : ""}
                 {this.state.prev===true ? 
                     <>
                         <h3>You've already taken this quiz.</h3>
