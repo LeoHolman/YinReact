@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.218abfef.chunk.css",
+    "main.js": "/static/js/main.075fb37a.chunk.js",
+    "main.js.map": "/static/js/main.075fb37a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.f8392860.js",
+    "runtime-main.js.map": "/static/js/runtime-main.f8392860.js.map",
+    "static/js/2.bc8c81fe.chunk.js": "/static/js/2.bc8c81fe.chunk.js",
+    "static/js/2.bc8c81fe.chunk.js.map": "/static/js/2.bc8c81fe.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.39531527926f29d96d05ac1610bd5fd8.js": "/precache-manifest.39531527926f29d96d05ac1610bd5fd8.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.218abfef.chunk.css.map": "/static/css/main.218abfef.chunk.css.map",
+    "static/js/2.bc8c81fe.chunk.js.LICENSE": "/static/js/2.bc8c81fe.chunk.js.LICENSE",
+    "static/media/1_graph.svg": "/static/media/1_graph.4059374e.svg",
+    "static/media/2_graph.svg": "/static/media/2_graph.ec56be3d.svg",
+    "static/media/3_graph.svg": "/static/media/3_graph.d05b49b1.svg",
+    "static/media/4_graph.svg": "/static/media/4_graph.70af4f87.svg",
+    "static/media/LADirectoryStyle.css": "/static/media/Three.db4f3b08.svg",
+    "static/media/Home.css": "/static/media/WalkingJoJo.eadd54a7.svg",
+    "static/media/Yin_Classroom_logo@4x.png": "/static/media/Yin_Classroom_logo@4x.f472b60e.png",
+    "static/media/studentImg2.jpg": "/static/media/studentImg2.76cd4ea4.jpg",
+    "static/media/teacherImg.jpg": "/static/media/teacherImg.4cccd371.jpg",
+    "static/media/yin1.svg": "/static/media/yin1.a4fc2c7c.svg",
+    "static/media/yin2.svg": "/static/media/yin2.bf98447d.svg",
+    "static/media/yin3.svg": "/static/media/yin3.00dce588.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f8392860.js",
+    "static/js/2.bc8c81fe.chunk.js",
+    "static/css/main.218abfef.chunk.css",
+    "static/js/main.075fb37a.chunk.js"
+  ]
+}

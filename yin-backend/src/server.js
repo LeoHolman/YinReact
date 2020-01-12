@@ -111,6 +111,7 @@ const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname,'/build')));
 app.use(express.static('src/uploads'));
 app.use(cookieParser());
 app.use(session({
@@ -404,7 +405,11 @@ app.post('/nativeRecording/add/', async (req,res,next) => {
     } catch (ex) {
         res.status(404).send('Word not found');
     }
-})
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/build/index.html'));
+});
 
 //Start application
 app.listen(8000, () => console.log('Listening on port 8000'));
