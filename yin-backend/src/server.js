@@ -119,12 +119,40 @@ app.use(session({
     store: new MongoStore({mongooseConnection: mongoose.connection}),
     resave: false,
     saveUninitialized: true,
-    // cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1', secure:false },//sameSite: false
+    cookie: {
+        path: '/',
+        maxAge:  60 * 1000,
+        httpOnly: false,
+        // domain:'127.0.0.1', 
+        secure:false },//sameSite: false
 }));
 
-app.get('/sessions/', (req, res, next) => {
-    // res.cookie('hello','world');
+app.get('/sessions/', async (req, res, next) => {
+    res.cookie('hello','world');
+    req.session.beep = 'boop';
+    // const user = await User.findOne({username: 'lLeo'});
+    // req.session.user = user._id; 
+    // console.dir(req);
+    console.dir(req.cookies);
+    console.log(req.session);
+    res.header({
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true"
+    });
+    if(req.session.user){
+        console.log('true');
+        try{
+            const user = await User.findById(req.session.user);
+            console.log('true');
+            res.send(user);
+            return
+        } catch (ex) {
+            res.status(401).send('You must login');
+            console.dir(ex);
+        }
+    }
     if(req.session.page_views){
+
         req.session.page_views++;
         console.log(req.session.page_views);
         res.send(`Seen ${req.session.page_views}`)
@@ -135,6 +163,8 @@ app.get('/sessions/', (req, res, next) => {
         res.send('Welcome');
     }
 })
+
+
 
 // WORD API
 // ===========================================
@@ -301,20 +331,30 @@ app.post('/signup/', async (req, res) => {
 });
 
 app.post('/login/', async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    console.log('hit')
+    res.header({
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        "Access-Control-Allow-Credentials": "true"
+    });
+    console.log('Login page');
+    console.dir(req.session);
     const username = req.body.username;
+    console.dir(req.body);
     const userRecord = await User.findOne({username});
     if(!userRecord){
         res.status(401).send('Username/password incorrect');
         console.log("Not found");
     } else {
+        console.log("Found user");
         const userSalt = userRecord.salt;
         const incomingPassword = req.body.password;
         const hashedIncomingPassword = await argon2.hash(incomingPassword, {userSalt}); 
         const correctPassword = await argon2.verify(userRecord.password, incomingPassword);
         if (correctPassword){
+            console.log('Passwords match');
             req.session.user = userRecord._id;
-            res.status(204).send();
+            console.dir(req.session);
+            res.status(200).send();
         } else {
             res.status(401).send('Username/password incorrect.');
         }
