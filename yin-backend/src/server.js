@@ -1,13 +1,8 @@
 import express from 'express';
 const cors = require('cors');
 import bodyParser from 'body-parser';
-import * as argon2 from 'argon2';
 import { read } from 'fs';
-const randomBytes = require('randombytes');
-const jwt = require('jsonwebtoken');
 const PRIVATE_KEY = 'donttellnobody';
-const path = require('path');
-const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const d3 = require('d3');
 const session = require('express-session');
@@ -18,12 +13,12 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
 
-const Word = require('./models/word');
-const Lesson = require('./models/lesson');
-const User = require('./models/user');
-const Recording = require('./models/recording');
-const NativeRecording = require('./models/native_recording');
-const QuizScore = require('./models/quiz_score');
+const wordRouter = require('./routers/word');
+const lessonRouter = require('./routers/lesson');
+const userRouter = require('./routers/user');
+const recordingRouter = require('./routers/recording');
+const quizScoreRouter = require('./routers/quiz_score');
+const nativeRecordingRouter = require('./routers/native_recording');
 
 const app = express();
 app.use(fileUpload());
@@ -38,6 +33,13 @@ app.use(session({
     saveUninitialized: true,
     // cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1', secure:false },//sameSite: false
 }));
+
+app.use(wordRouter);
+app.use(lessonRouter);
+app.use(userRouter);
+app.use(recordingRouter);
+app.use(quizScoreRouter);
+app.use(nativeRecordingRouter);
 
 app.get('/sessions/', (req, res, next) => {
     res.header({
@@ -55,281 +57,6 @@ app.get('/sessions/', (req, res, next) => {
         console.log('Session set');
         console.log(req.sessionID);
         res.send('Welcome');
-    }
-})
-
-// WORD API
-// ===========================================
-app.post('/words/add/', (req, res, next) => {
-    const relativeBase = path.join('uploads', 'test');
-    const audioDirPath = path.join(__dirname, relativeBase);
-    const audioPath = path.join(audioDirPath, req.files.audioFile.name);
-    const storePath = path.join('test', req.files.audioFile.name);
-    const pinyin = req.body.pinyin;
-    const correctTone = req.body.correctTone;
-    const character = req.body.character;
-    try {
-        if(!fs.existsSync(audioDirPath)){
-            fs.mkdirSync(audioDirPath, { recursive: true}, (err) => {
-                if(err){
-                    console.log(err);
-                }
-            })
-        }
-        let incomingFile = req.files.audioFile;
-        incomingFile.mv(audioPath, (err) => {
-            if(err){
-                console.log(err);
-                res.status(500).send(err);
-                return
-            }
-            const newWord = new Word({audioFile: storePath, pinyin, correctTone, character});
-            newWord.save().then( () => {
-                res.status(200).send('Upload complete.');
-                return
-            });
-        })
-    } catch (ex) {
-        console.log(ex);
-        res.status(500).send('Internal server error');
-    }
-});
-
-app.get('/words/all/', async (req, res, next) => {
-    try {
-        const allWords = await Word.find({});
-        res.send(allWords);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-})
-
-app.get('/words/:character/', async (req, res, next) => {
-    const character = req.params.character;
-    try {
-        const word = await Word.find({character})
-        .populate('native_recording')
-        .exec( (err, _word) => {
-            res.send(_word);
-        });
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.delete('/words/:character/delete', async (req, res, next) => {
-    const character = req.params.character;
-    try {
-        const wordToDelete = await Word.deleteOne({character});
-        res.send(`${character} deleted successfully.`);
-    } catch (ex) {
-        res.status(500).send('Something went wrong.');
-    }
-});
-
-// LESSON API
-// ===========================================
-app.get('/lessons/all/', async (req, res, next) => {
-    try {
-        const allLessons = await Lesson.find({}).populate('words');
-        res.send(allLessons);
-    } catch (ex) {
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.get('/lessons/:name/', async (req, res, next) => {
-    const name = req.params.name; 
-    try {
-        // const lesson = await (await )
-        Lesson.findOne({name})
-        .populate({
-            path:'words', 
-            populate: {
-                path: 'native_recording'
-            }
-        })
-        .exec( (err, _lesson) => {
-            if (err){
-                console.log(err);
-                res.status(500).send('Something went wrong');
-            }
-            res.send(_lesson);
-        });
-    } catch (ex) {
-        console.log(ex);
-        res.status(500).send('Something went wrong');
-    }
-});
-
-app.get('/lessons/:name/words/', async (req, res, next) => {
-    const name = req.params.name;
-    const lesson = await Lesson.findOne({name});
-    const words = await Word.find({'_id': { $in: lesson.words}})
-    res.send(words);
-})
-
-app.post('/lessons/add/', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    const name = req.body.name;
-    const words = req.body.words;
-    const description = req.body.description;
-    const is_quiz = req.body.is_quiz;
-    const quizSections = req.body.quizSections;
-    const newLesson = new Lesson({name, words, description, is_quiz, quizSections});
-    newLesson.save().then( () => {
-        res.send(`${newLesson.name} saved successfully!`);
-    });
-});
-
-app.put('/lessons/:name/edit/', async (req, res, next) => {
-    const name = req.params.name;
-    const newName = req.body.name;
-    const words = req.body.words;
-    const description = req.body.description;
-    const is_quiz = req.body.is_quiz;
-    const quizSections = req.body.quizSections;
-    const lessonToUpdate = await Lesson.findOne({name});
-    lessonToUpdate.name = newName;
-    lessonToUpdate.words = words;
-    lessonToUpdate.description = description;
-    lessonToUpdate.is_quiz = is_quiz;
-    lessonToUpdate.quizSections = quizSections;
-    await lessonToUpdate.save();
-    res.send(`${lessonToUpdate.name} updated successfully.`);
-});
-
-app.delete('/lessons/:name/delete/', async (req, res, next) => {
-    const name = req.params.name;
-    const lessonToDelete = await Lesson.deleteOne({name});
-    res.send(`${name} deleted successfully.`);
-});
-
-// USER API
-// ===========================================
-app.post('/signup/', async (req, res) => {
-    const username = req.body.username;
-    const nameUnavailable = await User.findOne({username});
-    if(!nameUnavailable){
-        const salt = randomBytes(32);
-        const hashedPass = await argon2.hash(req.body.password, {salt});
-        const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex'), baseline: req.body.baseline});
-        newUser.save().then( () => {
-            res.send(`Hello! ${req.body.username}`)
-        });
-    } else {
-        res.send('Username taken, please try another.');
-    }
-});
-
-app.post('/login/', async (req, res, next) => {
-    console.log('hit')
-    res.header({
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-        'Access-Control-Allow-Credentials':'true'
-    })
-    const username = req.body.username;
-    const userRecord = await User.findOne({username});
-    if(!userRecord){
-        res.status(401).send('Username/password incorrect');
-        console.log("Not found");
-    } else {
-        const userSalt = userRecord.salt;
-        const incomingPassword = req.body.password;
-        const hashedIncomingPassword = await argon2.hash(incomingPassword, {userSalt}); 
-        const correctPassword = await argon2.verify(userRecord.password, incomingPassword);
-        if (correctPassword){
-            req.session.user = userRecord._id;
-            res.status(204).send();
-        } else {
-            res.status(401).send('Username/password incorrect.');
-        }
-    }
-});
-
-app.post('/user/baseline/add/', async (req, res, next) => {
-
-});
-
-// RECORDING API
-// ===========================================
-app.get('/recordings/:_id', async (req, res, next) => {
-    const _id = req.params._id;
-    const recording = await Recording.findOne({_id});
-    res.send(recording);
-});
-
-app.post('/recordings/add/', async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    console.log('hit');
-    const username = req.body.username;
-    const user = await User.findOne({username});
-    const dataset = await req.body.dataset;
-    try {
-        const newRecording = new Recording({user: user._id, data: dataset});
-        newRecording.save().then( async () => {
-            console.log('recordingsave');
-            // const retrieve = await User.findById(newRecording.user);
-            res.send(`Recording saved successfully.`);
-        });
-    } catch (ex) {
-        console.log(ex);
-        res.status(500).send('Something went wrong');
-    }
-});
-
-// QUIZSCORE API
-// ===========================================
-app.post('/quizScores/add/', async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    const fulllesson = await Lesson.findOne({"name": req.body.lesson}).exec();
-    const lesson = fulllesson.id;
-    const fulluser = await User.findOne({"username": req.body.user}).exec();
-    const user = fulluser.id;
-    const score = req.body.score;
-    const maxScore = req.body.maxScore;
-    const recordings = req.body.recordings;
-    try {
-        const newQuizScore = new QuizScore({lesson, user, score, maxScore, recordings});
-        newQuizScore.save().then( () => {
-            res.send('Score saved successfully.');
-        });
-    } catch (ex) {
-        console.log(ex);
-        res.status(500).send('Something went wrong.');
-    }
-});
-
-app.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
-    const username = req.params.username;
-    const lessonname = req.params.lessonname; 
-    const user = await User.findOne({username});
-    const lesson = await Lesson.findOne({name: lessonname});
-    const quizScores = await QuizScore.find({user: user._id, lesson: lesson._id});
-    res.send(quizScores);
-});
-
-//NATIVE RECORDING API
-//==========================================
-app.post('/nativeRecording/add/', async (req,res,next) => {
-    const data = new String(req.files.recording.data);
-    const incomingword = req.body.word;
-    try{
-        const word = await Word.findOne({'_id': incomingword});
-        try{
-            let newNativeRecording = new NativeRecording({data});
-            newNativeRecording.save();
-            word.native_recording = newNativeRecording.id;
-            word.save();
-            res.send(data);
-
-        } catch (ex) {
-            console.log(ex);
-            res.status(500).send(ex);
-        }
-
-    } catch (ex) {
-        res.status(404).send('Word not found');
     }
 })
 
