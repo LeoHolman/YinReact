@@ -1,5 +1,6 @@
 const express = require('express');
 const Lesson = require('../models/lesson');
+const Word = require('../models/word');
 
 const router = new express.Router();
 
