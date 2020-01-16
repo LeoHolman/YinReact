@@ -5,7 +5,6 @@ import * as argon2 from 'argon2';
 import { read } from 'fs';
 const randomBytes = require('randombytes');
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
 const PRIVATE_KEY = 'donttellnobody';
 const path = require('path');
 const fs = require('fs');
@@ -19,93 +18,12 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
 
-var wordSchema = new mongoose.Schema({
-    audioFile: String, 
-    pinyin: String, 
-    correctTone: Number, 
-    character: String,
-    native_recording: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'NativeRecording'
-    }
-});
-
-var lessonSchema = new mongoose.Schema({
-    name: String,
-    words: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Word'
-    }],
-    description: String,
-    is_quiz: Boolean,
-    quizSections:[{type:Number}]
-});
-
-var userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    salt: String,
-    is_teacher: Boolean,
-    baseline: Number
-});
-
-var recordingSchema = new mongoose.Schema({
-    word: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    data: String,
-});
-
-var nativeRecordingSchema = new mongoose.Schema({
-    data: String
-});
-
-var Recording = mongoose.model('Recording', recordingSchema);
-
-var quizScoreSchema = new mongoose.Schema({
-    lesson: {type: mongoose.Schema.Types.ObjectId, ref: 'Lesson'},
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    score: Number,
-    maxScore: Number,
-    recordings: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recording'}]
-});
-
-var Word = mongoose.model('Word', wordSchema);
-
-var Lesson = mongoose.model('Lesson', lessonSchema);
-
-var User = mongoose.model('User', userSchema);
-
-var Recording = mongoose.model('Recording', recordingSchema);
-
-var NativeRecording = mongoose.model('NativeRecording', nativeRecordingSchema);
-
-var QuizScore = mongoose.model('QuizScore', quizScoreSchema);
-
-userSchema.methods.generateAuthToken = () => {
-    const token = jwt.sign({_id: this._id}, 'myprivatekey');
-    return token;
-}
-
-function validateUser(user) {
-    const schema = {
-        username: Joi.string(),
-        password: Joi.string()
-    }
-    return Joi.validate(user, schema);
-}
-
-function tokenMiddleWare(req, res, next) {
-    const token = req.headers["x-access-token"] || req.headers["authorization"];
-    if(!token){ return res.status(401).send("Access denied.")};
-
-    try {
-        const decoded = jwt.verify(token, 'myprivatekey');
-        req.user = decoded;
-        next();
-    } catch (ex) {
-        res.status(400).send("Invalid token.");
-    }
-};
+const Word = require('./models/word');
+const Lesson = require('./models/lesson');
+const User = require('./models/user');
+const Recording = require('./models/recording');
+const NativeRecording = require('./models/native_recording');
+const QuizScore = require('./models/quiz_score');
 
 const app = express();
 app.use(fileUpload());
@@ -122,6 +40,11 @@ app.use(session({
 }));
 
 app.get('/sessions/', (req, res, next) => {
+    res.header({
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Credentials':'true'
+    })
+    
     // res.cookie('hello','world');
     if(req.session.page_views){
         req.session.page_views++;
@@ -300,7 +223,11 @@ app.post('/signup/', async (req, res) => {
 });
 
 app.post('/login/', async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    console.log('hit')
+    res.header({
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Credentials':'true'
+    })
     const username = req.body.username;
     const userRecord = await User.findOne({username});
     if(!userRecord){
