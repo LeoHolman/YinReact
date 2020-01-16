@@ -10,11 +10,11 @@ class Quiz extends Component{
         this.state = {
             activity1:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity2:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity3:{
                 recordings:[]
@@ -58,7 +58,6 @@ class Quiz extends Component{
     async recordScore(){
         var sum_score = null;
         var sum_total_score = null;
-        const user_token = localStorage.token;
         if(this.includes(1) && this.includes(2)){
             sum_score = this.state.activity1.score + this.state.activity2.score;
             sum_total_score = this.state.activity1.max_score + this.state.activity2.max_score;
