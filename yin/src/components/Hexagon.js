@@ -14,7 +14,7 @@ class Hexagon extends Component{
     }
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8000/getLesson/${this.props.match.params.lessonNumber}`);
+        const response = await fetch(`/api/getLesson/${this.props.match.params.lessonNumber}`);
         const lesson = await response.json();
         // console.log(JSON.stringify(lesson));
         this.setState({lesson: lesson});

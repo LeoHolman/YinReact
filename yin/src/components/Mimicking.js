@@ -17,7 +17,7 @@ class Mimicking extends Component {
     }
 
     uploadRecording(dataset, username){
-        fetch('http://localhost:8000/recordings/add/', {
+        fetch('/api/recordings/add/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

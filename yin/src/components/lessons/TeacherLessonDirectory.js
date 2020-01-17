@@ -14,7 +14,7 @@ class TeacherLessonDirectory extends Component {
     }
 
     async componentDidMount(){
-        var lessons = await (await fetch("http://localhost:8000/lessons/all/")).json();
+        var lessons = await (await fetch("/api/lessons/all/")).json();
         this.setState({lessons: lessons});
     }
 

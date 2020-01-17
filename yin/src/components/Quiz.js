@@ -41,7 +41,7 @@ class Quiz extends Component{
                 }
             }
 
-            fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.lesson}`)
+            fetch(`/api/quizScores/${this.props.username}/${this.props.lesson}`)
                 .then( (response) => response.json()
                     .then( (result) => {
                         console.log("result" + JSON.stringify(result));
