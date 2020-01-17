@@ -3,7 +3,7 @@ const NativeRecording = require('../models/native_recording');
 
 const router = new express.Router();
 
-router.post('/nativeRecording/add/', async (req,res,next) => {
+router.post('/api/nativeRecording/add/', async (req,res,next) => {
     const data = new String(req.files.recording.data);
     const incomingword = req.body.word;
     try{

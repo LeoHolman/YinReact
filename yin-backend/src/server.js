@@ -20,10 +20,16 @@ const recordingRouter = require('./routers/recording');
 const quizScoreRouter = require('./routers/quiz_score');
 const nativeRecordingRouter = require('./routers/native_recording');
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+}
+
 const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static('src/uploads'));
 app.use(cookieParser());
 app.use(session({
@@ -33,10 +39,16 @@ app.use(session({
     saveUninitialized: true,
     // cookie: { maxAge: 30 * 60 * 1000,httpOnly: false , domain:'127.0.0.1', secure:false },//sameSite: false
 }));
-
+app.get('/*', (req, res, next) =>{
+    console.log('header set');
+    res.header({
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+    });
+    next();
+});
+app.use(userRouter);
 app.use(wordRouter);
 app.use(lessonRouter);
-app.use(userRouter);
 app.use(recordingRouter);
 app.use(quizScoreRouter);
 app.use(nativeRecordingRouter);

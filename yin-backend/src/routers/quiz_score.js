@@ -3,7 +3,7 @@ const QuizScore = require('../models/quiz_score');
 
 const router = new express.Router();
 
-router.post('/quizScores/add/', async (req, res, next) => {
+router.post('/api/quizScores/add/', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     const fulllesson = await Lesson.findOne({"name": req.body.lesson}).exec();
     const lesson = fulllesson.id;
@@ -23,7 +23,7 @@ router.post('/quizScores/add/', async (req, res, next) => {
     }
 });
 
-router.get('/quizScores/:username/:lessonname/', async (req, res, next) => {
+router.get('/api/quizScores/:username/:lessonname/', async (req, res, next) => {
     const username = req.params.username;
     const lessonname = req.params.lessonname; 
     const user = await User.findOne({username});

@@ -59,11 +59,12 @@ class App extends React.Component{
 
   submitForm(event, username, password) {
         event.preventDefault();
-        fetch('http://localhost:8000/login/', {
+        fetch('/login/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(
                 {
                     "username":username,

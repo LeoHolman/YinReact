@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const router = new express.Router();
 
-router.post('/words/add/', (req, res, next) => {
+router.post('/api/words/add/', (req, res, next) => {
     const relativeBase = path.join('uploads', 'test');
     const audioDirPath = path.join(__dirname, relativeBase);
     const audioPath = path.join(audioDirPath, req.files.audioFile.name);
@@ -40,7 +40,7 @@ router.post('/words/add/', (req, res, next) => {
     }
 });
 
-router.get('/words/all/', async (req, res, next) => {
+router.get('/api/words/all/', async (req, res, next) => {
     try {
         const allWords = await Word.find({});
         res.send(allWords);
@@ -49,7 +49,7 @@ router.get('/words/all/', async (req, res, next) => {
     }
 })
 
-router.get('/words/:character/', async (req, res, next) => {
+router.get('/api/words/:character/', async (req, res, next) => {
     const character = req.params.character;
     try {
         const word = await Word.find({character})
@@ -62,7 +62,7 @@ router.get('/words/:character/', async (req, res, next) => {
     }
 });
 
-router.delete('/words/:character/delete', async (req, res, next) => {
+router.delete('/api/words/:character/delete', async (req, res, next) => {
     const character = req.params.character;
     try {
         const wordToDelete = await Word.deleteOne({character});

@@ -4,7 +4,7 @@ const Word = require('../models/word');
 
 const router = new express.Router();
 
-router.get('/lessons/all/', async (req, res, next) => {
+router.get('/api/lessons/all/', async (req, res, next) => {
     try {
         const allLessons = await Lesson.find({}).populate('words');
         res.send(allLessons);
@@ -13,7 +13,7 @@ router.get('/lessons/all/', async (req, res, next) => {
     }
 });
 
-router.get('/lessons/:name/', async (req, res, next) => {
+router.get('/api/lessons/:name/', async (req, res, next) => {
     const name = req.params.name; 
     try {
         // const lesson = await (await )
@@ -37,14 +37,14 @@ router.get('/lessons/:name/', async (req, res, next) => {
     }
 });
 
-router.get('/lessons/:name/words/', async (req, res, next) => {
+router.get('/api/lessons/:name/words/', async (req, res, next) => {
     const name = req.params.name;
     const lesson = await Lesson.findOne({name});
     const words = await Word.find({'_id': { $in: lesson.words}})
     res.send(words);
 })
 
-router.post('/lessons/add/', (req, res, next) => {
+router.post('/api/lessons/add/', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     const name = req.body.name;
     const words = req.body.words;
@@ -57,7 +57,7 @@ router.post('/lessons/add/', (req, res, next) => {
     });
 });
 
-router.put('/lessons/:name/edit/', async (req, res, next) => {
+router.put('/api/lessons/:name/edit/', async (req, res, next) => {
     const name = req.params.name;
     const newName = req.body.name;
     const words = req.body.words;
@@ -74,7 +74,7 @@ router.put('/lessons/:name/edit/', async (req, res, next) => {
     res.send(`${lessonToUpdate.name} updated successfully.`);
 });
 
-router.delete('/lessons/:name/delete/', async (req, res, next) => {
+router.delete('/api/lessons/:name/delete/', async (req, res, next) => {
     const name = req.params.name;
     const lessonToDelete = await Lesson.deleteOne({name});
     res.send(`${name} deleted successfully.`);

@@ -3,13 +3,13 @@ const Recording = require('../models/recording');
 
 const router = new express.Router();
 
-router.get('/recordings/:_id', async (req, res, next) => {
+router.get('/api/recordings/:_id', async (req, res, next) => {
     const _id = req.params._id;
     const recording = await Recording.findOne({_id});
     res.send(recording);
 });
 
-router.post('/recordings/add/', async (req, res, next) => {
+router.post('/api/recordings/add/', async (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     console.log('hit');
     const username = req.body.username;

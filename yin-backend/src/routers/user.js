@@ -5,7 +5,7 @@ const randomBytes = require('randombytes');
 
 const router = new express.Router();
 
-router.post('/signup/', async (req, res) => {
+router.post('/api/signup/', async (req, res) => {
     const username = req.body.username;
     const nameUnavailable = await User.findOne({username});
     if(!nameUnavailable){
@@ -20,12 +20,9 @@ router.post('/signup/', async (req, res) => {
     }
 });
 
-router.post('/login/', async (req, res, next) => {
-    console.log('hit')
-    res.header({
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-        'Access-Control-Allow-Credentials':'true'
-    })
+router.post('/api/login/', async (req, res, next) => {
+    console.log('hit');
+    console.log(req.session.user);
     const username = req.body.username;
     const userRecord = await User.findOne({username});
     if(!userRecord){
@@ -45,7 +42,7 @@ router.post('/login/', async (req, res, next) => {
     }
 });
 
-router.post('/user/baseline/add/', async (req, res, next) => {
+router.post('/api/user/baseline/add/', async (req, res, next) => {
 
 });
 
