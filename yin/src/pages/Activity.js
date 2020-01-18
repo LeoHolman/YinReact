@@ -39,7 +39,7 @@ class Activity extends Component{
         //         )
         //     );
 
-        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words`)
+        fetch(`/api/lessons/${this.props.match.params.name}/words`)
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({audioRes: result});
@@ -75,7 +75,7 @@ class Activity extends Component{
     }
 
     sendScore(score, sum_total, recordings){
-        fetch('http://localhost:8000/quizScores/add/', {
+        fetch('/api/quizScores/add/', {
             method: 'POST',
             headers: {"Content-Type":"application/json"},
             

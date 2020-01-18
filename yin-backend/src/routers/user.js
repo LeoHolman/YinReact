@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 import * as argon2 from 'argon2';
 const randomBytes = require('randombytes');
+const mongoose = require('mongoose');
 
 const router = new express.Router();
 
@@ -40,6 +41,26 @@ router.post('/api/login/', async (req, res, next) => {
             res.status(401).send('Username/password incorrect.');
         }
     }
+});
+
+router.get('/api/user/me/', async (req, res, next) => {
+    try{
+        // const userID = new mongoose.Types.ObjectId(req.session.user);
+        const userID = req.session.user;
+        try {
+                const user = await User.findById(userID);
+                res.send(user.username);
+            } catch (ex) {
+                console.log(ex);
+                console.log('Session present, but no such user exists');
+                res.status(404).send('No such user found');
+            }
+    } catch (ex) {
+        console.log('No session set');
+        console.log(ex);
+        res.status(401).send('You must log in first.');
+        return
+    } 
 });
 
 router.post('/api/user/baseline/add/', async (req, res, next) => {
