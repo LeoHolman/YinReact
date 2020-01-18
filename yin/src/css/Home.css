@@ -8,12 +8,23 @@ Dark blue - #245484 (sufficient contrast with white text)
 
 **/
 
+.classroom #background{
+    background-image: url(../assets/images/background.png);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    z-index:-1000;
+    opacity:.3;
+}
+
 .homeHeader {
     color: orange;
 }
 
 .classroom #img-container{
-    background-image: url(../assets/images/WalkingJoJo.svg);
+    /* background-image: url(../assets/images/WalkingJoJo.svg);
     background-size: contain;
     background-repeat: no-repeat;
     padding-bottom:50vh;
@@ -23,7 +34,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     left:0;
     width:100vw;
     height:20vh;
-    z-index:-100;
+    z-index:-100; */
 }
 
 .classroom h2{
@@ -40,18 +51,20 @@ Dark blue - #245484 (sufficient contrast with white text)
 .classroom .intro{
     display:grid;
     grid-template-columns:1fr 1fr;
-    grid-column-gap:2em;
+    grid-column-gap:10vw;
 }
 
-.classroom .intro div{
+.classroom #students, .classroom #teachers{
     /* border:1px solid #464646; */
     background-color:rgb(255,255,255,.7);
     box-shadow:2px 2px 3px lightgray;
+    border:3px solid black;
+    margin-top:-3px;
 }
 
 
 .classroom .intro p{
-    padding:10px;
+    padding:20px;
 }
 
 .classroom .intro h3{
@@ -62,6 +75,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     text-align:center;
     margin-top:0;
     margin-bottom:0;
+    font-size:1.75em;
 }
 
 .classroom .intro #students h3{
