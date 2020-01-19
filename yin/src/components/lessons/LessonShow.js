@@ -40,7 +40,14 @@ class LessonShow extends Component{
                     </>
                 }
                 {this.state.lesson.is_quiz ? 
-                    <p id="is_quiz">This lesson is a quiz.</p>
+                    <>
+                        <p id="is_quiz">This lesson is a quiz, containing the following activities:</p>
+                        <ul>
+                            {this.state.lesson.quizSections.map( (activity) => {
+                                return <li key={activity}>{activity}</li>
+                            })}
+                        </ul>
+                    </>
                 :
                     <p>This is a lesson, not a quiz.</p>
                 }

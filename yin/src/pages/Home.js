@@ -3,8 +3,8 @@ import '../css/Home.css'
 // import yin1 from '../assets/images/yin1.svg'
 // import yin2 from '../assets/images/yin2.svg'
 // import yin3 from '../assets/images/yin3.svg'
-import student from '../assets/images/studentImg2.jpg';
-import teacher from '../assets/images/teacherImg.jpg';
+import student from '../assets/images/Student@4x.png';
+import teacher from '../assets/images/Teacher@4x.png';
 
 class Home extends Component {
     render(){
