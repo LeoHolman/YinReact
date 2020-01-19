@@ -45,8 +45,18 @@ class App extends React.Component{
     this.setState({lessonOpen: !this.state.lessonOpen});
   }
 
-  setBaseline(value){
+  async setBaseline(value){
     this.setState({baseline: value});
+    await fetch('/api/user/baseline/add/', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        baseline: value
+      })
+    });
   }
 
   async checkLogin(){

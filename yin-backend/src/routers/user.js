@@ -6,6 +6,22 @@ const mongoose = require('mongoose');
 
 const router = new express.Router();
 
+async function getUserBySession(req){
+    try{
+        const userID = req.session.user;
+        try {
+                const user = await User.findById(userID);
+                return user;
+            } catch (ex) {
+                console.log(ex);
+                return 401;
+            }
+    } catch (ex) {
+        console.log(ex);
+        return 401;
+    } 
+}
+
 router.post('/api/signup/', async (req, res) => {
     const username = req.body.username;
     const nameUnavailable = await User.findOne({username});
@@ -44,27 +60,35 @@ router.post('/api/login/', async (req, res, next) => {
 });
 
 router.get('/api/user/me/', async (req, res, next) => {
-    try{
-        // const userID = new mongoose.Types.ObjectId(req.session.user);
-        const userID = req.session.user;
-        try {
-                const user = await User.findById(userID);
-                res.send(user.username);
-            } catch (ex) {
-                console.log(ex);
-                console.log('Session present, but no such user exists');
-                res.status(404).send('No such user found');
-            }
-    } catch (ex) {
+    const user = await getUserBySession(req);
+    if(user === 401){
+        console.log('Session present, but no such user exists');
+        res.status(404).send('No such user found');
+    } else if (user === 404) {
         console.log('No session set');
-        console.log(ex);
         res.status(401).send('You must log in first.');
-        return
-    } 
+    } else {
+        res.send(user.username);
+    }
+});
+
+router.get('/api/user/baseline/', async (req, res, next) => {
+    const user = await getUserBySession(req);
+    if(!user === 401 || !user === 404){
+        res.send(user.baseline);
+    }
 });
 
 router.post('/api/user/baseline/add/', async (req, res, next) => {
-
+    const user = await getUserBySession(req);
+    if(!(user === 401) && !(user === 404)){
+        user.baseline = req.body.baseline;
+        console.log(req.body);
+        user.save();
+        res.sendStatus(204);
+    } else {
+        res.sendStatus(user);
+    }
 });
 
 module.exports = router;
