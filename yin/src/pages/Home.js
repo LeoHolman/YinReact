@@ -17,11 +17,10 @@ class Home extends Component {
                        Students can practice the words they'll actually need to know for class, and take quizzes at their convenience.
                    </p>
                    <section className="intro">
-                        <img src={student}/>
-                        <img src={teacher}/>
+                        <img alt="student pointing at a laptop" src={student}/>
+                        <img alt="Teacher teaching students at a whiteboard" src={teacher}/>
                         <div id="students">
                             <h3>STUDENTS</h3>
-                            <img alt="Student working on a computer" src={student}/>
                             <p>In Yin Classroom, you can test yourself with activities based on lessons you're learning in the classroom. 
                                 Practice as much as you want in any of the lessons, and when you're ready, take any quizzes that your teacher
                                 has created for you. It's recommended you first explore <a href="www.yin.rit.edu">Yin</a> to become familiar with
@@ -30,7 +29,6 @@ class Home extends Component {
                         </div>
                         <div id="teachers">
                             <h3>TEACHERS</h3>
-                            <img alt="Teacher teaching students at a whiteboard" src={teacher}/>
                             <p>Want to use Yin in your classs? With Yin Classroom, you can create lessons based on word lists you're teaching, add your
                                 own audio recordings, and create quizzes to test your students' comprehension. Please <a href="mailto:yinwebapp@gmail.com">email us </a>
                                 to sign up as a teacher or hear more about what Yin Classroom can offer your students!

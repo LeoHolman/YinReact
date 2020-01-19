@@ -40,8 +40,8 @@ const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
-app.use(express.static('src/uploads'));
-app.use(express.static(path.join(__dirname, '/build')));
+app.use(express.static(path.join(__dirname, 'uploads')));
+// app.use(express.static(path.join(__dirname, '/build')));
 app.use(cookieParser());
 app.use(session({
     'secret': SESSION_KEY,
@@ -52,7 +52,7 @@ app.use(session({
     cookie: { maxAge: 30 * 60 * 1000},//sameSite: false
 }));
 app.get('/*', (req, res, next) =>{
-    console.dir(req.session);
+    // console.dir(req.session);
     next();
 });
 app.use(userRouter);
@@ -91,6 +91,7 @@ app.get('*', (req, res) => {
 })
 //Start application
 // app.listen(8000, () => console.log('Listening on port 8000'));
+console.log(path.join(__dirname, 'uploads'));
 const server = https.createServer(httpsOptions, app).listen(port, () => {
     console.log('Running on port '+ port);
 })

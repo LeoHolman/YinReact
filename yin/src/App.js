@@ -10,7 +10,6 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './components/Login';
 import LessonDirectory from './pages/LessonDirectory';
-import LessonShow from './components/lessons/LessonShow';
 import Activity from './pages/Activity';
 import TeacherInterface from './pages/TeacherInterface';
 import SignUp from './pages/SignUp';
@@ -100,7 +99,7 @@ class App extends React.Component{
               <Route path="/baseline/" component={Baseline} />
               <Route path="/teacherInterface/" component={TeacherInterface} />
               <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity baseline={this.state.baseline} {...props} setBaseline={this.setBaseline} user={this.state.username} />} />
-              <Route path="/lessons/:name/" component={LessonShow} />
+              {/* <Route path="/lessons/:name/" component={LessonShow} /> */}
               <Route path="/lessons/" component={LessonDirectory} />
               <Route path="/" component={Home} />
             </Switch>
