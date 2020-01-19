@@ -16,11 +16,11 @@ class Baseline extends Component{
 
     extractAverage(dataset){
         const parsedData = d3.tsvParse(dataset);
-        var runningTotal = 0;
-        parsedData.map( (__data) => {
-            runningTotal += Number(__data.frequency);
+        const data = parsedData.map( (__data) => {
+            return Number(__data.frequency); 
         });
-        const baseline = runningTotal / parsedData.length
+
+        const baseline = data.reduce((acc, number) => acc + number, 0) / data.length;
         return baseline;
     }
 

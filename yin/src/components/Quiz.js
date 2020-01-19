@@ -10,11 +10,11 @@ class Quiz extends Component{
         this.state = {
             activity1:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity2:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity3:{
                 recordings:[]
@@ -41,7 +41,7 @@ class Quiz extends Component{
                 }
             }
 
-            fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.fullLesson.name}`)
+            fetch(`/api/quizScores/${this.props.username}/${this.props.lesson}`)
                 .then( (response) => response.json()
                     .then( (result) => {
                         console.log("result" + JSON.stringify(result));
@@ -58,7 +58,6 @@ class Quiz extends Component{
     async recordScore(){
         var sum_score = null;
         var sum_total_score = null;
-        const user_token = localStorage.token;
         if(this.includes(1) && this.includes(2)){
             sum_score = this.state.activity1.score + this.state.activity2.score;
             sum_total_score = this.state.activity1.max_score + this.state.activity2.max_score;

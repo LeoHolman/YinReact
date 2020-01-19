@@ -12,7 +12,7 @@ class LessonShow extends Component{
     }
 
     async componentDidMount() {
-        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}`)
+        fetch(`/api/lessons/${this.props.match.params.name}`)
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({lesson: result});                    }

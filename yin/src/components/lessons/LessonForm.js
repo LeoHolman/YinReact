@@ -43,7 +43,7 @@ class LessonForm extends Component{
     }
 
     async fetchAllWords(){
-        const all_words = await (await fetch('http://localhost:8000/words/all/')).json();
+        const all_words = await (await fetch('/api/words/all/')).json();
         return all_words;
     }
 
@@ -92,7 +92,7 @@ class LessonForm extends Component{
 
     deleteLesson(){
         const method = 'DELETE';
-        const url = `http://localhost:8000/lessons/${this.props.name}/delete`;
+        const url = `/api/lessons/${this.props.name}/delete`;
 
         fetch(url,{
             method: method,
@@ -112,9 +112,9 @@ class LessonForm extends Component{
         console.log("in handle");
         event.preventDefault();
         var method = this.props.editing ? 'PUT' : 'POST';
-        var url = 'http://localhost:8000/lessons/add/';
+        var url = '/api/lessons/add/';
         if(this.props.editing && this.state.name ===this.props.name){
-            url = `http://localhost:8000/lessons/${this.state.name}/edit`;
+            url = `/api/lessons/${this.state.name}/edit`;
         } else if (this.props.editing && this.state.name !== this.props.name){
             this.deleteLesson();
             method = "POST";

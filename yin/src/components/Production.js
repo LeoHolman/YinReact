@@ -17,7 +17,7 @@ class Mimicking extends Component {
     }
 
     uploadRecording(dataset, username){
-        fetch('http://localhost:8000/recordings/add/', {
+        fetch('/api/recordings/add/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -56,7 +56,7 @@ class Mimicking extends Component {
                 {this.props.lesson.words[this.state.currentStimuli] ?
                     <>
                         {this.state.allowAdvance ?
-                            <AudioPlayer audioFile={`http://localhost:8000/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                            <AudioPlayer audioFile={`/api/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
                         :
                             <></>
                         }

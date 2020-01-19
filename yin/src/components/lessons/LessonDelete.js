@@ -12,7 +12,7 @@ class LessonDelete extends Component{
     }
 
     delete(){
-        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/delete`, {method:"DELETE"})
+        fetch(`/api/lessons/${this.props.match.params.name}/delete`, {method:"DELETE"})
             .then( (response) => response.text()
                 .then( (result) => {
                     console.log("deleted");

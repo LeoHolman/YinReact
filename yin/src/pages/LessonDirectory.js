@@ -17,7 +17,7 @@ class LessonDirectory extends Component {
     }
 
     async componentDidMount() {
-        fetch('http://localhost:8000/lessons/all')
+        fetch('/api/lessons/all')
             .then( (response) => response.json()
                 .then( (result) => {
                     this.setState({allLessons: result});
