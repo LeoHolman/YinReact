@@ -74,8 +74,10 @@ router.get('/api/user/me/', async (req, res, next) => {
 
 router.get('/api/user/baseline/', async (req, res, next) => {
     const user = await getUserBySession(req);
-    if(!user === 401 || !user === 404){
-        res.send(user.baseline);
+    if(!(user === 401) && !(user === 404)){
+        res.send(`${user.baseline}`);
+    } else {
+        res.sendStatus(user);
     }
 });
 

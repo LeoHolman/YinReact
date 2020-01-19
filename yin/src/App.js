@@ -66,7 +66,10 @@ class App extends React.Component{
     } else {
       const username = await session.text()
       const isLoggedIn = true;
-      this.setState({username, isLoggedIn});
+      const baselineResponse = await fetch('/api/user/baseline/');
+      const baselinedata = await baselineResponse.text();
+      const baseline = Number(baselinedata);
+      this.setState({username, isLoggedIn, baseline});
     }
   }
 
