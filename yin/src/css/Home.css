@@ -89,3 +89,8 @@ Dark blue - #245484 (sufficient contrast with white text)
 .classroom .intro img{
     width:100%;
 }
+
+button{
+    margin:1em auto;
+    display:block;
+}
