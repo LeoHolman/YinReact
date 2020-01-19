@@ -1,7 +1,6 @@
 import express from 'express';
 const cors = require('cors');
 import bodyParser from 'body-parser';
-import { read, fstat } from 'fs';
 const PRIVATE_KEY = 'donttellnobody';
 const fileUpload = require('express-fileupload');
 const d3 = require('d3');
@@ -15,7 +14,7 @@ const path = require('path');
 const port = 8000;
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/learning-mongo', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/yin', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const wordRouter = require('./routers/word');
 const lessonRouter = require('./routers/lesson');
@@ -29,7 +28,6 @@ const corsOptions = {
     credentials: true,
     optionsSuccessStatus: 200
 }
-console.log(fs.readdirSync('./'));
 
 const httpsOptions = {
     key: fs.readFileSync('./src/security/cert.key'),
@@ -41,7 +39,6 @@ app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'uploads')));
-// app.use(express.static(path.join(__dirname, '/build')));
 app.use(cookieParser());
 app.use(session({
     'secret': SESSION_KEY,
@@ -52,7 +49,6 @@ app.use(session({
     cookie: { maxAge: 30 * 60 * 1000},//sameSite: false
 }));
 app.get('/*', (req, res, next) =>{
-    // console.dir(req.session);
     next();
 });
 app.use(userRouter);
@@ -73,7 +69,6 @@ app.get('/sessions/', (req, res, next) => {
         'Access-Control-Allow-Credentials':'true'
     })
     
-    // res.cookie('hello','world');
     if(req.session.page_views){
         req.session.page_views++;
         console.log(req.session.page_views);

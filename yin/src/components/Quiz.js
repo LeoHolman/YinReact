@@ -32,6 +32,7 @@ class Quiz extends Component{
         this.advance = this.advance.bind(this);
         this.recordScore = this.recordScore.bind(this);
         this.initialize= this.initialize.bind(this);
+        this.addActivityRecording = this.addActivityRecording.bind(this);
     }
 
     initialize(){
@@ -51,8 +52,12 @@ class Quiz extends Component{
                     }
                 )
             )
-        
-        
+    }
+
+    addActivityRecording(activityNumber, recordings){
+        this.setState({[activityNumber]: {
+            recordings: recordings
+        }});
     }
 
     async recordScore(){
@@ -146,7 +151,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <Mimicking lesson={this.props.fullLesson} username={this.props.username} />
+                        <Mimicking lesson={this.props.fullLesson} username={this.props.username} recordingOutput={this.addActivityRecording} />
                         :
                         ""
                     }

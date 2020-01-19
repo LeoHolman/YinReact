@@ -16,16 +16,21 @@ class Mimicking extends Component {
         this.nextWord = this.nextWord.bind(this);
     }
 
-    uploadRecording(dataset, username){
-        fetch('/api/recordings/add/', {
+    async uploadRecording(dataset, username){
+        const response = await(await fetch('/api/recordings/add/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({username, dataset})
-        }).then( (res) => {
-            console.log(`${res.statusText}`)
-        });
+            body: JSON.stringify({dataset: dataset})
+        })).json();
+        console.dir(response);
+        const recordingID = response.recording;
+        const updatedRecord = [
+            ...this.state.record,
+            recordingID
+        ];
+        this.setState({record: updatedRecord});
     }
 
     passDataToState(dataset){
@@ -44,7 +49,11 @@ class Mimicking extends Component {
                 currentStimuli: this.state.currentStimuli + 1,
                 userDataset: '',
                 allowAdvance: false
-            })
+            });
+            if(this.props.lesson.is_quiz){
+                this.uploadRecording(this.state.userDataset);
+                this.props.recordingOutput('activity3', this.state.record);
+            }
         } else {
             console.log('Please complete the recording first!');
         }
@@ -55,7 +64,7 @@ class Mimicking extends Component {
             <>
                 {this.props.lesson.words[this.state.currentStimuli] ?
                     <>
-                        <AudioPlayer audioFile={`http://localhost:8000/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                        <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
                         <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
                         <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
                         <Recorder label="Record" outputFunction={this.passDataToState} />
