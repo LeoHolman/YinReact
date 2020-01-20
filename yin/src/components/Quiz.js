@@ -159,11 +159,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-<<<<<<< HEAD
                         <Mimicking lesson={this.props.fullLesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance}/>
-=======
-                        <Mimicking lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} />
->>>>>>> 88d28a679c75dc0bf032bbfa5653e5f3c8a1a041
                         :
                         ""
                     }
