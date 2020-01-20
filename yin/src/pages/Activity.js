@@ -74,7 +74,7 @@ class Activity extends Component{
                     }
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
-                    <Quiz activities={this.state.lesson.quizSections} stimuli={this.state.lesson.words} fullLesson={this.state.lesson} username={this.props.user} sendScore={this.sendScore}/>
+                    <Quiz activities={this.state.lesson.quizSections} stimuli={this.state.lesson.words} lesson={this.state.lesson} username={this.props.user} sendScore={this.sendScore}/>
                 </Route>
 
 

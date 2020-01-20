@@ -38,9 +38,6 @@ class Mimicking extends Component {
             userDataset: dataset,
             allowAdvance: true
         });
-        if(this.props.lesson.is_quiz){
-            this.uploadRecording(dataset, this.props.username);
-        }
     }
 
     nextWord(){
@@ -62,7 +59,7 @@ class Mimicking extends Component {
     render(){
         return(
             <>
-                {this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
+                {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
                     <>
                         <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
                         <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
