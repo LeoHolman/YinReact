@@ -80,13 +80,13 @@ class Mimicking extends Component {
                     {this.props.quiz==="true" ?
                             <>
                                 <p>You've completed this section of the quiz.</p>
-                                <button onClick={this.advance}>Continue</button>
+                                <button onClick={this.props.advance(3)}>Continue</button>
                             </>
                         :
                             <div id="score">
                                 <h2>Activity complete!</h2>
                                 <Link to="../">Return to Lessons & Quizzes</Link>
-                                <Link to="./4"><button>Next Lesson</button></Link>
+                                <Link to="./4"><button>Next activity</button></Link>
                             </div>
                     }
                     </>

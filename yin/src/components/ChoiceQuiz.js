@@ -242,9 +242,9 @@ class ChoiceQuiz extends Component {
                             <h2>Activity complete!</h2>
                             <p>Your score is: {this.state.score} out of {this.props.stimuli.length}</p>
                             <Link to="../">Return to Lessons & Quizzes</Link>
-                            {this.props.choices==='2' ? <Link to="./2"><button>Next Lesson</button></Link>
+                            {this.props.choices==='2' ? <Link to="./2"><button>Next activity</button></Link>
                             :
-                            <Link to="./3"><button>Next Lesson</button></Link>
+                            <Link to="./3"><button>Next activity</button></Link>
                             }
                         </div>
                         }

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Recorder from './Recorder';
 import PitchChart from './PitchChart';
 import AudioPlayer from './AudioPlayer';
+import {Link} from 'react-router-dom';
+
 
 class Mimicking extends Component {
     constructor(props) {
@@ -52,7 +54,7 @@ class Mimicking extends Component {
             });
             if(this.props.lesson.is_quiz){
                 this.uploadRecording(this.state.userDataset);
-                this.props.recordingOutput('activity3', this.state.record);
+                this.props.recordingOutput('activity4', this.state.record);
             }
         } else {
             console.log('Please complete the recording first!');
@@ -89,7 +91,19 @@ class Mimicking extends Component {
                         }</button>
                     </>
                     :
-                    <p>Lesson complete!</p>
+                    <>
+                    {this.props.quiz==="true" ?
+                            <>
+                                <p>You've completed this section of the quiz.</p>
+                                <button onClick={this.props.advance(4)}>Continue</button>
+                            </>
+                        :
+                            <div id="score">
+                                <h2>Activity complete!</h2>
+                                <Link to="../">Return to Lessons & Quizzes</Link>
+                            </div>
+                    }
+                    </>
                 }
             </>
         )

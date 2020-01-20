@@ -16,8 +16,8 @@ class TeacherInterface extends Component {
             <Switch>
                 <Route path="/teacherInterface/lessons/:name/edit/" component={LessonEdit} />
                 <Route path="/teacherInterface/lessons/:name/delete/" component={LessonDelete} />
-                <Route path="/teacherInterface/lessons/:name/" component={LessonShow} />
                 <Route path="/teacherInterface/lessons/add/" component={LessonForm} />
+                <Route path="/teacherInterface/lessons/:name/" component={LessonShow} />
                 <Route path="/teacherInterface/lessons/" component={TeacherLessonDirectory} />
                 <Route path="/teacherInterface/words/add" component={AudioUpload} />
                 <Route path="/teacherInterface/" component={TeacherLessonDirectory} />

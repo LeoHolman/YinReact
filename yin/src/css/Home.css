@@ -53,6 +53,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     grid-template-columns:1fr 1fr;
     grid-column-gap:10vw;
     max-width:1000px;
+    margin:0 auto;
 }
 
 .classroom #students, .classroom #teachers{

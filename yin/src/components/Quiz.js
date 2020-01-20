@@ -141,7 +141,7 @@ class Quiz extends Component{
         return(
             <>
                 {/* {this.props.fullLesson && } */}
-                {this.state.prev===true ? 
+                {this.state.prev===true && this.state.current !== 5? 
                     <>
                         <h3>You've already taken this quiz.</h3>
                         <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
@@ -159,12 +159,12 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <Mimicking lesson={this.props.fullLesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance}/>
+                        <Mimicking lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} quiz="true"/>
                         :
                         ""
                     }
                     {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <Production lesson={this.props.lesson} username={this.props.username} />
+                        <Production lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} quiz="true"/>
                         :
                         ""
                     }
