@@ -4,7 +4,7 @@ class AudioPlayer extends Component {
 
     render(){
         return(
-            <audio controls > 
+            <audio className="stimuliAudio" controls > 
                 <source src={this.props.audioFile} />
                 The audio cannot play.
             </audio>
