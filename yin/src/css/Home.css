@@ -52,6 +52,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     display:grid;
     grid-template-columns:1fr 1fr;
     grid-column-gap:10vw;
+    max-width:1000px;
 }
 
 .classroom #students, .classroom #teachers{
@@ -65,6 +66,7 @@ Dark blue - #245484 (sufficient contrast with white text)
 
 .classroom .intro p{
     padding:20px;
+    margin-top:0;
 }
 
 .classroom .intro h3{
@@ -73,7 +75,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     font-weight:500;
     padding:.5em;
     text-align:center;
-    margin-top:0;
+    margin-top:1em;
     margin-bottom:0;
     font-size:1.75em;
 }

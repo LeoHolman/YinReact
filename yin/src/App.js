@@ -64,12 +64,17 @@ class App extends React.Component{
     if(session.status === 401 || session.status === 404){
       return false;
     } else {
-      const username = await session.text()
       const isLoggedIn = true;
-      const baselineResponse = await fetch('/api/user/baseline/');
-      const baselinedata = await baselineResponse.text();
-      const baseline = Number(baselinedata);
-      this.setState({username, isLoggedIn, baseline});
+      // const baselineResponse = await fetch('/api/user/me/');
+      const userdata = await session.json();
+      if(userdata){
+        console.log(userdata.username);
+        console.log(userdata);
+      }
+      const is_teacher = userdata.is_teacher;
+      const username = userdata.username
+      const baseline = Number(userdata.baseline);
+      this.setState({username, isLoggedIn, baseline, is_teacher});
     }
   }
 

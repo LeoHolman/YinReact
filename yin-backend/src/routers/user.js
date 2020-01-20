@@ -68,18 +68,15 @@ router.get('/api/user/me/', async (req, res, next) => {
         console.log('No session set');
         res.status(401).send('You must log in first.');
     } else {
-        res.send(user.username);
+        const safeUser = {
+            username: user.username, 
+            is_teacher: user.is_teacher || false,
+            baseline: user.baseline || null
+        };
+        res.json(safeUser);
     }
 });
 
-router.get('/api/user/baseline/', async (req, res, next) => {
-    const user = await getUserBySession(req);
-    if(!(user === 401) && !(user === 404)){
-        res.send(`${user.baseline}`);
-    } else {
-        res.sendStatus(user);
-    }
-});
 
 router.post('/api/user/baseline/add/', async (req, res, next) => {
     const user = await getUserBySession(req);

@@ -31,7 +31,7 @@ class LessonDirectory extends Component {
             <div>
                 <ul>
                     {this.state.allLessons.map( (lesson) => {
-                        return <LessonDirectoryCard LessonName={lesson.name} LessonDesc="Description of the Lesson" is_quiz={lesson.is_quiz} link={`/lessons/${lesson.name}/`} key={`${lesson._id}`} />
+                        return <LessonDirectoryCard LessonName={lesson.name} LessonDesc={lesson.description} is_quiz={lesson.is_quiz} link={`/lessons/${lesson.name}/`} key={`${lesson._id}`} />
                     })}
                 </ul>
                 
