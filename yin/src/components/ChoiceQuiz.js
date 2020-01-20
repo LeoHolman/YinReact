@@ -205,10 +205,9 @@ class ChoiceQuiz extends Component {
     render(){
         return(
             <>
-            
-                
                 {this.props.stimuli && 
-                    this.props.stimuli.length > this.state.currentStimulus ? 
+                    <>
+                    { this.props.stimuli.length > this.state.currentStimulus ? 
                     <>
                     <div className="activity-wrap two-choice">
                         <div className="stimuli">
@@ -246,9 +245,10 @@ class ChoiceQuiz extends Component {
                         </div>
                         }
                         </>
-                        
-                }
-            </>
+                    }
+                </>
+            }
+        </>
         )
     }
 

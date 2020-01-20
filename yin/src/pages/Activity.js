@@ -53,11 +53,11 @@ class Activity extends Component{
                 <h2>Activity {this.props.match.params.activityNumber}</h2>
                
                 <Route path={`/lessons/${this.props.match.params.name}/1`}>
-                    <ChoiceQuiz stimuli={this.state.audioRes} choices="2" />
+                    <ChoiceQuiz stimuli={this.state.lesson.words} choices="2" />
  
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/2`}>
-                    <ChoiceQuiz stimuli={this.state.audioRes} choices="4"/>
+                    <ChoiceQuiz stimuli={this.state.lesson.words} choices="4"/>
                 </Route>
                 <Route path={`/lessons/${this.props.match.params.name}/3`}>
                     {Boolean(this.props.baseline) === false ?
