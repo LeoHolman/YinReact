@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Recorder from './Recorder';
 import PitchChart from './PitchChart';
 import AudioPlayer from './AudioPlayer';
+import {Link} from 'react-router-dom';
+
 
 class Mimicking extends Component {
     constructor(props) {
@@ -77,7 +79,20 @@ class Mimicking extends Component {
                         }</button>
                     </>
                     :
-                    <p>Lesson complete!</p>
+                    <>
+                    {this.props.quiz==="true" ?
+                            <>
+                                <p>You've completed this section of the quiz.</p>
+                                <button onClick={this.advance}>Continue</button>
+                            </>
+                        :
+                            <div id="score">
+                                <h2>Activity complete!</h2>
+                                <Link to="../">Return to Lessons & Quizzes</Link>
+                                <Link to="./4"><button>Next Lesson</button></Link>
+                            </div>
+                    }
+                    </>
                 }
             </>
         )
