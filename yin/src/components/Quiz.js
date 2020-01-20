@@ -33,25 +33,42 @@ class Quiz extends Component{
         this.recordScore = this.recordScore.bind(this);
         this.initialize= this.initialize.bind(this);
         this.addActivityRecording = this.addActivityRecording.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
-    initialize(){
-            if(this.props.activities){
-                if(this.state.current===null){
-                    this.setState({current:this.props.activities[0]});
-                }
+    async componentDidUpdate(prevProps, prevState, snapshot){
+        if(this.props.activities){
+            if(this.state.current===null){
+                this.setState({current:this.props.activities[0]});
             }
+        }
+        if(prevState.prev === false){
+            console.log('prev state is false')
+            const response = await fetch(`/api/quizScores/me/${this.props.lesson.name}`);
+            const result = await response.json();
+            if(result.length >0){
+                this.setState({prev: true});
+                console.log('state set');
+            }
+            console.log('Intialization completed');
+            return <></>;
+        }
+    }
 
-            fetch(`/api/quizScores/${this.props.username}/${this.props.lesson}`)
-                .then( (response) => response.json()
-                    .then( (result) => {
-                        console.log("result" + JSON.stringify(result));
-                        if(result.length >0){
-                            this.setState({prev: true});
-                        }
-                    }
-                )
-            )
+    async initialize(){
+        if(this.props.activities){
+            if(this.state.current===null){
+                this.setState({current:this.props.activities[0]});
+            }
+        }
+        const response = await fetch(`/api/quizScores/me/${this.props.lesson}`);
+        const result = await response.json();
+        if(result.length >0){
+            this.setState({prev: true});
+            console.log('state set');
+        }
+        console.log('Intialization completed');
+        return <></>;
     }
 
     addActivityRecording(activityNumber, recordings){
@@ -72,7 +89,6 @@ class Quiz extends Component{
         } else if (this.includes(2)){
             sum_score = this.state.activity2.score;
             sum_total_score = this.state.activity2.max_score;
-
         }
         this.setState({sum_score:sum_score});
         this.setState({sum_total_score:sum_total_score});
@@ -81,10 +97,7 @@ class Quiz extends Component{
         this.props.sendScore(sum_score, sum_total_score, allRecordings);        
     }
 
-
-
     advance(num){
-
         for (var i=num; i<5; i++){
             var next=i+1;
             if (this.includes(next)){
@@ -95,10 +108,6 @@ class Quiz extends Component{
                 this.recordScore();
             }
         }
-        
-  
-        
-
     }
 
     captureScore(score, max_score, choices){
@@ -110,7 +119,6 @@ class Quiz extends Component{
         }}, () => {
             this.advance(activitynum);
         });
-
     }
 
     includes(num){
@@ -132,7 +140,7 @@ class Quiz extends Component{
     render(){
         return(
             <>
-                {this.props.fullLesson && this.state.prev===false ? this.initialize() : ""}
+                {/* {this.props.fullLesson && } */}
                 {this.state.prev===true ? 
                     <>
                         <h3>You've already taken this quiz.</h3>
@@ -151,12 +159,16 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
+<<<<<<< HEAD
                         <Mimicking lesson={this.props.fullLesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance}/>
+=======
+                        <Mimicking lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} />
+>>>>>>> 88d28a679c75dc0bf032bbfa5653e5f3c8a1a041
                         :
                         ""
                     }
                     {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <Production lesson={this.props.fullLesson} username={this.props.username} />
+                        <Production lesson={this.props.lesson} username={this.props.username} />
                         :
                         ""
                     }
@@ -168,8 +180,6 @@ class Quiz extends Component{
                         :
                         ""
                     }
-
-
                     </>
                 }
                 
