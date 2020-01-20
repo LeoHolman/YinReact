@@ -3,24 +3,9 @@ const User = require('../models/user');
 import * as argon2 from 'argon2';
 const randomBytes = require('randombytes');
 const mongoose = require('mongoose');
+const {auth, getSafeUser} = require('../middleware/auth');
 
 const router = new express.Router();
-
-async function getUserBySession(req){
-    try{
-        const userID = req.session.user;
-        try {
-                const user = await User.findById(userID);
-                return user;
-            } catch (ex) {
-                console.log(ex);
-                return 401;
-            }
-    } catch (ex) {
-        console.log(ex);
-        return 401;
-    } 
-}
 
 router.post('/api/signup/', async (req, res) => {
     const username = req.body.username;
@@ -38,8 +23,6 @@ router.post('/api/signup/', async (req, res) => {
 });
 
 router.post('/api/login/', async (req, res, next) => {
-    console.log('hit');
-    console.log(req.session.user);
     const username = req.body.username;
     const userRecord = await User.findOne({username});
     if(!userRecord){
@@ -59,35 +42,16 @@ router.post('/api/login/', async (req, res, next) => {
     }
 });
 
-router.get('/api/user/me/', async (req, res, next) => {
-    const user = await getUserBySession(req);
-    if(user === 401){
-        console.log('Session present, but no such user exists');
-        res.status(404).send('No such user found');
-    } else if (user === 404) {
-        console.log('No session set');
-        res.status(401).send('You must log in first.');
-    } else {
-        const safeUser = {
-            username: user.username, 
-            is_teacher: user.is_teacher || false,
-            baseline: user.baseline || null
-        };
-        res.json(safeUser);
-    }
+router.get('/api/user/me/', [auth, getSafeUser], async (req, res, next) => {
+        res.json(req.user);
 });
 
 
-router.post('/api/user/baseline/add/', async (req, res, next) => {
-    const user = await getUserBySession(req);
-    if(!(user === 401) && !(user === 404)){
-        user.baseline = req.body.baseline;
-        console.log(req.body);
-        user.save();
-        res.sendStatus(204);
-    } else {
-        res.sendStatus(user);
-    }
+router.post('/api/user/baseline/add/', auth, async (req, res, next) => {
+    const user = req.user;
+    user.baseline = req.body.baseline;
+    user.save();
+    res.sendStatus(204);
 });
 
 module.exports = router;
