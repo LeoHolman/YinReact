@@ -7,6 +7,14 @@
     grid-row-gap:4em;
 }
 
+.green {
+    background-color: #237a36;
+}
+
+.red {
+    background-color: #a50122;
+}
+
 .response{
     text-align:center;
     width:75%;

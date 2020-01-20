@@ -68,7 +68,7 @@ class Mimicking extends Component {
                         {this.props.lesson.words[this.state.currentStimuli].native_recording && 
                             <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
                         }
-                        <Recorder label="Record" outputFunction={this.passDataToState} />
+                        <Recorder label="Record" outputFunction={this.passDataToState} key={Math.random()} />
                         <button onClick={this.nextWord}>Next {this.props.lesson.words.length - 1 === this.state.currentStimuli ?
                             "Section"
                             :

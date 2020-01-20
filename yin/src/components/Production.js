@@ -5,7 +5,7 @@ import AudioPlayer from './AudioPlayer';
 import {Link} from 'react-router-dom';
 
 
-class Mimicking extends Component {
+class Production extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,10 +64,10 @@ class Mimicking extends Component {
     render(){
         return(
             <>
-                {this.props.lesson.words[this.state.currentStimuli] ?
+                {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
                     <>
                         {this.state.allowAdvance ?
-                            <AudioPlayer audioFile={`/api/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
+                            <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
                         :
                             <></>
                         }
@@ -110,4 +110,4 @@ class Mimicking extends Component {
     }
 }
 
-export default Mimicking;
+export default Production;

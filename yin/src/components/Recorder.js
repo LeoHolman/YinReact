@@ -4,9 +4,16 @@ class Recorder extends Component {
     constructor(props){
         super(props);
         this.state = {
-            record: []
+            record: [],
+            button_class: ''
         }
         this.addRecordFunction = this.addRecordFunction.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+
+    componentDidMount(){
+        const recordButton = document.getElementById("__record_button");
+        recordButton.classList.remove('green');
     }
 
     async addRecordFunction() {
@@ -44,7 +51,9 @@ class Recorder extends Component {
                 .then(stream => {
                     const mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.start();
-                    recordButton.style.backgroundColor = "red";
+                    // recordButton.classList.remove("green");
+                    // recordButton.classList.add("red");
+                    this.setState({button_class:'red'});
     
                     const audioChunks = [];
     
@@ -61,7 +70,9 @@ class Recorder extends Component {
     
                     setTimeout(() => {
                         mediaRecorder.stop();
-                        recordButton.style.backgroundColor = "green";
+                        // recordButton.classList.remove("red");
+                        // recordButton.classList.add("green");
+                        this.setState({button_class:'green'});
                     }, 2000);
                 });
         })
@@ -83,7 +94,7 @@ class Recorder extends Component {
     render() {
         return(
             <>
-                <button onClick={this.addRecordFunction} id="__record_button">{this.props.label}</button>
+                <button onClick={this.addRecordFunction} className={this.state.button_class} id="__record_button">{this.props.label}</button>
             </>
         )
     }
