@@ -1,2 +1,3 @@
-{"_id":{"$oid":"5e0cd4cc753fd9496cf642a9"},"pinyin":"ma1","correctTone":{"$numberInt":"1"},"character":"妈","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5e0cda51a3b5f93a707601d8"},"audioFile":"D:\\Webdev\\YinReact\\yin-backend\\src\\uploads\\test\\ma.m4a","pinyin":"ma1","correctTone":{"$numberInt":"1"},"character":"妈","__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e0e877b6b054b041ca87f62"},"audioFile":"test\\ma.m4a","pinyin":"ma3","correctTone":{"$numberInt":"3"},"character":"马","__v":{"$numberInt":"0"},"native_recording":{"$oid":"5e17c3bbfbc2360c9029ae68"}}
+{"_id":{"$oid":"5e10bd496d462e2de4f02906"},"audioFile":"test\\ma.m4a","pinyin":"ma2","correctTone":{"$numberInt":"2"},"character":"嘛","__v":{"$numberInt":"0"},"native_recording":{"$oid":"5e17c3bbfbc2360c9029ae68"}}
+{"_id":{"$oid":"5e152d035fbee25b48c2de74"},"audioFile":"test\\beep.m4a","pinyin":"ma1","correctTone":{"$numberInt":"1"},"character":"妈","__v":{"$numberInt":"0"},"native_recording":{"$oid":"5e17c3bbfbc2360c9029ae68"}}
