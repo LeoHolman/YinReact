@@ -47,7 +47,7 @@ class PitchChart extends Component {
             // var zScore = 0;
             var x = __data.time * (width / 2);
             var y = height - ((height/2) + ((__data.frequency - (height/2))));
-            d3.select(`#${chartID} svg`)
+            return d3.select(`#${chartID} svg`)
                 .append("circle")
                 .attr("cx", x)
                 .attr("cy", y) 
@@ -56,16 +56,12 @@ class PitchChart extends Component {
                 .style("fill",color);
             }
         );
-        var requestPayload = {
-                record: datarecord
-            }
-       
     };
 
     componentDidMount(){
         this.drawPitchChart('__visualization', 1100, 500);
         this.props.dataset.map( (curve) => {
-            this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+            return this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
         });
     }
 
@@ -74,7 +70,7 @@ class PitchChart extends Component {
         d3.selectAll("svg").remove();
         this.drawPitchChart('__visualization', 1100, 500);
         this.props.dataset.map( (curve) => {
-            this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+            return this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
         });
     }
 

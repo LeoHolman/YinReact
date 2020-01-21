@@ -42,7 +42,7 @@ class AudioUpload extends Component {
         formData.append('correct', this.state.correct);
         formData.append('lessonName', this.state.lessonName);
         formData.append('audioFile', document.getElementById("audioFileInput").files[0])
-        fetch("http://localhost:8000/uploadAudio/", {
+        fetch("/api/uploadAudio/", {
             method: "POST",
             body: formData,
         }).then((response) => {

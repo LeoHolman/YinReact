@@ -14,7 +14,7 @@ class TeacherLessonDirectory extends Component {
     }
 
     async componentDidMount(){
-        var lessons = await (await fetch("http://localhost:8000/lessons/all/")).json();
+        var lessons = await (await fetch("/api/lessons/all/")).json();
         this.setState({lessons: lessons});
     }
 
@@ -29,7 +29,7 @@ class TeacherLessonDirectory extends Component {
                         <h1>Lessons:</h1>
                         <ul>
                             {this.state.lessons.map( (lesson) => {
-                                return <Link to={`/lessons/${lesson.name}/`} key={lesson.name} className="teacherCardLink">
+                                return <Link to={`/teacherInterface/lessons/${lesson.name}/`} key={lesson.name} props={lesson} className="teacherCardLink">
                                     <div className="teacherCard lessonCard">
                                         <div className="meta" onClick={this.toggleActivityList}>
                                             <h2>{lesson.is_quiz ? 'Quiz: ' : 'Lesson: '}{lesson.name}</h2>

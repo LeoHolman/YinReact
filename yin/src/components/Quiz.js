@@ -10,11 +10,11 @@ class Quiz extends Component{
         this.state = {
             activity1:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity2:{
                 score: null,
-                maxpoints: new Number()
+                maxpoints: 0
             },
             activity3:{
                 recordings:[]
@@ -32,33 +32,54 @@ class Quiz extends Component{
         this.advance = this.advance.bind(this);
         this.recordScore = this.recordScore.bind(this);
         this.initialize= this.initialize.bind(this);
+        this.addActivityRecording = this.addActivityRecording.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
-    initialize(){
-            if(this.props.activities){
-                if(this.state.current===null){
-                    this.setState({current:this.props.activities[0]});
-                }
+    async componentDidUpdate(prevProps, prevState, snapshot){
+        if(this.props.activities){
+            if(this.state.current===null){
+                this.setState({current:this.props.activities[0]});
             }
+        }
+        if(prevState.prev === false){
+            console.log('prev state is false')
+            const response = await fetch(`/api/quizScores/me/${this.props.lesson.name}`);
+            const result = await response.json();
+            if(result.length >0){
+                this.setState({prev: true});
+                console.log('state set');
+            }
+            console.log('Intialization completed');
+            return <></>;
+        }
+    }
 
-            fetch(`http://localhost:8000/quizScores/${this.props.username}/${this.props.lesson}`)
-                .then( (response) => response.json()
-                    .then( (result) => {
-                        console.log("result" + JSON.stringify(result));
-                        if(result.length >0){
-                            this.setState({prev: true});
-                        }
-                    }
-                )
-            )
-        
-        
+    async initialize(){
+        if(this.props.activities){
+            if(this.state.current===null){
+                this.setState({current:this.props.activities[0]});
+            }
+        }
+        const response = await fetch(`/api/quizScores/me/${this.props.lesson}`);
+        const result = await response.json();
+        if(result.length >0){
+            this.setState({prev: true});
+            console.log('state set');
+        }
+        console.log('Intialization completed');
+        return <></>;
+    }
+
+    addActivityRecording(activityNumber, recordings){
+        this.setState({[activityNumber]: {
+            recordings: recordings
+        }});
     }
 
     async recordScore(){
         var sum_score = null;
         var sum_total_score = null;
-        const user_token = localStorage.token;
         if(this.includes(1) && this.includes(2)){
             sum_score = this.state.activity1.score + this.state.activity2.score;
             sum_total_score = this.state.activity1.max_score + this.state.activity2.max_score;
@@ -68,7 +89,6 @@ class Quiz extends Component{
         } else if (this.includes(2)){
             sum_score = this.state.activity2.score;
             sum_total_score = this.state.activity2.max_score;
-
         }
         this.setState({sum_score:sum_score});
         this.setState({sum_total_score:sum_total_score});
@@ -77,10 +97,7 @@ class Quiz extends Component{
         this.props.sendScore(sum_score, sum_total_score, allRecordings);        
     }
 
-
-
     advance(num){
-
         for (var i=num; i<5; i++){
             var next=i+1;
             if (this.includes(next)){
@@ -91,10 +108,6 @@ class Quiz extends Component{
                 this.recordScore();
             }
         }
-        
-  
-        
-
     }
 
     captureScore(score, max_score, choices){
@@ -106,7 +119,6 @@ class Quiz extends Component{
         }}, () => {
             this.advance(activitynum);
         });
-
     }
 
     includes(num){
@@ -128,8 +140,8 @@ class Quiz extends Component{
     render(){
         return(
             <>
-                {this.props.lesson && this.state.prev===false ? this.initialize() : ""}
-                {this.state.prev===true ? 
+                {/* {this.props.fullLesson && } */}
+                {this.state.prev===true && this.state.current !== 5? 
                     <>
                         <h3>You've already taken this quiz.</h3>
                         <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
@@ -147,25 +159,23 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <Mimicking lesson={this.props.fullLesson} username={this.props.username} />
+                        <Mimicking lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} quiz="true"/>
                         :
                         ""
                     }
                     {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <Production lesson={this.props.fullLesson} username={this.props.username} />
+                        <Production lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} quiz="true"/>
                         :
                         ""
                     }
                     {this.props.activities  && this.state.current===5 ?
                         <div id="score">
                         <h3>You've completed this quiz!</h3>
-                        <p>Your combined score on the multiple choice sections is {this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
+                        <p>Your combined score on the multiple choice sections is <br/>{this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
                         </div>
                         :
                         ""
                     }
-
-
                     </>
                 }
                 

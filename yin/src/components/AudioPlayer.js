@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 
 class AudioPlayer extends Component {
-    constructor(props){
-        super(props);
-    }
 
     render(){
         return(
-            <audio controls > 
+            <audio className="stimuliAudio" controls > 
                 <source src={this.props.audioFile} />
                 The audio cannot play.
             </audio>

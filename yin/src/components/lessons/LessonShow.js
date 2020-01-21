@@ -5,29 +5,21 @@ class LessonShow extends Component{
     constructor(props){
         super(props)
         this.state = {
-            lesson: []
+            lesson:  {}
         }
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.getWords = this.getWords.bind(this);
+        this.fetchLesson = this.fetchLesson.bind(this);
     }
 
     async componentDidMount() {
-        fetch(`http://localhost:8000/lessons/${this.props.match.params.name}`)
-            .then( (response) => response.json()
-                .then( (result) => {
-                    this.setState({lesson: result});                    }
-                )
-            );
+        if(!!this.state.lesson){
+            this.fetchLesson();
+        }
     }
 
-    getWords(words){
-        if (words === undefined || words === 0){
-            return (<p>This lesson has no words yet.</p>);
-        }else{
-            const mapped = words.map((word) => <li>word</li>);
-            return mapped;
-        }
-
+    async fetchLesson(){
+        const lesson = await (await fetch(`/api/lessons/${this.props.match.params.name}`)).json();
+        this.setState({lesson});
     }
 
     render(){
@@ -37,10 +29,25 @@ class LessonShow extends Component{
                 <h2>{this.state.lesson.name}</h2>
                 <h3>Description:</h3>
                 <p>{this.state.lesson.description}</p>
-                <h3>Words:</h3>
-                <ul>{this.getWords(this.state.lesson.words)}    </ul>
+                {this.state.lesson.words &&
+                    <>
+                        <h3>Words:</h3>
+                        <ul>
+                            {this.state.lesson.words.map( (word) => {
+                            return <li key={word._id}>{word.character}</li>
+                            })}
+                        </ul>
+                    </>
+                }
                 {this.state.lesson.is_quiz ? 
-                    <p id="is_quiz">This lesson is a quiz.</p>
+                    <>
+                        <p id="is_quiz">This lesson is a quiz, containing the following activities:</p>
+                        <ul>
+                            {this.state.lesson.quizSections.map( (activity) => {
+                                return <li key={activity}>{activity}</li>
+                            })}
+                        </ul>
+                    </>
                 :
                     <p>This is a lesson, not a quiz.</p>
                 }

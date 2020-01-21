@@ -12,10 +12,10 @@ class LessonEdit extends Component{
     }
 
     async componentDidMount(){
-        const lesson = await (await fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/`)).json();
+        const lesson = await (await fetch(`/api/lessons/${this.props.match.params.name}/`)).json();
         this.setState({lesson});
 
-        const words = await(await fetch(`http://localhost:8000/lessons/${this.props.match.params.name}/words/`)).json();
+        const words = await(await fetch(`/api/lessons/${this.props.match.params.name}/words/`)).json();
         this.setState({words});
     }
 

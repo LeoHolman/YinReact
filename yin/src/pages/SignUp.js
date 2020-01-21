@@ -60,7 +60,7 @@ class SignUp extends Component{
         event.preventDefault();
         if(this.state.preventSubmit === false){
             const method = this.props.editing ? 'PUT' : 'POST';
-            fetch('http://localhost:8000/signup/',{
+            fetch('/api/signup/',{
                 method: method,
                 headers: {
                     "Content-Type": "application/json"

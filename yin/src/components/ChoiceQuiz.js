@@ -14,7 +14,9 @@ class ChoiceQuiz extends Component {
             answers:[],
             score:0,
             status:"",
-            error:""
+            error:"",
+            feedback_heading:"",
+            feedback:""
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -65,12 +67,17 @@ class ChoiceQuiz extends Component {
             }
     
             if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
-                document.getElementById(this.state.active).classList.add('correct');
+                document.getElementById(this.state.active).classList.add('positive');
                 this.setState({'score':this.state.score+1});
-                this.setState({'status':"correct"});
+                this.setState({'status':"positive"});
+                this.setState({feedback_heading: 'Correct!'});
+                this.setState({'feedback':`You selected tone ${this.state.active}, which is the correct answer.`});
             } else{
-                document.getElementById(this.state.active).classList.add('incorrect');
-                this.setState({'status':"incorrect"});
+                document.getElementById(this.state.active).classList.add('negative');
+                this.setState({'status':"negative"});
+                this.setState({feedback_heading: 'Incorrect.'});
+                this.setState({'feedback':`You selected tone ${this.state.active}, when it should've been tone ${this.props.stimuli[this.state.currentStimulus].correctTone}.`});
+
             }
     
             document.getElementById("nextQuestion").classList.remove("hide");
@@ -198,15 +205,14 @@ class ChoiceQuiz extends Component {
     render(){
         return(
             <>
-            
-                
                 {this.props.stimuli && 
-                    this.props.stimuli.length > this.state.currentStimulus ? 
+                    <>
+                    { this.props.stimuli.length > this.state.currentStimulus ? 
                     <>
                     <div className="activity-wrap two-choice">
                         <div className="stimuli">
                             <audio controls id = "audio-clip" ref="audio" >
-                                <source id="audioSource" src={`http://localhost:8000/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
+                                <source id="audioSource" src={`/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
                                 Audio not working!
                             </audio>
                             <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p>
@@ -219,7 +225,7 @@ class ChoiceQuiz extends Component {
                     <div className="feedbackContainer">
                         <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
                         <button onClick={this.nextQuestion} className="hide" id="nextQuestion">Next</button>
-                        <FeedbackBox status = {this.state.status} />
+                        <FeedbackBox status = {this.state.status} heading={this.state.feedback_heading} content={this.state.feedback}/>
                         <p id="error">{this.state.error}</p>
                     </div>
                     </>
@@ -236,12 +242,17 @@ class ChoiceQuiz extends Component {
                             <h2>Activity complete!</h2>
                             <p>Your score is: {this.state.score} out of {this.props.stimuli.length}</p>
                             <Link to="../">Return to Lessons & Quizzes</Link>
+                            {this.props.choices==='2' ? <Link to="./2"><button>Next activity</button></Link>
+                            :
+                            <Link to="./3"><button>Next activity</button></Link>
+                            }
                         </div>
                         }
                         </>
-                        
-                }
-            </>
+                    }
+                </>
+            }
+        </>
         )
     }
 

@@ -12,6 +12,27 @@ class Login extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleForm = this.handleForm.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+
+    componentDidMount(){
+        console.log('mounted');
+        var user = document.getElementById("username");
+        var pass = document.getElementById("password");
+        if(user){
+            console.log("user exists");
+            console.log(user.value + " user ");
+            if (user.value !==""){
+                console.log('userset');
+                this.setState({fusername:user.value});
+            } 
+            if(pass.value !==""){
+                console.log('passset');
+
+                this.setState({fpassword:pass.value});
+            }
+        }
+
     }
 
     handleChange(event, target) {
@@ -23,7 +44,8 @@ class Login extends Component {
         if(username !== "" && password !==""){
             this.props.submitForm(event, username, password);
             this.setState( {fusername: '', fpassword: ''});
-        }else{
+            this.setState({error:""});
+        }else if (username==="" || password ===""){
             this.setState({'error':'Please fill out all fields.'});
         }
 
@@ -35,11 +57,12 @@ class Login extends Component {
                 <form id="loginform"  onSubmit={e => this.handleForm(e, this.state.fusername, this.state.fpassword )}>
                     <h3>Login</h3>
                     <label htmlFor="username">Username:</label>
-                    <input id="username" name="username" placeholder="username" type="text" value={this.state.value} onChange={e => this.handleChange(e,'fusername')} />
+                    <input id="username" name="username" placeholder="username" type="text" value ={this.state.fusername} onChange={e => this.handleChange(e,'fusername')} />
                     <label htmlFor ="password">Password:</label>
-                    <input id="password" name="password" placeholder="password" type="password" value={this.state.value} onChange={e => this.handleChange(e,'fpassword')}/>
+                    <input id="password" name="password" placeholder="password" type="password"  value={this.state.fpassword} onChange={e => this.handleChange(e,'fpassword')}/>
                     <input type="submit" value="Submit" />
-                    <p>{this.state.error}</p>
+                    <p>{this.props.error} {this.state.error}</p>
+
                 </form>
                 <Link to="/SignUp">Don't have an account? Sign up.</Link>
             </>
