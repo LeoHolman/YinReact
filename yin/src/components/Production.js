@@ -66,12 +66,13 @@ class Production extends Component {
             <>
                 {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
                     <>
+                        <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>
+
                         {this.state.allowAdvance ?
                             <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
                         :
                             <></>
                         }
-                        <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
                         <PitchChart 
                             dataset={this.state.allowAdvance ? [
                                 [String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],

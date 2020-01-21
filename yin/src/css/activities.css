@@ -68,6 +68,15 @@
     grid-template-columns:4fr 1fr;
 }
 
+.stimuliAudio{
+    margin:0 auto;
+    display:block;
+}
+
+.stimuliCharacter{
+    font-size:3em;
+    text-align:center;
+}
 
 #submitAnswer, #nextQuestion{
     float:right;
@@ -90,4 +99,8 @@
     width:50%;
     margin:0 auto;
     padding:2em;
+}
+
+#__visualization{
+    margin-top:2em;
 }

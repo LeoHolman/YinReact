@@ -171,7 +171,7 @@ class Quiz extends Component{
                     {this.props.activities  && this.state.current===5 ?
                         <div id="score">
                         <h3>You've completed this quiz!</h3>
-                        <p>Your combined score on the multiple choice sections is {this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
+                        <p>Your combined score on the multiple choice sections is <br/>{this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
                         </div>
                         :
                         ""

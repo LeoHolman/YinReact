@@ -63,8 +63,9 @@ class Mimicking extends Component {
             <>
                 {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
                     <>
+                        <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>
+
                         <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
-                        <p>{this.props.lesson.words[this.state.currentStimuli].character}</p>
                         {this.props.lesson.words[this.state.currentStimuli].native_recording && 
                             <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
                         }
