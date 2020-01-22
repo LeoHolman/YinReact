@@ -64,9 +64,9 @@ class Production extends Component {
     render(){
         return(
             <>
-                {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ?
+                {this.props.lesson && this.props.lesson.words[this.state.currentStimuli]  ?
                     <>
-                        <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>
+                        { this.props.lesson.words[this.state.currentStimuli] && <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>}
 
                         {this.state.allowAdvance ?
                             <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
