@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"yin.words"}],"uuid":"e661b073147a4fba88e361bb3f131aae"}
