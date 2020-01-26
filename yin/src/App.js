@@ -29,6 +29,7 @@ class App extends React.Component{
       isLoggedIn: false,
       username: '',
       baseline: 0,
+      is_teacher: false,
       error:""
     }
     this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
@@ -105,7 +106,7 @@ class App extends React.Component{
   render(){
     return (
       <Router>
-      <Header is_teacher={true} />
+      <Header is_teacher={this.state.is_teacher} isLoggedIn={this.state.isLoggedIn} username={this.state.username} />
       
         {this.state.isLoggedIn ? 
           <> 
@@ -129,7 +130,7 @@ class App extends React.Component{
                   <BaselineExplanation/>
                 </Route>
                 <Route exact path="/*">
-                  <Login submitForm={this.submitForm} error={this.state.error}/>
+                  <Login submitForm={this.submitForm} error={this.state.error} />
                 </Route>
               </Switch>
             </>

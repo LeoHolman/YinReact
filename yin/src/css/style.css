@@ -43,7 +43,7 @@ nav li {
 
 
 
-nav li a {
+nav li a, nav li span {
     display: block;
     color: black;
     text-align: center;
