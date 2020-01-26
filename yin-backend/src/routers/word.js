@@ -1,17 +1,20 @@
 const express = require('express');
 const Word = require('../models/word');
+const NativeRecording = require('../models/native_recording');
+const FormData = require('form-data');
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 const router = new express.Router();
 
 router.post('/api/words/add/', (req, res, next) => {
     const relativeBase = path.join('uploads', 'test');
-    const audioDirPath = path.join(__dirname, relativeBase);
+    const audioDirPath = path.join(path.dirname(__dirname), relativeBase);
     const audioPath = path.join(audioDirPath, req.files.audioFile.name);
     const storePath = path.join('test', req.files.audioFile.name);
     const pinyin = req.body.pinyin;
-    const correctTone = req.body.correctTone;
+    const correctTone = req.body.correctTone.split(',');
     const character = req.body.character;
     try {
         if(!fs.existsSync(audioDirPath)){
@@ -22,13 +25,27 @@ router.post('/api/words/add/', (req, res, next) => {
             })
         }
         let incomingFile = req.files.audioFile;
-        incomingFile.mv(audioPath, (err) => {
+        incomingFile.mv(audioPath, async (err) => {
+            var formData = new FormData();
+            formData.append('audioData', fs.createReadStream(audioPath));
+            const response = await fetch('https://yin.rit.edu/pages/audioProcessing.php', {
+                method: 'POST',
+                body: formData
+            });
+            const csvDataLocation = await response.text();
+            const start = csvDataLocation.search(/(\*\*\*)/)+5
+            const end = csvDataLocation.search('&&&')
+            var url = csvDataLocation.substring(start,end)
+            url = 'https://yin.rit.edu/' + url;
+            const data = await(await fetch(url)).text();
+            const newNativeRecording = new NativeRecording({data});
+            newNativeRecording.save();
             if(err){
                 console.log(err);
                 res.status(500).send(err);
                 return
             }
-            const newWord = new Word({audioFile: storePath, pinyin, correctTone, character});
+            const newWord = new Word({audioFile: storePath, pinyin, correctTone, character, native_recording: newNativeRecording});
             newWord.save().then( () => {
                 res.status(200).send('Upload complete.');
                 return

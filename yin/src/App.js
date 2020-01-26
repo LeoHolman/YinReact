@@ -67,10 +67,6 @@ class App extends React.Component{
       const isLoggedIn = true;
       // const baselineResponse = await fetch('/api/user/me/');
       const userdata = await session.json();
-      if(userdata){
-        console.log(userdata.username);
-        console.log(userdata);
-      }
       const is_teacher = userdata.is_teacher;
       const username = userdata.username
       const baseline = Number(userdata.baseline);

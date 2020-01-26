@@ -16,19 +16,13 @@ class Login extends Component {
     }
 
     componentDidMount(){
-        console.log('mounted');
         var user = document.getElementById("username");
         var pass = document.getElementById("password");
         if(user){
-            console.log("user exists");
-            console.log(user.value + " user ");
             if (user.value !==""){
-                console.log('userset');
                 this.setState({fusername:user.value});
             } 
             if(pass.value !==""){
-                console.log('passset');
-
                 this.setState({fpassword:pass.value});
             }
         }

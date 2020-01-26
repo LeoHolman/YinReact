@@ -27,7 +27,7 @@ class Home extends Component {
                                 has created for you. It's recommended you first explore <a href="www.yin.rit.edu">Yin</a> to become familiar with
                                 how the activities work, and then come here to practice words your teacher has specifically added based on what you're 
                                 learning in class. </p>
-                            <Link to="/login"><button>Login or Sign Up</button></Link>
+                            <Link to="/login"><button>Login</button></Link>
                         </div>
                         <div id="teachers">
                             <h3>TEACHERS</h3>
@@ -35,7 +35,7 @@ class Home extends Component {
                                 own audio recordings, and create quizzes to test your students' comprehension. Please <a href="mailto:yinwebapp@gmail.com">email us </a>
                                 to sign up as a teacher or hear more about what Yin Classroom can offer your students!
                             </p>
-                            <Link to="/login"><button>Login or Sign Up</button></Link>
+                            <Link to="/login"><button>Login</button></Link>
                         </div>
                    </section>
                    <div id="background">
