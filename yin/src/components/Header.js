@@ -8,7 +8,7 @@ class Header extends Component{
         return(
             <div className="header">
                 <Link to="/"><img src={Logo} id="logo" alt="jojo the monkey walking by the yin logo"/></Link>
-                <Nav is_teacher={this.props.is_teacher} />
+                <Nav is_teacher={this.props.is_teacher} isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
             </div>
         )
     }

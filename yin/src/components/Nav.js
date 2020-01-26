@@ -9,9 +9,15 @@ class Nav extends Component {
                 <ul>
                     <li><a href="https://yin.rit.edu">Return to Yin </a></li>
                     <li><Link to="/lessons/">Lessons & Quizzes &emsp;|</Link></li>
-                    <li><Link to="/login/">Login &emsp;|</Link> </li>
+                    <>
+                        {this.props.isLoggedIn ? 
+                            <li><span>Logged in as: {this.props.username}&emsp;|</span></li>
+                        :
+                            <li><Link to="/login/">Login &emsp;|</Link> </li>
+                        }
                     {/* {this.props.is_teacher &&
                         <li><Link to="/teacherInterface/">Teachers &emsp;|</Link></li>} */}
+                    </>
                 </ul>
             </nav>
         )

@@ -58,7 +58,7 @@ class Login extends Component {
                     <p>{this.props.error} {this.state.error}</p>
 
                 </form>
-                <Link to="/SignUp">Don't have an account? Sign up.</Link>
+                {/* <Link to="/SignUp">Don't have an account? Sign up.</Link> */}
             </>
         )
     }
