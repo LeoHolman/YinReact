@@ -27,7 +27,6 @@ class Recorder extends Component {
                         const end = csvDataLocation.search('&&&')
                         var url = csvDataLocation.substring(start,end)
                         url = 'https://yin.rit.edu/' + url;
-                        // this.drawPitchCurve(url, 1100,500);
                         const data = await this.getDataSet(url);
                         this.props.outputFunction(data);
                     })	
@@ -44,7 +43,7 @@ class Recorder extends Component {
             // var audio;
             // var audioUrl;
             var audioBlob;
-            const recordButton = document.getElementById(buttonId);
+            // const recordButton = document.getElementById(buttonId);
             navigator.mediaDevices.getUserMedia({
                     audio: true
                 })

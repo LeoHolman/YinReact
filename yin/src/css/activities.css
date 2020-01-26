@@ -11,21 +11,27 @@
     background-color: #237a36;
 }
 
+.inner-response {
+    padding:75% 1em 0 1em;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+    z-index: -1;
+}
+
 .red {
     background-color: #a50122;
 }
 
 .response{
     text-align:center;
-    width:75%;
+    width:100%;
     margin:.5em auto;
     border-radius:20px;
     background-color:white;
     box-shadow:3px 3px 5px gray;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding:75% 1em 0 1em;
     border:1px solid white;
+    z-index: 30;
 }
 
 .response img{

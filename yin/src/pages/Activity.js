@@ -48,37 +48,39 @@ class Activity extends Component{
 
     render(){
         return(
-            <div>
-                <h3>Lesson: {this.props.match.params.name}</h3>
-                <h2>Activity {this.props.match.params.activityNumber}</h2>
-               
-                <Route path={`/lessons/${this.props.match.params.name}/1`}>
-                    <ChoiceQuiz stimuli={this.state.lesson.words} choices="2" />
- 
-                </Route>
-                <Route path={`/lessons/${this.props.match.params.name}/2`}>
-                    <ChoiceQuiz stimuli={this.state.lesson.words} choices="4"/>
-                </Route>
-                <Route path={`/lessons/${this.props.match.params.name}/3`}>
-                    {Boolean(this.props.baseline) === false ?
-                        <Baseline outputFunction={this.props.setBaseline} />
-                    :
-                        <Mimicking lesson={this.state.lesson} />
-                    }
-                </Route>
-                <Route path={`/lessons/${this.props.match.params.name}/4`}>
-                    {Boolean(this.props.baseline) === false ?
-                        <Baseline outputFunction={this.props.setBaseline} />
-                    :
-                        <Production lesson={this.state.lesson} />
-                    }
-                </Route>
-                <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
-                    <Quiz activities={this.state.lesson.quizSections} stimuli={this.state.lesson.words} lesson={this.state.lesson} username={this.props.user} sendScore={this.sendScore}/>
-                </Route>
-
-
-            </div>
+            <>
+                {this.state.lesson.words && 
+                    <div>
+                        <h3>Lesson: {this.props.match.params.name}</h3>
+                        <h2>Activity {this.props.match.params.activityNumber}</h2>
+                    
+                        <Route path={`/lessons/${this.props.match.params.name}/1`}>
+                            <ChoiceQuiz stimuli={this.state.lesson.words} choices="2" />
+        
+                        </Route>
+                        <Route path={`/lessons/${this.props.match.params.name}/2`}>
+                            <ChoiceQuiz stimuli={this.state.lesson.words} choices="4"/>
+                        </Route>
+                        <Route path={`/lessons/${this.props.match.params.name}/3`}>
+                            {Boolean(this.props.baseline) === false ?
+                                <Baseline outputFunction={this.props.setBaseline} />
+                            :
+                                <Mimicking lesson={this.state.lesson} />
+                            }
+                        </Route>
+                        <Route path={`/lessons/${this.props.match.params.name}/4`}>
+                            {Boolean(this.props.baseline) === false ?
+                                <Baseline outputFunction={this.props.setBaseline} />
+                            :
+                                <Production lesson={this.state.lesson} />
+                            }
+                        </Route>
+                        <Route path={`/lessons/${this.props.match.params.name}/quiz`}>
+                            <Quiz activities={this.state.lesson.quizSections} stimuli={this.state.lesson.words} lesson={this.state.lesson} username={this.props.user} sendScore={this.sendScore}/>
+                        </Route>
+                    </div>
+                }
+            </>
         )
     }
 }
