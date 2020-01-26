@@ -44,7 +44,7 @@ class Recorder extends Component {
             // var audio;
             // var audioUrl;
             var audioBlob;
-            const recordButton = document.getElementById(buttonId);
+            // const recordButton = document.getElementById(buttonId);
             navigator.mediaDevices.getUserMedia({
                     audio: true
                 })

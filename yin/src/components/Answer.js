@@ -7,38 +7,43 @@ import Four from '../assets/images/4_graph.svg';
 
 class Answer extends Component{
 
-    chooseImage(){
-        switch(this.props.number){
-            case '1':
-                // return(<img src={require('../assets/images/1_graph.svg')} alt="tone 1" title="1" />);
+    chooseImage(number){
+        switch(number){
+            case 1:
                 return One;
-            case '2':
+            case 2:
                 return Two;
-            case '3':
+            case 3:
                 return Three;
-            case '4':
+            case 4:
                 return Four;
             default:
                 return('Something went wrong');
         }
     }
 
-    // chooseImage(){
-    //     var url ="";
-    //     switch(this.props.number){
-    //         case '1':
-    //             url=""
-    //     }
-    // }
+    componentDidMount(){
+        var responseDivs = document.querySelectorAll("div.response");
+        responseDivs.forEach( (div) => {
+            div.addEventListener('click', (event) => {
+                event.stopPropagation();
+                this.props.collectResponse(div);
+            })
+        })
+    }
 
     render(){
         return(
             <>
             {this.props.number && 
-                <div id={this.props.number} onClick={e => this.props.collectResponse(e)} className="response" style={{backgroundImage: `url(${this.chooseImage()})`}}>
-                    <span className ="background-image" role="img" aria-label={this.props.number}></span>
-                    {/* {this.chooseImage()} */}
-                    {/* <p className="answer-text">{this.props.number[0]}</p> */}
+                <div className={`response options${this.props.number.length}`} id={this.props.number}  key={this.props.number}>
+                    {this.props.number.map( (toneNumber, index) => {
+                        const divKey = `div_${this.props.number}_tone_${toneNumber}_index_${index}`;
+                        return <div id={divKey} key={divKey} className="inner-response" style={{backgroundImage: `url(${this.chooseImage(toneNumber)})`}}>
+                            <span className ="background-image" role="img" aria-label={toneNumber}></span>
+                        </div>
+
+                    })}
                 </div>
                 // :
                 // <p>Something went wrong</p>

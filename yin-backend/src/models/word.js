@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const wordSchema = new mongoose.Schema({
     audioFile: String, 
     pinyin: String, 
-    correctTone: Number, 
+    correctTone: [{type: Number}], 
     character: String,
     native_recording: {
         type: mongoose.Schema.Types.ObjectId,

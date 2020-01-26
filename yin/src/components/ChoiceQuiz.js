@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Answer from './Answer';
 import FeedbackBox from './FeedbackBox';
 import {Link} from 'react-router-dom';
+import {arraysAreEqual, checkForArrayInArrayOfArrays} from '../helper/arrayHelpers';
 
 class ChoiceQuiz extends Component {
     constructor(props){
@@ -9,7 +10,7 @@ class ChoiceQuiz extends Component {
         this.state = {
             currentStimulus: 0,
             options:[], 
-            active:"",
+            active:[],
             submitted: false,
             answers:[],
             score:0,
@@ -23,35 +24,45 @@ class ChoiceQuiz extends Component {
         this.collectResponse = this.collectResponse.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
         this.reset = this.reset.bind(this);
-        // this.componentDidMount  = this.componentDidMount.bind(this);
         this.chooseTones  = this.chooseTones.bind(this);
         this.randomize = this.randomize.bind(this);
         this.displayAnswers = this.displayAnswers.bind(this);
         this.reportScore = this.reportScore.bind(this);
+        this.selectRandomOption = this.selectRandomOption.bind(this);
+        this.getWrongOption = this.getWrongOption.bind(this);
+        this.selectOptions = this.selectOptions.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+
     }
 
+    componentDidMount(){
+        if(this.props.stimuli.length > this.state.currentStimulus ){
+            this.displayAnswers();
+        }
+    }
 
+    componentDidUpdate(){
+        if(this.props.stimuli.length > this.state.currentStimulus ){
+            this.displayAnswers();
+        }
+    }
 
-    // static getStateDerivedFromProps(props, state){
-    //     return {stimuli: props.stimuli};
-    // }
     reset(){
         document.getElementById("nextQuestion").classList.add("hide");
         document.getElementById("submitAnswer").classList.remove("hide");
         document.getElementById("feedback-box").style.visibility="hidden";
 
-
         var responses = document.getElementsByClassName("response");
         for (var x=0; x<responses.length; x++){
             responses[x].classList.remove("active");
-            responses[x].classList.remove("correct");
-            responses[x].classList.remove("incorrect");
+            responses[x].classList.remove("postive");
+            responses[x].classList.remove("negative");
         }
         this.setState({'submitted':false});
         this.setState({'options':[]});
         this.setState({'active':""});
     }
-
 
     handleClick() {
         this.setState({'currentStimulus': this.state.currentStimulus + 1});
@@ -66,7 +77,7 @@ class ChoiceQuiz extends Component {
                 responses[x].classList.remove("active");
             }
     
-            if(this.state.active===JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone)){
+            if(arraysAreEqual(this.state.active,this.props.stimuli[this.state.currentStimulus].correctTone)){
                 document.getElementById(this.state.active).classList.add('positive');
                 this.setState({'score':this.state.score+1});
                 this.setState({'status':"positive"});
@@ -90,16 +101,16 @@ class ChoiceQuiz extends Component {
         
     }
 
-    collectResponse(event){
+    collectResponse(div){
         if(this.state.submitted===false){
             const questionLabel = `question${this.state.currentStimulus}`;
-            this.setState({'answers':[questionLabel, event.target.id ]});
-            this.setState({'active': event.target.id});
+            this.setState({'answers':[questionLabel, div.id ]});
+            this.setState({'active': div.id.split(',').map((item) => Number(item))});
             var responses = document.getElementsByClassName("response");
             for (var x=0; x<responses.length; x++){
                 responses[x].classList.remove("active");
             }
-            event.target.classList.add("active");
+            div.classList.add("active");
         }
     }
 
@@ -114,12 +125,70 @@ class ChoiceQuiz extends Component {
         return a;
     }
 
+    selectRandomOption(inputArr, correctPos){
+        let option = [];
+        const allPossible = [1,2,3,4]
+        let shuffled = this.randomize(allPossible);
+
+        if(inputArr.length === 1){
+            if(shuffled[0] === inputArr[0]){
+                option.push(shuffled[1])
+            } else {
+                option.push(shuffled[0]);
+            }
+        } else {
+            for(let i = 0; i < inputArr.length; i++){
+                if(i === correctPos){
+                    option.push(inputArr[i]);
+                } else {
+                    if(shuffled[i] === inputArr[i]){
+                        if(i === inputArr.length - 1){
+                            option.push(shuffled[0])
+                        } else {
+                            option.push(shuffled[i + 1])
+                        }
+                    } else {
+                        option.push(shuffled[i])
+                    }
+                }
+            }
+        }
+        return option;
+    }
+
+    getWrongOption(correctArr, correctPos, allOptions){
+            let newOption = this.selectRandomOption(correctArr, correctPos);
+            if(checkForArrayInArrayOfArrays(allOptions,newOption)){
+                return this.getWrongOption(correctArr, correctPos, allOptions);
+            } else {
+                return newOption;
+            }
+    }
+
+    selectOptions(){
+        const correctArr = this.props.stimuli[this.state.currentStimulus].correctTone;
+        let allOptions = [];
+        allOptions.push(correctArr);
+        let incorrectCalls = this.props.choices - 1;
+        let correctPos = 0;
+        for(let i = 0; i < incorrectCalls; i++){
+            let newArr = this.getWrongOption(correctArr, correctPos, allOptions);
+            allOptions.push(newArr);
+            correctPos++;
+            if(correctPos === correctArr.length){
+                correctPos = 0;
+            }
+        }
+        if(this.state.options === undefined || this.state.options.length<1){
+            var shuffledOptions = this.randomize(allOptions)
+            this.setState({options: shuffledOptions});
+        }
+    }
+
     chooseTones(correct){
 
         var optionArr =[];
         var randomArr = [1,2,3,4];
-        //to pair words with tones under their graphs, uncomment word-related code 
-        // var word = [];
         
         //Two choice quiz needs randomized 
         if(this.props.choices==='2'){
@@ -128,44 +197,11 @@ class ChoiceQuiz extends Component {
         
             for (var i=0; i<randomArr.length; i++){
                 if (randomArr[i] === correct){
-                    // word.push(randomArr[i]);
-                    // word.push(randomArr[i].charAt(randomArr[i].length-1));
                     optionArr.push(randomArr[i]);
                     randomArr.splice(i, 1); 
-                    // word = [];
                 }
             }
             optionArr.push(randomArr[0]);
-
-            //Push the first entry in the randomized array, whatever it is
-            //this assumes the randomized array only holds incorrect options
-            // word.push(randomArr[0]);
-            // word.push(randomArr[0].charAt(randomArr[0].length-1));
-            // optionArr.push(word);
-            // word = [];
-
-            // //Push the correct answer to the array
-            // word.push(this.props.stimuli[this.state.currentStimulus].word);
-            // word.push(JSON.stringify(this.props.stimuli[this.state.currentStimulus].correctTone));
-            // optionArr.push(word);
-            // word = [];
-
-            // //randomize the two options
-            // optionArr = this.randomize(optionArr);
-
-            // if(stimuli[this.state.currentStimulus]){
-            //     word.push(stimuli[this.state.currentStimulus].word);
-            //     optionArr.push(word);
-            //     word=[];
-            //     for (var i=0; i<2; i++){
-            //         word.push(stimuli[this.state.currentStimulus].alternateTones[i]);
-            //         optionArr.push(word);
-            //         word=[];
-            //     }
-            //     // this.setState({'options': optionArr});
-            //     // console.log('in random' + stimuli[this.state.currentStimulus].word);
-
-            // }``
         } else {
             optionArr = randomArr;
         }
@@ -175,24 +211,15 @@ class ChoiceQuiz extends Component {
         }
     }
 
-    displayAnswers(correct){
-        this.chooseTones(correct);
-        const answers = this.state.options.map( (opt) =>
-            <Answer number = {JSON.stringify(opt)} key ={opt} collectResponse={this.collectResponse} />
-        );
-        return (<>{answers}</>);
+    displayAnswers(){
+        if(this.state.options === undefined || this.state.options.length<1){
+            this.selectOptions();
+        } 
     }
 
-    // if you need to get it from the end of the pinyin
-    // getNumber(word){
-    //     var number = word.charAt(word.length-1);
-    //     return number;
-    // }
- 
     reportScore(){
         this.props.reportScore(this.state.score, this.props.stimuli.length, this.props.choices);
     }
-    
 
     nextQuestion(){
         this.refs.audio.pause();
@@ -219,7 +246,9 @@ class ChoiceQuiz extends Component {
                         
                         </div>
                         <div className = "answers">
-                            {this.displayAnswers(this.props.stimuli[this.state.currentStimulus].correctTone)}
+                            {this.state.options.map( (opt) => {
+                                return <Answer number = {opt} key ={opt} collectResponse={this.collectResponse} />
+                            })}
                         </div>
                     </div>
                     <div className="feedbackContainer">

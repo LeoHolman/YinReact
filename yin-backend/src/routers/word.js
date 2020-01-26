@@ -11,7 +11,7 @@ router.post('/api/words/add/', (req, res, next) => {
     const audioPath = path.join(audioDirPath, req.files.audioFile.name);
     const storePath = path.join('test', req.files.audioFile.name);
     const pinyin = req.body.pinyin;
-    const correctTone = req.body.correctTone;
+    const correctTone = req.body.correctTone.split(',');
     const character = req.body.character;
     try {
         if(!fs.existsSync(audioDirPath)){
