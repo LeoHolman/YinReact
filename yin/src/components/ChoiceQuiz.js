@@ -70,7 +70,8 @@ class ChoiceQuiz extends Component {
     }
 
     handleSubmit(event){
-        if(this.state.active !==""){
+        // if(!Array.isArray(this.state.active) || !this.state.active.length){
+        if(this.state.active !== undefined && this.state.active.length !==0){
             this.setState({'submitted':true});
             var responses = document.getElementsByClassName("response");
             for (var x=0; x<responses.length; x++){
@@ -242,7 +243,7 @@ class ChoiceQuiz extends Component {
                                 <source id="audioSource" src={`/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
                                 Audio not working!
                             </audio>
-                            <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p>
+                            {/* <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p> */}
                         
                         </div>
                         <div className = "answers">
