@@ -96,4 +96,9 @@ Dark blue - #245484 (sufficient contrast with white text)
 button{
     margin:1em auto;
     display:block;
+    padding:0 2em;
+}
+
+a button{
+    text-decoration: none;;
 }
