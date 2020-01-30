@@ -238,6 +238,9 @@ class ChoiceQuiz extends Component {
                     { this.props.stimuli.length > this.state.currentStimulus ? 
                     <>
                     <div className="activity-wrap two-choice">
+                        <div className="status">
+                            <p>Question {this.state.currentStimulus+1} out of {this.props.stimuli.length}</p>
+                        </div>
                         <div className="stimuli">
                             <audio controls id = "audio-clip" ref="audio" >
                                 <source id="audioSource" src={`/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
