@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "short_name": "Yin",
   "name": "Yin - A tool for visualizing tone in Mandarin",
+=======
+  "short_name": "React App",
+  "name": "Create React App Sample",
+>>>>>>> master
   "icons": [
     {
       "src": "favicon.ico",
