@@ -3,6 +3,7 @@ import One from '../assets/images/1_graph.svg';
 import Two from '../assets/images/2_graph.svg';
 import Three from '../assets/images/3_graph.svg';
 import Four from '../assets/images/4_graph.svg';
+import Five from '../assets/images/5_graph.png';
 
 
 class Answer extends Component{
@@ -17,6 +18,8 @@ class Answer extends Component{
                 return Three;
             case 4:
                 return Four;
+            case 5:
+                return Five;
             default:
                 return('Something went wrong');
         }
