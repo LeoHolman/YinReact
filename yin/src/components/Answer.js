@@ -3,7 +3,7 @@ import One from '../assets/images/1_graph.svg';
 import Two from '../assets/images/2_graph.svg';
 import Three from '../assets/images/3_graph.svg';
 import Four from '../assets/images/4_graph.svg';
-import Five from '../assets/images/5_graph.png';
+import Five from '../assets/images/5_graph.svg';
 
 
 class Answer extends Component{
