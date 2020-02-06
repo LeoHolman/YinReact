@@ -83,12 +83,12 @@ class ChoiceQuiz extends Component {
                 this.setState({'score':this.state.score+1});
                 this.setState({'status':"positive"});
                 this.setState({feedback_heading: 'Correct!'});
-                this.setState({'feedback':`You selected tone ${this.state.active}, which is the correct answer.`});
+                this.setState({'feedback':`The word was ${this.props.stimuli[this.state.currentStimulus].character}, or ${this.props.stimuli[this.state.currentStimulus].pinyin}, so tone ${this.state.active} is the correct answer.`});
             } else{
                 document.getElementById(this.state.active).classList.add('negative');
                 this.setState({'status':"negative"});
                 this.setState({feedback_heading: 'Incorrect.'});
-                this.setState({'feedback':`You selected tone ${this.state.active}, when it should've been tone ${this.props.stimuli[this.state.currentStimulus].correctTone}.`});
+                this.setState({'feedback':`The word was ${this.props.stimuli[this.state.currentStimulus].character}, or ${this.props.stimuli[this.state.currentStimulus].pinyin}. You selected tone ${this.state.active}, when it should've been tone ${this.props.stimuli[this.state.currentStimulus].correctTone}.`});
 
             }
     
