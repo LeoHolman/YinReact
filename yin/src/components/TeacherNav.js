@@ -8,7 +8,7 @@ class TeacherNav extends Component {
             <nav id="teacher-nav">
                 <li><Link to="/teacherInterface/lessons/">Edit Lessons</Link></li>
                 <li><Link to="/teacherInterface/addLesson/">Add Lesson</Link></li>
-                <li><Link to="/teacherInterface/uploadAudio/">Upload Audio</Link></li>
+                <li><Link to="/teacherInterface/words/add">Upload Audio</Link></li>
             </nav>
         )
     }

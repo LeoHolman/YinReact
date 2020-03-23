@@ -14,7 +14,6 @@ class LessonDirectoryCard extends Component {
 
     toggleActivityList(){
         this.setState({activityOpen: !this.state.activityOpen});
-        console.log("anything")
     }
 
     render(){

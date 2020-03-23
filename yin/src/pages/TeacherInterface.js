@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AudioUpload from '../components/AudioUpload';
+import WordAdd from '../components/WordAdd';
 // import TeacherNav from '../components/TeacherNav';
 import LessonForm from '../components/lessons/LessonForm';
 import LessonEdit from '../components/lessons/LessonEdit';
@@ -19,7 +19,7 @@ class TeacherInterface extends Component {
                 <Route path="/teacherInterface/lessons/add/" component={LessonForm} />
                 <Route path="/teacherInterface/lessons/:name/" component={LessonShow} />
                 <Route path="/teacherInterface/lessons/" component={TeacherLessonDirectory} />
-                <Route path="/teacherInterface/words/add" component={AudioUpload} />
+                <Route path="/teacherInterface/words/add" component={WordAdd} />
                 <Route path="/teacherInterface/" component={TeacherLessonDirectory} />
             </Switch>
         )
