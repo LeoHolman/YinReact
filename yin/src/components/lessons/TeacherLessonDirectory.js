@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import TeacherNav from '../TeacherNav';
 import '../../css/teacherInterface.css';
 import '../../css/lessons.css';
 
@@ -23,10 +24,11 @@ class TeacherLessonDirectory extends Component {
             <>
                 {this.state.lessons && 
                     <>
-                        <Link to={'/teacherInterface/lessons/add'} id="addLessonLink">
+                        {/* <Link to={'/teacherInterface/lessons/add'} id="addLessonLink">
                             + &emsp;Add a Lesson
                         </Link>
-                        <h1>Lessons:</h1>
+                        <h1>Lessons:</h1> */}
+                        <TeacherNav view ="lessons"/>
                         <ul>
                             {this.state.lessons.map( (lesson) => {
                                 return <Link to={`/teacherInterface/lessons/${lesson.name}/`} key={lesson.name} props={lesson} className="teacherCardLink">

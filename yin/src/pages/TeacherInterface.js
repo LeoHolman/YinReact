@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WordAdd from '../components/WordAdd';
+import WordAdd from '../components/words/WordAdd';
 // import TeacherNav from '../components/TeacherNav';
 import LessonForm from '../components/lessons/LessonForm';
 import LessonEdit from '../components/lessons/LessonEdit';

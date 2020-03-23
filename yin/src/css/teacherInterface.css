@@ -3,26 +3,27 @@ COLORS --
 Dark red - #9A2D04
 Orange - //#FF8F17//  --->#db7a13
 Background gray - #EDEDED
-Blue - #5E99D3
+Blue - //#5E99D3// ---> #3070B0
 */
 
 #teacher-nav {
-    width: 50%;
+    width: 90%;
     margin: 0 auto;
-    text-align: center;
 }
+
+
 /* 
 #teacher-nav li {
     margin-top: 7px;
     list-style: none;
     float: none;
     border: solid #5E99D3 2px;
-    color: #5E99D3;
+    color: #3070B0;
     border-radius: 25px;
     box-shadow: 5px 5px black;
 } */
 
-#teacher-nav li{
+/* #teacher-nav li{
     list-style: none;
     float: none;
     margin:.5em;
@@ -46,12 +47,12 @@ Blue - #5E99D3
 
 #teacher-nav li:hover{
     background-color:white;
-    color:#5E99D3;
+    color:#3070B0;
 }
 
 #teacher-nav li:hover a{
-    color:#5E99D3;
-}
+    color:#3070B0;
+} */
 
 
 /* Teacher Lessons directory */
@@ -73,6 +74,7 @@ Blue - #5E99D3
 
 #addLessonLink{
     float:right;
+    padding-top:.5em;
 }
 
 
