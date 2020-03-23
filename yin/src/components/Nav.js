@@ -15,8 +15,8 @@ class Nav extends Component {
                         :
                             <li><Link to="/login/">Login &emsp;|</Link> </li>
                         }
-                    {/* {this.props.is_teacher &&
-                        <li><Link to="/teacherInterface/">Teachers &emsp;|</Link></li>} */}
+                    {this.props.is_teacher &&
+                        <li><Link to="/teacherInterface/">Teachers &emsp;|</Link></li>}
                     </>
                 </ul>
             </nav>
