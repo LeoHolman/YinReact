@@ -11,6 +11,11 @@ Blue - //#5E99D3// ---> #3070B0
     margin: 0 auto;
 }
 
+#teacher-nav h1 a{
+    color:rgb(126, 125, 125);
+}
+
+
 
 /* 
 #teacher-nav li {
@@ -58,8 +63,9 @@ Blue - //#5E99D3// ---> #3070B0
 /* Teacher Lessons directory */
 
 .lessonCard.teacherCard{
-    box-shadow:5px 5px 0px #9A2D04;
+    /* box-shadow:5px 5px 0px #9A2D04; */
     padding:1em;
+    border:1.2px solid #9A2D04;
 }
 
 
@@ -103,4 +109,22 @@ Blue - //#5E99D3// ---> #3070B0
 
 #is_quiz{
     margin-top:4em;
+}
+
+/* WORDS */ 
+
+.wordCard{
+    background-color:white;
+    display:grid;
+    grid-template-columns:1fr 3fr;
+    padding:.5em 1em;
+    margin:1em;
+}
+
+.wordCard p, .wordCard a{
+    margin-top:0;
+}
+
+.wordCard a{
+    text-align:right;
 }

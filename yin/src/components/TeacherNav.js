@@ -15,10 +15,10 @@ class TeacherNav extends Component {
                 </>
             :
                 <>
-                    <Link to={'/teacherInterface/lessons/add'} id="addLessonLink">
-                            + &emsp;Add a Lesson
+                    <Link to={'/teacherInterface/words/add'} id="addLessonLink">
+                            + &emsp;Add a Word
                     </Link>
-                    <h1>Words | <Link to={'/teacherInterface/lessons'}>Lessons</Link></h1>
+                    <h1><Link to={'/teacherInterface/lessons'}>Lessons</Link> | Words</h1>
                 </>
             }
             
