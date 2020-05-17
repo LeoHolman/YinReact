@@ -54,7 +54,7 @@ class Login extends Component {
                     <input id="username" name="username" placeholder="username" type="text" value ={this.state.fusername} onChange={e => this.handleChange(e,'fusername')} />
                     <label htmlFor ="password">Password:</label>
                     <input id="password" name="password" placeholder="password" type="password"  value={this.state.fpassword} onChange={e => this.handleChange(e,'fpassword')}/>
-                    <input type="submit" value="Submit" />
+                    <input id="submit-button" type="submit" value="Submit" />
                     <p>{this.props.error} {this.state.error}</p>
 
                 </form>

@@ -21,36 +21,35 @@ class Nav extends Component {
             <>
                 <nav id ="main">
                     <ul>
-                        <li><a href="https://yin.rit.edu">Return to Yin </a></li>
-                        <li><Link to="/lessons/">Lessons & Quizzes &emsp;|</Link></li>
+                        <li><a id="nav-old-yin" href="https://yin.rit.edu">Return to Yin </a></li>
+                        <li><Link to="/lessons/" id="nav-lessons-quizzes">Lessons & Quizzes &emsp;|</Link></li>
                         <>
                             {this.props.isLoggedIn ? 
                                 <li><span>Logged in as: {this.props.username}&emsp;|</span></li>
                             :
-                                <li><Link to="/login/">Login &emsp;|</Link> </li>
+                                <li><Link to="/login/" id="nav-login">Login &emsp;|</Link> </li>
                             }
                         {this.props.is_teacher &&
-                            <li><Link to="/teacherInterface/">Teachers &emsp;|</Link></li>}
+                            <li><Link to="/teacherInterface/" id="nav-teacher-interface">Teachers &emsp;|</Link></li>}
                         </>
                     </ul>
                 </nav>
                 <div id="mobile-nav" className={this.state.open && "mobileOpen"}>
                     <img id="hamburger-icon" src={this.state.open ? whiteHamburger : hamburger} onClick={this.openMobileNav}></img>
                     <div id="mobile-links" className={this.state.open && "mobileOpen"}>
-                    <Link to="/lessons/">Lessons & Quizzes</Link>
+                    <Link to="/lessons/" id="nav-mobile-lessons-quizzes">Lessons & Quizzes</Link>
                     {this.props.is_teacher &&
-                        <Link to="/teacherInterface/">Teachers</Link>
+                        <Link to="/teacherInterface/" id="nav-mobile-teacher-interface">Teachers</Link>
                     }
                     {this.props.isLoggedIn ? 
                         <>
                             <span>Logged in as: {this.props.username}</span>
-                            <Link to="/logout/" id="logout">&mdash; Logout</Link> 
+                            <Link to="/logout/" id="nav-mobile-logout">&mdash; Logout</Link> 
                         </>
                     :
-                        <Link to="/login/">Login</Link> 
+                        <Link to="/login/" id="nav-mobile-logout">Login</Link> 
                     }
                     </div>
-                    
                 </div>
             </>
         )
