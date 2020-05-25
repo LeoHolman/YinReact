@@ -11,3 +11,4 @@ coverage/
 yarn.lock
 Yin-React.code-workspace
 uploads/
+tests/results
