@@ -52,7 +52,7 @@ class Activity extends Component{
                 {this.state.lesson.words && 
                     <div>
                         <h3>Lesson: {this.props.match.params.name}</h3>
-                        <h2>Activity {this.props.match.params.activityNumber}</h2>
+                        <h2 id='header-activity'>Activity {this.props.match.params.activityNumber}</h2>
                     
                         <Route path={`/lessons/${this.props.match.params.name}/1`}>
                             <ChoiceQuiz stimuli={this.state.lesson.words} choices="2" />
