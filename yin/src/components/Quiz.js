@@ -6,7 +6,7 @@ import Production from './Production';
 class Quiz extends Component{
     constructor(props){
         super(props);
-        console.log(props);
+        // console.log(props);
         this.state = {
             activity1:{
                 score: null,
@@ -33,26 +33,26 @@ class Quiz extends Component{
         this.recordScore = this.recordScore.bind(this);
         this.initialize= this.initialize.bind(this);
         this.addActivityRecording = this.addActivityRecording.bind(this);
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
-    async componentDidUpdate(prevProps, prevState, snapshot){
+    async componentDidMount(){
         if(this.props.activities){
             if(this.state.current===null){
                 this.setState({current:this.props.activities[0]});
             }
         }
-        if(prevState.prev === false){
-            console.log('prev state is false')
-            const response = await fetch(`/api/quizScores/me/${this.props.lesson.name}`);
-            const result = await response.json();
-            if(result.length >0){
-                this.setState({prev: true});
-                console.log('state set');
-            }
-            console.log('Intialization completed');
-            return <></>;
-        }
+        // if(prevState.prev === false){
+        //     console.log('prev state is false')
+        //     const response = await fetch(`/api/quizScores/me/${this.props.lesson.name}`);
+        //     const result = await response.json();
+        //     if(result.length >0){
+        //         this.setState({prev: true});
+        //         console.log('state set');
+        //     }
+        //     console.log('Intialization completed');
+        //     return <></>;
+        // }
     }
 
     async initialize(){

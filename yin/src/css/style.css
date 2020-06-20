@@ -3,7 +3,7 @@
 Dark red - #9A2D04
 Orange - //#FF8F17//  --->#db7a13
 Background gray - #EDEDED
-Blue - #5E99D3
+Blue - //#5E99D3// ---> #3070B0
 Dark blue - #245484 (sufficient contrast with white text)
 
 **/
@@ -12,7 +12,7 @@ Dark blue - #245484 (sufficient contrast with white text)
 
 
 .active{
-    color:#5E99D3;
+    color:#3070B0;
 }
 
 
@@ -52,7 +52,58 @@ nav li a, nav li span {
 }
 
 .link:hover{
-    color:#5E99D3;
+    color:#3070B0;
+}
+
+#mobile-nav{
+    visibility:hidden;
+    width:30%;
+    position:fixed;
+    right:0;
+    top:0;
+    height:100vh;
+}
+
+#mobile-links.mobileOpen{
+    visibility: visible;
+    background:#245484e3;
+    height:100vh;
+    transition:all .5s ease;
+}
+
+#mobile-links{
+    padding-top:4em;
+    visibility:hidden;
+    padding-bottom:4em;
+
+}
+
+#mobile-nav a,#mobile-nav span{
+    display:block;
+    padding:1em;
+    padding-left:2em;
+    /* background:#245484e3; */
+    color:white
+}
+
+#mobile-nav.mobileOpen a:hover{
+    background:#245484;
+}
+
+#mobile-nav #hamburger-icon{
+    width:15%;
+    margin:1em 5% 0 70%;
+    /* margin-bottom:1em; */
+    float:right;
+    
+}
+
+#mobile-nav span{
+    padding-bottom:.2em;
+}
+
+#mobile-nav a#logout{
+    padding-left:3em;
 }
 
 h1, h2, h3, h4, h5{
@@ -63,10 +114,12 @@ h1, h2, h3, h4, h5{
 h1{
     font-size: 2.1em;
     font-variant: small-caps;
+    font-weight:500;
 }
 
 h2{
     font-size: 1.7em;
+    font-weight:500;
 }
 
 h3{
@@ -79,8 +132,18 @@ h4{
 }
 
 a{
-    color:#5E99D3;
+    color:#3070B0;
+    text-decoration: none;
 }
+/* 
+a:hover{
+    color:#5E99D3;
+    text-decoration: underline;
+}
+
+a:hover div{
+    color:inherit
+} */
 
 /* a:visited{
     color:darkblue;
@@ -102,7 +165,7 @@ button, input[type=submit]{
 
 button:hover, input[type=submit]:hover{
     background-color:white;
-    color:#5E99D3;
+    color:#3070B0;
 }
 
 /** -------- HOME PAGE --------- **/
@@ -242,11 +305,26 @@ form #error{
     
 }
 
+@media only screen and (max-width:900px){
+    nav{
+        visibility:hidden;
+        height:5vh;
+    }
+    
+    #mobile-nav{
+        visibility:visible;
+    }
+}
+
 
 /* MEDIA QUERY - 700px*/
 
 @media only screen and (max-width:700px){
-    
+    body{
+        width:90%;
+        overflow-x:hidden;
+    }
+
     #home-intro, #home-about{
         width: 60vw;
         margin:2em auto;
@@ -254,6 +332,10 @@ form #error{
     
     #begin{
         font-size:2em;
+    }
+
+    #mobile-nav{
+        width:40%;
     }
     
 }
@@ -284,6 +366,10 @@ form #error{
     }
     
     footer div{
+        width:100%;
+    }
+
+    #mobile-nav{
         width:100%;
     }
 }

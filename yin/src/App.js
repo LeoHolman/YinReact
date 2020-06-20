@@ -3,6 +3,7 @@ import './css/activities.css';
 import './css/LADirectoryStyle.css';
 import './css/style.css';
 import './css/lessons.css';
+import './helper/navigation.js';
 import BaselineExplanation from './components/BaselineExplanation';
 import Baseline from './components/Baseline';
 import Footer from './components/Footer';

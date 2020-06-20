@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AudioUpload from '../components/AudioUpload';
+import WordAdd from '../components/words/WordAdd';
 // import TeacherNav from '../components/TeacherNav';
 import LessonForm from '../components/lessons/LessonForm';
 import LessonEdit from '../components/lessons/LessonEdit';
@@ -7,6 +7,7 @@ import LessonDelete from '../components/lessons/LessonDelete';
 import {Switch, Route} from 'react-router-dom';
 import TeacherLessonDirectory from '../components/lessons/TeacherLessonDirectory';
 import LessonShow from '../components/lessons/LessonShow';
+import WordDirectory from '../components/words/WordDirectory';
 
 class TeacherInterface extends Component {
 
@@ -19,7 +20,8 @@ class TeacherInterface extends Component {
                 <Route path="/teacherInterface/lessons/add/" component={LessonForm} />
                 <Route path="/teacherInterface/lessons/:name/" component={LessonShow} />
                 <Route path="/teacherInterface/lessons/" component={TeacherLessonDirectory} />
-                <Route path="/teacherInterface/words/add" component={AudioUpload} />
+                <Route path="/teacherInterface/words/add" component={WordAdd} />
+                <Route path="/teacherInterface/words/" component={WordDirectory} />
                 <Route path="/teacherInterface/" component={TeacherLessonDirectory} />
             </Switch>
         )
