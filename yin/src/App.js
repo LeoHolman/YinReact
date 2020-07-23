@@ -129,6 +129,7 @@ class App extends React.Component{
                 <Route exact path="/SignUp">
                   <SignUp />
                 </Route>
+                <Route exact path="/logout"></Route>
                 <Route exact path="*/explanation">
                   <BaselineExplanation/>
                 </Route>

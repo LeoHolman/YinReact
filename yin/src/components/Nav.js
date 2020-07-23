@@ -25,7 +25,10 @@ class Nav extends Component {
                         <li><Link to="/lessons/" id="nav-lessons-quizzes">Lessons & Quizzes &emsp;|</Link></li>
                         <>
                             {this.props.isLoggedIn ? 
-                                <li><span>Logged in as: {this.props.username}&emsp;|</span></li>
+                                <>
+                                    <li><span>Logged in as: {this.props.username}&emsp;|</span></li>
+                                    <Link to="/logout/" id="logout-link"> Logout</Link> 
+                                </>
                             :
                                 <li><Link to="/login/" id="nav-login">Login &emsp;|</Link> </li>
                             }
