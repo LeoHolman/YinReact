@@ -13,7 +13,11 @@ router.post('/api/signup/', async (req, res) => {
     if(!nameUnavailable){
         const salt = randomBytes(32);
         const hashedPass = await argon2.hash(req.body.password, {salt});
-        const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex'), baseline: req.body.baseline});
+        const newUser = new User({ username: req.body.username,
+                                   password: hashedPass,
+                                   is_teacher: false,
+                                   salt: salt.toString('hex'),
+                                   baseline: req.body.baseline});
         newUser.save().then( () => {
             res.send(`Hello! ${req.body.username}`)
         });
