@@ -113,7 +113,9 @@ class App extends React.Component{
           <> 
             <Switch>
               <Route path="/baseline/" component={Baseline} />
-              <Route path="/teacherInterface/" component={TeacherInterface} />
+              {this.state.is_teacher &&
+                <Route path="/teacherInterface/" component={TeacherInterface} />
+              }
               <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity baseline={this.state.baseline} {...props} setBaseline={this.setBaseline} user={this.state.username} />} />
               {/* <Route path="/lessons/:name/" component={LessonShow} /> */}
               <Route path="/lessons/" component={LessonDirectory} />
