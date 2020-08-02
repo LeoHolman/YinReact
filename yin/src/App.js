@@ -29,6 +29,8 @@ function App() {
   const [isTeacher, setIsTeacher] = useState(false);
   const [error, setError] = useState('');
 
+  // let history = useHistory();
+
   useEffect(() =>{
     checkLogin();
   }, []);
@@ -69,18 +71,6 @@ function App() {
     }
   }
 
-  function logOut() {
-    fetch('/api/logout', {
-      method: 'get',
-      credentials: 'include', 
-      redirect: "follow"
-    }).then(res => {
-      console.log(res);
-      setIsLoggedIn(false);
-    }).catch(err => {
-      console.log(err);
-    });
-  }
 
   function submitForm(event, username, password) {
         event.preventDefault();
@@ -112,7 +102,7 @@ function App() {
 
   return (
     <Router>
-    <Header is_teacher={isTeacher} isLoggedIn={isLoggedIn} username={username} logout={logOut} />
+    <Header isTeacher={isTeacher} isLoggedIn={isLoggedIn} username={username} setLoggedIn={setIsLoggedIn} />
     
       {isLoggedIn ? 
         <> 
