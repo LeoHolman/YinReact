@@ -76,6 +76,19 @@ class App extends React.Component{
     }
   }
 
+  logOut() {
+    fetch('/api/logout', {
+      method: 'get',
+      credentials: 'include', // <--- YOU NEED THIS LINE
+      redirect: "follow"
+    }).then(res => {
+      console.log(res);
+      this.props.history.push('/');
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
   submitForm(event, username, password) {
         event.preventDefault();
         fetch('/api/login/', {
@@ -107,7 +120,7 @@ class App extends React.Component{
   render(){
     return (
       <Router>
-      <Header is_teacher={this.state.is_teacher} isLoggedIn={this.state.isLoggedIn} username={this.state.username} />
+      <Header is_teacher={this.state.is_teacher} isLoggedIn={this.state.isLoggedIn} username={this.state.username} logout={this.logOut} />
       
         {this.state.isLoggedIn ? 
           <> 
@@ -129,7 +142,7 @@ class App extends React.Component{
                 <Route exact path="/SignUp">
                   <SignUp />
                 </Route>
-                <Route exact path="/logout"></Route>
+                {/* <Route exact path="/logout">{this.logOut}</Route> */}
                 <Route exact path="*/explanation">
                   <BaselineExplanation/>
                 </Route>

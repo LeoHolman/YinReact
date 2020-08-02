@@ -27,7 +27,7 @@ class Nav extends Component {
                             {this.props.isLoggedIn ? 
                                 <>
                                     <li><span>Logged in as: {this.props.username}&emsp;|</span></li>
-                                    <Link to="/logout/" id="logout-link"> Logout</Link> 
+                                    <Link to="/logout/" id="logout-link" onClick={this.props.logout}> Logout</Link> 
                                 </>
                             :
                                 <li><Link to="/login/" id="nav-login">Login &emsp;|</Link> </li>
