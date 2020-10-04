@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
 const recordingSchema = new mongoose.Schema({
-    word: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    data: String,
+    userID: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    wordID: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
+    audioFile: {type: mongoose.Schema.Types.ObjectId, ref: 'files'},
+    pitchData: String,
+    isNative: Boolean,
+    createdAt: {type: Date}
 });
 
 const Recording = mongoose.model('Recording', recordingSchema);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const lessonSchema = new mongoose.Schema({
+const sectionSchema = new mongoose.Schema({
     name: String,
     words: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -11,6 +11,6 @@ const lessonSchema = new mongoose.Schema({
     quizSections:[{type:Number}]
 });
 
-const Lesson = mongoose.model('Lesson', lessonSchema);
+const Section = mongoose.model('Section', sectionSchema);
 
-module.exports = Lesson;
+module.exports = Section;

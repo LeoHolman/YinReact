@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
 
 const wordSchema = new mongoose.Schema({
-    audioFile: String, 
-    pinyin: String, 
-    correctTone: [{type: Number}], 
     character: String,
-    native_recording: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'NativeRecording'
-    }
+    pinyin: String, 
+    correctTone: [{type: Number}] 
 });
 
 const Word = mongoose.model('Word', wordSchema);
