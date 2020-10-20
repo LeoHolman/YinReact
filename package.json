@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/LeoHolman/YinReact/issues"
   },
-  "homepage": "https://github.com/LeoHolman/YinReact#readme"
+  "homepage": "https://github.com/LeoHolman/YinReact#readme",
+  "devDependencies": {
+    "prettier": "2.1.2"
+  }
 }
