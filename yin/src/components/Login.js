@@ -1,67 +1,84 @@
-import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import '../css/login.css';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+// import {Link} from 'react-router-dom';
+import "../css/login.css";
 
-class Login extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            fusername: '',
-            fpassword: '',
-            error:""
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleForm = this.handleForm.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
+const Login = ({ submitForm, parentError }) => {
+  const [fUsername, setFUsername] = useState("");
+  const [fPassword, setFPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const user = document.getElementById("username");
+    const pass = document.getElementById("password");
+    if (user) {
+      if (user.value !== "") {
+        setFUsername(user.value);
+      }
+      if (pass.value !== "") {
+        setFPassword(pass.value);
+      }
     }
+  });
 
-    componentDidMount(){
-        var user = document.getElementById("username");
-        var pass = document.getElementById("password");
-        if(user){
-            if (user.value !==""){
-                this.setState({fusername:user.value});
-            } 
-            if(pass.value !==""){
-                this.setState({fpassword:pass.value});
-            }
-        }
+  function handleChange(event, targetFunc) {
+    targetFunc(event.target.value);
+  }
 
+  function handleForm(event, username, password) {
+    event.preventDefault();
+    if (username !== "" && password !== "") {
+      submitForm(event, username, password);
+      setFUsername("");
+      setFPassword("");
+      setError("");
+    } else if (username === "" || password === "") {
+      setError("Please fill out all fields.");
     }
+  }
 
-    handleChange(event, target) {
-        this.setState({[target]: event.target.value});
-    }
+  return (
+    <>
+      <form
+        id="loginform"
+        onSubmit={(e) => handleForm(e, fUsername, fPassword)}
+      >
+        <h3>Login</h3>
+        <label htmlFor="username">Username:</label>
+        <input
+          id="username"
+          name="username"
+          placeholder="username"
+          type="text"
+          value={fUsername}
+          onChange={(e) => handleChange(e, setFUsername)}
+        />
+        <label htmlFor="password">Password:</label>
+        <input
+          id="password"
+          name="password"
+          placeholder="password"
+          type="password"
+          value={fPassword}
+          onChange={(e) => handleChange(e, setFPassword)}
+        />
+        <input id="submit-button" type="submit" value="Submit" />
+        <p>
+          {parentError} {error}
+        </p>
+      </form>
+      {/* <Link to="/SignUp">Don't have an account? Sign up.</Link> */}
+    </>
+  );
+};
 
-    handleForm(event, username, password){
-        event.preventDefault();
-        if(username !== "" && password !==""){
-            this.props.submitForm(event, username, password);
-            this.setState( {fusername: '', fpassword: ''});
-            this.setState({error:""});
-        }else if (username==="" || password ===""){
-            this.setState({'error':'Please fill out all fields.'});
-        }
+Login.propTypes = {
+  submitForm: PropTypes.func.isRequired,
+  parentError: PropTypes.string,
+};
 
-    }
-
-    render() {
-        return(
-            <>
-                <form id="loginform"  onSubmit={e => this.handleForm(e, this.state.fusername, this.state.fpassword )}>
-                    <h3>Login</h3>
-                    <label htmlFor="username">Username:</label>
-                    <input id="username" name="username" placeholder="username" type="text" value ={this.state.fusername} onChange={e => this.handleChange(e,'fusername')} />
-                    <label htmlFor ="password">Password:</label>
-                    <input id="password" name="password" placeholder="password" type="password"  value={this.state.fpassword} onChange={e => this.handleChange(e,'fpassword')}/>
-                    <input id="submit-button" type="submit" value="Submit" />
-                    <p>{this.props.error} {this.state.error}</p>
-
-                </form>
-                {/* <Link to="/SignUp">Don't have an account? Sign up.</Link> */}
-            </>
-        )
-    }
-}
+Login.defaultProps = {
+  parentError: "",
+};
 
 export default Login;

@@ -129,7 +129,7 @@ function App() {
                 <BaselineExplanation/>
               </Route>
               <Route exact path="/*">
-                <Login submitForm={submitForm} error={error} />
+                <Login submitForm={submitForm} parentError={error} />
               </Route>
             </Switch>
           </>
