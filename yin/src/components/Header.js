@@ -33,7 +33,7 @@ const Header = ({ isTeacher, isLoggedIn, username, setLoggedIn }) => {
         />
       </Link>
       <Nav
-        is_teacher={isTeacher}
+        isTeacher={isTeacher}
         isLoggedIn={isLoggedIn}
         username={username}
         logout={logOut}

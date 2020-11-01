@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/LeoHolman/YinReact#readme",
   "devDependencies": {
+    "eslint-plugin-prettier": "^3.1.4",
     "prettier": "2.1.2"
+  },
+  "dependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.15.0"
   }
 }
