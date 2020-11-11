@@ -28,6 +28,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/no-unescaped-entities": [0],
         "no-unused-expressions": [2, {"allowTernary": true}],
-        "prettier/prettier":"error"
+        "prettier/prettier":"error",
+        "no-plusplus": [2, {"allowForLoopAfterthoughts": true}]
     }
 }

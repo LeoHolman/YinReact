@@ -72,7 +72,7 @@ class Activity extends Component{
                             {Boolean(this.props.baseline) === false ?
                                 <Baseline outputFunction={this.props.setBaseline} />
                             :
-                                <Production lesson={this.state.lesson} />
+                                <Production lessonWords={this.state.lesson.words} />
                             }
                         </Route>
                         <Route path={`/lessons/${this.props.match.params.name}/quiz`}>

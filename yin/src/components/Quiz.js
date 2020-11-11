@@ -164,7 +164,7 @@ class Quiz extends Component{
                         ""
                     }
                     {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <Production lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} isQuiz="true"/>
+                        <Production lessonWords={this.props.lesson.words} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} isQuiz="true"/>
                         :
                         ""
                     }
