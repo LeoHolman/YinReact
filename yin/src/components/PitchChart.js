@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3'
 
-class PitchChart extends Component {
-    constructor(props){
-        super(props);
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.drawPitchChart = this.drawPitchChart.bind(this);
-        this.drawPitchCurve = this.drawPitchCurve.bind(this);
-    }
+const PitchChart = ({dataset}) => {
     
-    drawPitchChart(divID, width, height) {
+    function drawPitchChart(divID, width, height) {
         d3.select(`#${divID}`)
             .append('svg')
             .attr('width', width)
@@ -34,7 +28,7 @@ class PitchChart extends Component {
         }
     }
     
-    drawPitchCurve(dataset, width, height, {baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization"} = {}) {
+     function drawPitchCurve(dataset, width, height, {baseline=(height/2), standardDeviation=0, color="red", chartID="__visualization"} = {}) {
         let datarecord = [];
         const parsedData = d3.tsvParse(dataset);
         parsedData.map((__data) => {
@@ -58,30 +52,20 @@ class PitchChart extends Component {
         );
     };
 
-    componentDidMount(){
-        this.drawPitchChart('__visualization', 1100, 500);
-        this.props.dataset.map( (curve) => {
-            return this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
-        });
-    }
-
-    componentDidUpdate(){
-        console.log('PitchChartUpdate');
+    useEffect(() => {
         d3.selectAll("svg").remove();
-        this.drawPitchChart('__visualization', 1100, 500);
-        this.props.dataset.map( (curve) => {
-            return this.drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
+        drawPitchChart('__visualization', 1100, 500);
+        dataset.map( (curve) => {
+            return drawPitchCurve(curve[0], 1100, 500, {color:curve[1]});
         });
-    }
+    })
 
-    render(){
-        return(
-            <>
-                <div id="__visualization"> 
-                </div>
-            </>
-        )
-    }
+    return(
+        <>
+            <div id="__visualization"> 
+            </div>
+        </>
+    )
 }
 
 export default PitchChart;
