@@ -26,6 +26,7 @@ class Activity extends Component{
         try{
             const lesson = await (await fetch(`/api/lessons/${this.props.match.params.name}`)).json()
             this.setState({lesson});
+            console.log(lesson)
         } catch (ex) {
             console.log(ex);
         }
@@ -49,6 +50,7 @@ class Activity extends Component{
     render(){
         return(
             <>
+                {console.log(this.state.lesson.quizSections)}
                 {this.state.lesson.words && 
                     <div>
                         <h3>Lesson: {this.props.match.params.name}</h3>

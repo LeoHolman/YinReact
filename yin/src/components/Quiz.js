@@ -1,188 +1,151 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import ChoiceQuiz from './ChoiceQuiz';
 import Mimicking from './Mimicking';
 import Production from './Production';
 
-class Quiz extends Component{
-    constructor(props){
-        super(props);
-        // console.log(props);
-        this.state = {
-            activity1:{
-                score: null,
-                maxpoints: 0
-            },
-            activity2:{
-                score: null,
-                maxpoints: 0
-            },
-            activity3:{
-                recordings:[]
-            },
-            activity4:{
-                recordings:[]
-            },
-            current: null,
-            // current:0,
-            prev: false,
-            sum_score: 0,
-            sum_total_score: 0
-        }
-        this.captureScore = this.captureScore.bind(this);
-        this.advance = this.advance.bind(this);
-        this.recordScore = this.recordScore.bind(this);
-        this.initialize= this.initialize.bind(this);
-        this.addActivityRecording = this.addActivityRecording.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
+const Quiz = ({activities, lesson, sendScore, stimuli, username}) => {
+    const [activity1, setActivity1] = useState({score: null, maxpoints: 0})
+    const [activity2, setActivity2] = useState({score: null, maxpoints: 0})
+    const [activity3, setActivity3] = useState({recordings: []})
+    const [activity4, setActivity4] = useState({recordings: []})
+    const [current, setCurrent] = useState(null)
+    const [prev, setPrev] = useState(false)
+    const [sumScore, setSumScore] = useState(0)
+    const [sumTotalScore, setSumTotalScore] = useState(0);
 
-    async componentDidMount(){
-        if(this.props.activities){
-            if(this.state.current===null){
-                this.setState({current:this.props.activities[0]});
+    useEffect(() => {
+        if(activities){
+            if(current===null){
+                setCurrent(activities[0])
             }
         }
-        // if(prevState.prev === false){
-        //     console.log('prev state is false')
-        //     const response = await fetch(`/api/quizScores/me/${this.props.lesson.name}`);
-        //     const result = await response.json();
-        //     if(result.length >0){
-        //         this.setState({prev: true});
-        //         console.log('state set');
-        //     }
-        //     console.log('Intialization completed');
-        //     return <></>;
-        // }
-    }
-
-    async initialize(){
-        if(this.props.activities){
-            if(this.state.current===null){
-                this.setState({current:this.props.activities[0]});
+        getQuizData().then( (result) => {
+            // console.log(result);
+                if(result.length >0){
+                    setPrev(true);
+                }
             }
-        }
-        const response = await fetch(`/api/quizScores/me/${this.props.lesson}`);
+        );
+        
+    }, [])
+
+    // useEffect(() => {
+    //     // const activitynum = choices==="2" ? 1 : 2;
+
+    //     advance(current);
+
+    // }, [sumScore])
+
+    async function getQuizData() {
+        const response = await fetch(`/api/quizScores/me/${lesson}`);
         const result = await response.json();
-        if(result.length >0){
-            this.setState({prev: true});
-            console.log('state set');
+        return result;
+    }
+
+    function addActivityRecording(activityNumber, activityRecordings){
+        if (activityNumber == 'activity3'){
+            setActivity3({recordings: activityRecordings})
+        } else if (activityNumber == 'activity4'){
+            setActivity4({recordings: activityRecordings})
         }
-        console.log('Intialization completed');
-        return <></>;
     }
 
-    addActivityRecording(activityNumber, recordings){
-        this.setState({[activityNumber]: {
-            recordings: recordings
-        }});
-    }
-
-    async recordScore(){
-        var sum_score = null;
-        var sum_total_score = null;
-        if(this.includes(1) && this.includes(2)){
-            sum_score = this.state.activity1.score + this.state.activity2.score;
-            sum_total_score = this.state.activity1.max_score + this.state.activity2.max_score;
-        } else if(this.includes(1)){
-            sum_score = this.state.activity1.score;
-            sum_total_score = this.state.activity1.max_score;
-        } else if (this.includes(2)){
-            sum_score = this.state.activity2.score;
-            sum_total_score = this.state.activity2.max_score;
+    async function recordScore(){
+        var sumScore = null;
+        var sumTotalScore = null;
+        if(includes(1) && includes(2)){
+            sumScore = activity1.score + activity2.score;
+            sumTotalScore = activity1.maxScore + activity2.max_score;
+        } else if(includes(1)){
+            sumScore = activity1.score;
+            sumTotalScore = activity1.maxScore;
+        } else if (includes(2)){
+            sumScore = activity2.score;
+            sumTotalScore = activity2.maxScore;
         }
-        this.setState({sum_score:sum_score});
-        this.setState({sum_total_score:sum_total_score});
-        var array1 = this.state.activity3.recordings;
-        var allRecordings = array1.concat(this.state.activity4.recordings);
-        this.props.sendScore(sum_score, sum_total_score, allRecordings);        
+        setSumScore(sumScore);
+        setSumTotalScore(sumTotalScore)
+        var array1 = activity3.recordings;
+        var allRecordings = array1.concat(activity4.recordings);
+        sendScore(sumScore, sumTotalScore, allRecordings);        
     }
 
-    advance(num){
+    //advance is broken, fix advance 
+    function advance(num){
         for (var i=num; i<5; i++){
             var next=i+1;
-            if (this.includes(next)){
-                this.setState({"current":next});
+            if (activities.includes(next)){
+                setCurrent(next)
                 break;
             }else if (next===5){
-                this.setState({"current":5});
-                this.recordScore();
+                setCurrent(5)
+                recordScore();
             }
         }
     }
 
-    captureScore(score, max_score, choices){
+    function captureScore(score, maxScore, choices){
         const activity = choices==="2" ? "activity1" : "activity2";
-        const activitynum = choices==="2" ? 1 : 2;
-        this.setState({[activity]:{
+        if (activity == 'activity1'){
+            setActivity1( {
             "score": score, 
-            "max_score": max_score
-        }}, () => {
-            this.advance(activitynum);
-        });
+            "maxScore": maxScore });
+        } else if (activity == 'activity2'){
+            setActivity2({
+                "score": score, 
+                "maxScore": maxScore });
+        }
+        advance(current)
     }
 
-    includes(num){
-        for(var i=0; i<this.props.activities.length; i++){
-            if(this.props.activities[i]===num){
-                return true;
-            }
+    function includes(num){
+        if(activities.includes(num)){
+            return true;
         }
         return false;
     }
     
-    toPercent(num1,num2){
+    function toPercent(num1,num2){
         var percent= num1/num2 *100;
         return percent;
     }
     //to-do
     //need to lift state up from quizzes to here; when a quiz is finished, score needs to come up, and current needs to be updated to the next activity in this.props.activities (might not be the next sequentially)
 
-    render(){
-        return(
-            <>
-                {/* {this.props.fullLesson && } */}
-                {this.state.prev===true && this.state.current !== 5? 
-                    <>
-                        <h3>You've already taken this quiz.</h3>
-                        <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
-                    </>
-                    :
-                    <>
-                    {this.props.activities && this.includes(1) && this.state.current===1 ?
-                        <ChoiceQuiz stimuli={this.props.stimuli} choices="2" reportScore={this.captureScore} quiz="true"/>
-                        :
-                        ""
-                    }
-                    {this.props.activities && this.includes(2)  && this.state.current===2 ?
-                        <ChoiceQuiz stimuli={this.props.stimuli} choices="4" reportScore={this.captureScore} quiz="true"/>
-                        :
-                        ""
-                    }
-                    {this.props.activities && this.includes(3)  && this.state.current===3 ?
-                        <Mimicking lesson={this.props.lesson} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} quiz="true"/>
-                        :
-                        ""
-                    }
-                    {this.props.activities && this.includes(4)  && this.state.current===4 ?
-                        <Production lessonWords={this.props.lesson.words} username={this.props.username} recordingOutput={this.addActivityRecording} advance = {this.advance} isQuiz="true"/>
-                        :
-                        ""
-                    }
-                    {this.props.activities  && this.state.current===5 ?
-                        <div id="score">
-                        <h3>You've completed this quiz!</h3>
-                        <p>Your combined score on the multiple choice sections is <br/>{this.state.sum_score} out of {this.state.sum_total_score} ({this.toPercent(this.state.sum_score, this.state.sum_total_score)}%). <br />Your teacher will grade your recordings.</p>
-                        </div>
-                        :
-                        ""
-                    }
-                    </>
-                }
-                
-            </>
-        )
+    const blocker = (
+        <>
+            <h3>You've already taken this quiz.</h3>
+            <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
+        </>
+    );
+
+    function activitySwitch(current){
+        if (includes(current)){
+            switch(current){
+                case 1: 
+                    return (<ChoiceQuiz stimuli={stimuli} choices="2" reportScore={captureScore} quiz="true"/>)
+                case 2: 
+                    return (<ChoiceQuiz stimuli={stimuli} choices="4" reportScore={captureScore} quiz="true"/>)
+                case 3: 
+                    return (<Mimicking lesson={lesson} username={username} recordingOutput={addActivityRecording} advance = {advance} quiz="true"/>)
+                case 4: 
+                    return (<Production lessonWords={lesson.words} username={username} recordingOutput={addActivityRecording} advance = {advance} isQuiz="true"/>)
+            }
+        } else if (current == 5){
+            return (<div id="score">
+                <h3>You've completed this quiz!</h3>
+                <p>Your combined score on the multiple choice sections is <br/>{sumScore} out of {sumTotalScore} ({toPercent(sumScore, sumTotalScore)}%). <br />Your teacher will grade your recordings.</p>
+            </div>)
+        }
+        return null;
     }
 
+    return(
+        <>
+            {(prev === true && current !== 5) ? blocker : activitySwitch(current)} 
+        </>
+    )
 }
+
 
 export default Quiz;
