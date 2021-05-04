@@ -1,44 +1,37 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
-class Recorder extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            record: [],
-            button_class: ''
-        }
-        this.addRecordFunction = this.addRecordFunction.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
+const Recorder = ({outputFunction, label}) => {
+    // const [recording, setRecording] = useState(
+        // []
+    // )
+    const [buttonClass, setButtonClass] = useState('')
 
-    componentDidMount(){
+    useEffect(() => {
         const recordButton = document.getElementById("__record_button");
         recordButton.classList.remove('green');
-    }
+    }, [])
 
-    async addRecordFunction() {
-        // self.innerHTML = "Recording";
-        this.record("__record_button")
+    async function addRecordFunction() {
+        record("__record_button")
             .then( blob => {
-                // self.innerHTML = "Done"
-                this.processAudio(blob)
+                processAudio(blob)
                     .then( async (csvDataLocation) => {
                         const start = csvDataLocation.search(/(\*\*\*)/)+5
                         const end = csvDataLocation.search('&&&')
                         var url = csvDataLocation.substring(start,end)
                         url = 'https://yin.rit.edu/' + url;
-                        const data = await this.getDataSet(url);
-                        this.props.outputFunction(data);
+                        const data = await getDataSet(url);
+                        outputFunction(data);
                     })	
             })
     }
 
-    async getDataSet(url){
+    async function getDataSet(url){
         const data = await (await fetch(`${url}`)).text();
         return data;
     }
 
-    record(buttonId) {
+    function record(buttonId) {
         return new Promise(resolve => {
             // var audio;
             // var audioUrl;
@@ -50,9 +43,7 @@ class Recorder extends Component {
                 .then(stream => {
                     const mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.start();
-                    // recordButton.classList.remove("green");
-                    // recordButton.classList.add("red");
-                    this.setState({button_class:'red'});
+                    setButtonClass('red');
     
                     const audioChunks = [];
     
@@ -69,15 +60,13 @@ class Recorder extends Component {
     
                     setTimeout(() => {
                         mediaRecorder.stop();
-                        // recordButton.classList.remove("red");
-                        // recordButton.classList.add("green");
-                        this.setState({button_class:'green'});
+                        setButtonClass('green');
                     }, 2000);
                 });
         })
     };
 
-    async processAudio(audioBlob) {
+    async function processAudio(audioBlob) {
         return new Promise(resolve => {
             // var rawResponse;
             // var csvDataLocation;
@@ -90,13 +79,11 @@ class Recorder extends Component {
         });
     }
 
-    render() {
-        return(
-            <>
-                <button onClick={this.addRecordFunction} className={this.state.button_class} id="__record_button">{this.props.label}</button>
-            </>
-        )
-    }
+    return(
+        <>
+            <button onClick={addRecordFunction} className={buttonClass} id="__record_button">{label}</button>
+        </>
+    )
 }
 
 export default Recorder;
