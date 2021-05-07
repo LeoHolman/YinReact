@@ -6,6 +6,7 @@ const Recorder = ({outputFunction, label}) => {
         // []
     // )
     const [buttonClass, setButtonClass] = useState('')
+    const [data, setData] = useState([])
 
     useEffect(() => {
         const recordButton = document.getElementById("__record_button");
@@ -15,30 +16,34 @@ const Recorder = ({outputFunction, label}) => {
     var voice = new Wad({source: 'mic'});
     var tuner = new Wad.Poly();
     var myReq;
-    var count = 0;
     tuner.setVolume(0);
     tuner.add(voice);
-    function call_pitch(count){
+    function call_pitch(){
+            var new_data = []
             voice.play();
             tuner.updatePitch();
             setButtonClass('red');
             var logPitch = function(){
                 console.log(tuner.pitch)
+                new_data.push(tuner.pitch)
                 myReq = requestAnimationFrame(logPitch)
             }
             logPitch();
+            return new_data
     }
     function stop_pitch(){
         tuner.stopUpdatingPitch();
     }
 
     function addRecordFunction(){
-        myReq = call_pitch();
+        var data = call_pitch();
         setTimeout(() => {
             console.log('Stop pitch called')
             tuner.stopUpdatingPitch();
             cancelAnimationFrame(myReq)
             setButtonClass('green');
+            console.log(data)
+            outputFunction(data)
         }, 2000);
     }
 
