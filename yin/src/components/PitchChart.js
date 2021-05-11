@@ -39,7 +39,13 @@ const PitchChart = ({ dataset }) => {
   ) {
     const datarecord = [];
     const parsedData = d3.tsvParse(rawDataset);
-    parsedData.map((__data) => {
+    console.log(rawDataset);
+    parsedData.filter((__data) => {
+        if ((__data.frequency) === undefined){
+            return false;
+        }
+        return true;
+    }).map((__data) => {
       // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);
       // if(isNaN(zScore)){
       // 	zScore = 0;

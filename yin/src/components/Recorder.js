@@ -18,14 +18,15 @@ const Recorder = ({outputFunction, label}) => {
     var myReq;
     tuner.setVolume(0);
     tuner.add(voice);
-    function call_pitch(){
+    function call_pitch(timeStart){
             var new_data = []
             voice.play();
             tuner.updatePitch();
             setButtonClass('red');
             var logPitch = function(){
                 console.log(tuner.pitch)
-                new_data.push(tuner.pitch)
+                var currTime = new Date().getTime();
+                new_data.push({time: (currTime - timeStart) / 1000, frequency: tuner.pitch})
                 myReq = requestAnimationFrame(logPitch)
             }
             logPitch();
@@ -36,15 +37,31 @@ const Recorder = ({outputFunction, label}) => {
     }
 
     function addRecordFunction(){
-        var data = call_pitch();
+        var timeStart = new Date().getTime();
+        var data = call_pitch(timeStart);
         setTimeout(() => {
             console.log('Stop pitch called')
             tuner.stopUpdatingPitch();
             cancelAnimationFrame(myReq)
             setButtonClass('green');
-            console.log(data)
-            outputFunction(data)
+            console.log(`Data: ${data}`);
+            let tsvData = convertArrayTSV(data);
+            console.log(`Formatted: ${tsvData}`);
+            outputFunction(tsvData)
         }, 2000);
+    }
+
+    function convertArrayTSV(arr){
+        let columnDelim = '\t';
+        let lineDelim = '\n';
+        let label = ['time', 'frequency']
+        let output = '' + columnDelim + label + columnDelim + lineDelim; 
+
+        arr.forEach( (item) => {
+            let newLine = item['time'] + columnDelim + item['frequency'] + columnDelim + lineDelim;
+            output += newLine
+        })
+        return output;
     }
 
 
