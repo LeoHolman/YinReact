@@ -13,7 +13,22 @@ const Recorder = ({outputFunction, label}) => {
         recordButton.classList.remove('green');
     }, [])
 
-    var voice = new Wad({source: 'mic'});
+    var voice = new Wad({
+        source: 'mic',
+        filter: [{
+            type: 'highpass',
+            frequency: 50
+        },
+        {   type: 'lowpass',
+            frequency: 1000
+        }],
+        averaging: 0.5,
+        recorder: {
+            options: {
+                audioBitsPerSecond : 5120000,
+            }
+        }
+    });
     var tuner = new Wad.Poly();
     var myReq;
     tuner.setVolume(0);
@@ -23,10 +38,11 @@ const Recorder = ({outputFunction, label}) => {
             voice.play();
             tuner.updatePitch();
             setButtonClass('red');
-            var logPitch = function(){
-                console.log(tuner.pitch)
+            var logPitch = function(timestamp){
+                // console.log(tuner.pitch)
                 var currTime = new Date().getTime();
                 new_data.push({time: (currTime - timeStart) / 1000, frequency: tuner.pitch})
+                // new_data.push({time: timestamp/1000, frequency: tuner.pitch})
                 myReq = requestAnimationFrame(logPitch)
             }
             logPitch();
@@ -34,19 +50,22 @@ const Recorder = ({outputFunction, label}) => {
     }
     function stop_pitch(){
         tuner.stopUpdatingPitch();
+        cancelAnimationFrame(myReq)
+        setButtonClass('green');
     }
 
     function addRecordFunction(){
         var timeStart = new Date().getTime();
         var data = call_pitch(timeStart);
         setTimeout(() => {
-            console.log('Stop pitch called')
-            tuner.stopUpdatingPitch();
-            cancelAnimationFrame(myReq)
-            setButtonClass('green');
-            console.log(`Data: ${data}`);
-            let tsvData = convertArrayTSV(data);
-            console.log(`Formatted: ${tsvData}`);
+            stop_pitch();
+            let definedData = data.filter((__data) => {
+                if ((__data.frequency) === undefined){
+                    return false;
+                }
+                return true;
+            });
+            let tsvData = convertArrayTSV(definedData);
             outputFunction(tsvData)
         }, 2000);
     }
@@ -55,7 +74,7 @@ const Recorder = ({outputFunction, label}) => {
         let columnDelim = '\t';
         let lineDelim = '\n';
         let label = ['time', 'frequency']
-        let output = '' + columnDelim + label + columnDelim + lineDelim; 
+        let output = '' + label.join(columnDelim) + columnDelim + lineDelim; 
 
         arr.forEach( (item) => {
             let newLine = item['time'] + columnDelim + item['frequency'] + columnDelim + lineDelim;

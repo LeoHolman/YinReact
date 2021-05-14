@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 import PropTypes from "prop-types";
+import * as Stats from '../helper/stats'
 
-const PitchChart = ({ dataset }) => {
+const PitchChart = ({ dataset, baseline }) => {
   function drawPitchChart(divID, width, height) {
     d3.select(`#${divID}`)
       .append("svg")
@@ -35,26 +36,25 @@ const PitchChart = ({ dataset }) => {
     rawDataset,
     width,
     height,
-    { color = "red", chartID = "__visualization" } = {}
+    { color = "red", chartID = "__visualization" } = {},
+    baseline=height/2
   ) {
     const datarecord = [];
     const parsedData = d3.tsvParse(rawDataset);
-    console.log(rawDataset);
-    parsedData.filter((__data) => {
-        if ((__data.frequency) === undefined){
-            return false;
-        }
-        return true;
-    }).map((__data) => {
-      // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);
-      // if(isNaN(zScore)){
-      // 	zScore = 0;
-      // }
+    // console.log(`At pitch chart: ${rawDataset}`);
+    let pitchData = parsedData.map((row) => Number(row.frequency))
+    let mean = Stats.calcMean(pitchData)
+    let standardDeviation = Stats.calcStandardDeviation(mean, pitchData)
+    parsedData.map((__data) => {
+      let zScore = Stats.calcZScore(baseline,__data.frequency,standardDeviation);
+      if(isNaN(zScore)){
+      	zScore = 0;
+      }
       const point = { time: __data.time, frequency: __data.frequency };
       datarecord.push(point);
       // var zScore = 0;
       const x = __data.time * (width / 2);
-      const y = height - (height / 2 + (__data.frequency - height / 2));
+      const y = height - ((height / 2 + (__data.frequency - height / 2)));
       return d3
         .select(`#${chartID} svg`)
         .append("circle")
