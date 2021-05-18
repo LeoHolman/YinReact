@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Wad from 'web-audio-daw';
+// import Wad from 'web-audio-daw';
+// import * as p5 from 'p5';
+import fft from 'fft-js'; 
 
 const Recorder = ({outputFunction, label}) => {
     // const [recording, setRecording] = useState(
@@ -13,60 +15,53 @@ const Recorder = ({outputFunction, label}) => {
         recordButton.classList.remove('green');
     }, [])
 
-    var voice = new Wad({
-        source: 'mic',
-        filter: [{
-            type: 'highpass',
-            frequency: 50
-        },
-        {   type: 'lowpass',
-            frequency: 1000
-        }],
-        averaging: 0.5,
-        recorder: {
-            options: {
-                audioBitsPerSecond : 5120000,
+    const audioContext = new window.AudioContext();
+    const analyser = audioContext.createAnalyser();
+    
+    navigator.getUserMedia(
+      { audio: true },
+      stream => {
+        audioContext.createMediaStreamSource(stream).connect(analyser);
+    
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    
+        analyser.getByteFrequencyData(dataArray);
+      },
+      err => console.log(err)
+    );
+
+    function getLoudestFrequency() {
+        var nyquist = 22050
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray)
+        console.log(dataArray);
+        var spectrum = fft.fft(dataArray) // array of amplitudes in bins
+        var numberOfBins = spectrum.length;
+        var maxAmp = 0;
+        var largestBin;
+    
+        for (var i = 0; i < numberOfBins; i++) {
+            var thisAmp = spectrum[i]; // amplitude of current bin
+            if (thisAmp > maxAmp) {
+                maxAmp = thisAmp;
+                largestBin = i;
             }
         }
-    });
-    var tuner = new Wad.Poly();
-    var myReq;
-    tuner.setVolume(0);
-    tuner.add(voice);
-    function call_pitch(timeStart){
-            var new_data = []
-            voice.play();
-            tuner.updatePitch();
-            setButtonClass('red');
-            var logPitch = function(timestamp){
-                // console.log(tuner.pitch)
-                var currTime = new Date().getTime();
-                new_data.push({time: (currTime - timeStart) / 1000, frequency: tuner.pitch})
-                // new_data.push({time: timestamp/1000, frequency: tuner.pitch})
-                myReq = requestAnimationFrame(logPitch)
-            }
-            logPitch();
-            return new_data
-    }
-    function stop_pitch(){
-        tuner.stopUpdatingPitch();
-        cancelAnimationFrame(myReq)
-        setButtonClass('green');
+    
+        var loudestFreq = largestBin * (nyquist / numberOfBins);
+        return loudestFreq;
     }
 
     function addRecordFunction(){
         var timeStart = new Date().getTime();
-        var data = call_pitch(timeStart);
+        var intervalID = setInterval(()=> {
+            var pitch = getLoudestFrequency(); 
+            console.log(pitch)
+        }, 500);
         setTimeout(() => {
-            stop_pitch();
-            let definedData = data.filter((__data) => {
-                if ((__data.frequency) === undefined){
-                    return false;
-                }
-                return true;
-            });
-            let tsvData = convertArrayTSV(definedData);
-            outputFunction(tsvData)
+            // let tsvData = convertArrayTSV(definedData);
+            // outputFunction(tsvData)
+            clearInterval(intervalID);
         }, 2000);
     }
 
@@ -83,6 +78,52 @@ const Recorder = ({outputFunction, label}) => {
         return output;
     }
 
+// P5 JS NEW INPUT ~~~~~~~~~~~~~~~~~~~~~~~!
+    // let x = 0;
+
+    // function setup() {
+    //     p5.noCanvas()
+    //     p5.noFill();
+
+    //     mic = new p5.AudioIn();
+    //     mic.start();
+    //     fft = new p5.FFT();
+    //     fft.setInput(mic);
+    // }
+    
+    // function getLoudestFrequency() {
+    //     var nyquist = p5.sampleRate() / 2; // 22050
+    //     var spectrum = fft.analyze(); // array of amplitudes in bins
+    //     var numberOfBins = spectrum.length;
+    //     var maxAmp = 0;
+    //     var largestBin;
+    
+    //     for (var i = 0; i < numberOfBins; i++) {
+    //         var thisAmp = spectrum[i]; // amplitude of current bin
+    //         if (thisAmp > maxAmp) {
+    //             maxAmp = thisAmp;
+    //             largestBin = i;
+    //         }
+    //     }
+    
+    //     var loudestFreq = largestBin * (nyquist / numberOfBins);
+    //     return loudestFreq;
+    // }
+    
+    // function draw() {
+    //   background(220);
+    //   var pitch = getLoudestFrequency();
+    //   console.log(pitch);
+      
+    //   ellipse(x, pitch, 5, 5)
+    //   x += 1
+    //   if (x > 710){
+    //     x = 0;
+    //   }
+    // }
+
+    
+    
 
     // async function addRecordFunction() {
     //     record("__record_button")
