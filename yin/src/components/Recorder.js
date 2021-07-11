@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { MediaRecorder, register } from 'extendable-media-recorder';
+import { connect } from 'extendable-media-recorder-wav-encoder';
+
 
 class Recorder extends Component {
     constructor(props){
@@ -18,16 +21,18 @@ class Recorder extends Component {
 
     async addRecordFunction() {
         // self.innerHTML = "Recording";
+        await register(await connect());
         this.record("__record_button")
             .then( blob => {
                 // self.innerHTML = "Done"
                 this.processAudio(blob)
-                    .then( async (csvDataLocation) => {
-                        const start = csvDataLocation.search(/(\*\*\*)/)+5
-                        const end = csvDataLocation.search('&&&')
-                        var url = csvDataLocation.substring(start,end)
-                        url = 'https://yin.rit.edu/' + url;
-                        const data = await this.getDataSet(url);
+                    .then( async (data) => {
+                        // const start = csvDataLocation.search(/(\*\*\*)/)+5
+                        // const end = csvDataLocation.search('&&&')
+                        // var url = csvDataLocation.substring(start,end)
+                        // url = 'https://yin.rit.edu/' + url;
+                        // const data = await this.getDataSet(url);
+                        console.log(data);
                         this.props.outputFunction(data);
                     })	
             })
@@ -48,7 +53,7 @@ class Recorder extends Component {
                     audio: true
                 })
                 .then(stream => {
-                    const mediaRecorder = new MediaRecorder(stream);
+                    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/wav'});
                     mediaRecorder.start();
                     // recordButton.classList.remove("green");
                     // recordButton.classList.add("red");
@@ -62,7 +67,7 @@ class Recorder extends Component {
     
                     mediaRecorder.addEventListener("stop", () => {
                         audioBlob = new Blob(audioChunks, {
-                            type: 'audio/wav; codecs=MS_PCM'
+                            type: 'audio/wav'
                         });
                         resolve(audioBlob);
                     });
@@ -82,11 +87,18 @@ class Recorder extends Component {
             // var rawResponse;
             // var csvDataLocation;
             var formData = new FormData();
-            formData.append("audioData", audioBlob);
-            fetch('https://yin.rit.edu/pages/audioProcessing.php', {
+            formData.append("file", audioBlob, "recorder.wav");
+            fetch('http://localhost:8080/extract_pitch/wav', {
                 method: 'POST', 
                 body: formData,
-            }).then((res) => resolve(res.text()));
+            })
+                .then((res) => {
+                    
+                    resolve(res.text())
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         });
     }
 
