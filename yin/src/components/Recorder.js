@@ -27,13 +27,14 @@ class Recorder extends Component {
                 // self.innerHTML = "Done"
                 this.processAudio(blob)
                     .then( async (data) => {
-                        // const start = csvDataLocation.search(/(\*\*\*)/)+5
-                        // const end = csvDataLocation.search('&&&')
-                        // var url = csvDataLocation.substring(start,end)
-                        // url = 'https://yin.rit.edu/' + url;
-                        // const data = await this.getDataSet(url);
-                        console.log(data);
-                        this.props.outputFunction(data);
+                        // Remove useless header information
+                        let lines = data.split('\n');
+                        lines.splice(0,3);
+                        // Add useful column labels
+                        lines.unshift(['time\tfrequency']);
+                        const spliced_data = lines.join('\n');
+                        console.log(spliced_data);
+                        this.props.outputFunction(spliced_data);
                     })	
             })
     }
