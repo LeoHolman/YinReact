@@ -1,64 +1,64 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MediaRecorder, register } from 'extendable-media-recorder';
 import { connect } from 'extendable-media-recorder-wav-encoder';
 
+let mediaRecorder = '';
+function Recorder(props) {
+    const [recording, setRecording] = useState([]);
+    const [buttonClass, setButtonClass] = useState('');
+    // const [mediaRecorder, setMediaRecorder] = useState('');
 
-class Recorder extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            record: [],
-            button_class: ''
-        }
-        this.addRecordFunction = this.addRecordFunction.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
-
-    componentDidMount(){
+    useEffect(() => {
         const recordButton = document.getElementById("__record_button");
-        recordButton.classList.remove('green');
-    }
+        connect()
+        .then(register)
+        .then(() => {
+            navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: false
+            })
+            .then((stream) => {
+                console.log(mediaRecorder);
+                if (mediaRecorder === ''){
+                    // setMediaRecorder(new MediaRecorder(stream, { mimeType: 'audio/wav'}));
+                    mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
+                    console.log(mediaRecorder);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                console.log(mediaRecorder);
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+}, []);
 
-    async addRecordFunction() {
-        // self.innerHTML = "Recording";
-        await register(await connect());
-        this.record("__record_button")
-            .then( blob => {
-                // self.innerHTML = "Done"
-                this.processAudio(blob)
-                    .then( async (data) => {
-                        // Remove useless header information
-                        let lines = data.split('\n');
-                        lines.splice(0,3);
-                        // Add useful column labels
-                        lines.unshift(['time\tfrequency']);
-                        const spliced_data = lines.join('\n');
-                        console.log(spliced_data);
-                        this.props.outputFunction(spliced_data);
+async function addRecordFunction() {
+    await register(await connect());
+    record("__record_button")
+        .then( blob => {
+            processAudio(blob)
+                .then( async (data) => {
+                    // Remove useless header information
+                    let lines = data.split('\n');
+                    lines.splice(0,3);
+                    // Add useful column labels
+                    lines.unshift(['time\tfrequency']);
+                    const splicedData = lines.join('\n');
+                    console.log(splicedData);
+                    setRecording(splicedData) 
+                        props.outputFunction(splicedData);
                     })	
             })
     }
 
-    async getDataSet(url){
-        const data = await (await fetch(`${url}`)).text();
-        return data;
-    }
-
-    record(buttonId) {
+    function record(buttonId) {
         return new Promise(resolve => {
-            // var audio;
-            // var audioUrl;
             var audioBlob;
-            // const recordButton = document.getElementById(buttonId);
-            navigator.mediaDevices.getUserMedia({
-                    audio: true
-                })
-                .then(stream => {
-                    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/wav'});
                     mediaRecorder.start();
-                    // recordButton.classList.remove("green");
-                    // recordButton.classList.add("red");
-                    this.setState({button_class:'red'});
+                    setButtonClass('red');
     
                     const audioChunks = [];
     
@@ -75,18 +75,16 @@ class Recorder extends Component {
     
                     setTimeout(() => {
                         mediaRecorder.stop();
+                        mediaRecorder = undefined;
                         // recordButton.classList.remove("red");
                         // recordButton.classList.add("green");
-                        this.setState({button_class:'green'});
+                        setButtonClass('green');
                     }, 2000);
                 });
-        })
     };
 
-    async processAudio(audioBlob) {
+    async function processAudio(audioBlob) {
         return new Promise(resolve => {
-            // var rawResponse;
-            // var csvDataLocation;
             var formData = new FormData();
             formData.append("file", audioBlob, "recorder.wav");
             fetch('http://localhost:8080/extract_pitch/wav', {
@@ -94,7 +92,6 @@ class Recorder extends Component {
                 body: formData,
             })
                 .then((res) => {
-                    
                     resolve(res.text())
                 })
                 .catch((err) => {
@@ -103,13 +100,9 @@ class Recorder extends Component {
         });
     }
 
-    render() {
-        return(
-            <>
-                <button onClick={this.addRecordFunction} className={this.state.button_class} id="__record_button">{this.props.label}</button>
-            </>
-        )
-    }
+    return(
+        <button onClick={addRecordFunction} className={buttonClass} id="__record_button">{props.label}</button>
+    )
 }
 
 export default Recorder;
