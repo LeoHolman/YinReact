@@ -1,23 +1,10 @@
 import React, { useState } from "react";
-import { MediaRecorder, register } from "extendable-media-recorder";
-import { connect } from "extendable-media-recorder-wav-encoder";
+import { MediaRecorder } from "extendable-media-recorder";
 import PropTypes from "prop-types";
+import registerMediaRecorder from "../helper/recorderService";
 
 function Recorder({ label, outputFunction }) {
-  //   const [recording, setRecording] = useState([]);
   const [buttonClass, setButtonClass] = useState("");
-  const [isRegistered, setIsRegistered] = useState(false);
-
-  //   useEffect(() => {
-  //     const recordButton = document.getElementById("__record_button");
-  //   }, []);
-
-  async function registerMediaRecorder() {
-    if (!isRegistered) {
-      await register(await connect());
-      setIsRegistered(true);
-    }
-  }
 
   async function processAudio(audioBlob) {
     return new Promise((resolve) => {
@@ -29,9 +16,6 @@ function Recorder({ label, outputFunction }) {
       }).then((res) => {
         resolve(res.text());
       });
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     });
   }
 
@@ -45,11 +29,7 @@ function Recorder({ label, outputFunction }) {
           video: false,
         })
         .then((stream) => {
-          //   console.log(mediaRecorder);
-
-          // setMediaRecorder(new MediaRecorder(stream, { mimeType: 'audio/wav'}));
           mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/wav" });
-          //   console.log(mediaRecorder);
           mediaRecorder.start();
           setButtonClass("red");
           const audioChunks = [];
@@ -68,16 +48,9 @@ function Recorder({ label, outputFunction }) {
           setTimeout(() => {
             mediaRecorder.stop();
             mediaRecorder = undefined;
-            // recordButton.classList.remove("red");
-            // recordButton.classList.add("green");
             setButtonClass("green");
           }, 2000);
         });
-      // .catch((err) => {
-      // //   console.log(err);
-      // //   console.log(mediaRecorder);
-      //     throw(err);
-      // });
     });
   }
 
@@ -91,8 +64,6 @@ function Recorder({ label, outputFunction }) {
         // Add useful column labels
         lines.unshift(["time\tfrequency"]);
         const splicedData = lines.join("\n");
-        // console.log(splicedData);
-        // setRecording(splicedData);
         outputFunction(splicedData);
       });
     });
