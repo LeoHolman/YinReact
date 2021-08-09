@@ -1,20 +1,27 @@
-import React, { Component } from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 
+const FeedbackBox = ({ status, heading, content }) => {
+  return (
+    <div id="feedback-box" className={`feedbackBox ${status}`}>
+      <>
+        <h3>{heading}</h3>
+        <p>{content}</p>
+      </>
+    </div>
+  );
+};
 
-class FeedbackBox extends Component{
-render(){
-    return(
-        <div id ="feedback-box" className={`feedbackBox ${this.props.status}`}>
-            <> 
-                <h3>{this.props.heading}</h3>
-                <p>{this.props.content}</p>
-            </>
-                
+FeedbackBox.propTypes = {
+  status: PropTypes.string.isRequired,
+  heading: PropTypes.string,
+  content: PropTypes.string,
+};
 
-        </div>
-    )
-}
-
-}
+FeedbackBox.defaultProps = {
+  heading: "Something went wrong...",
+  content:
+    "Sorry about that. If this persists, send us a note at yinwebapp@gmail.com",
+};
 
 export default FeedbackBox;

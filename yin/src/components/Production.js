@@ -1,114 +1,117 @@
-import React, { Component } from 'react'
-import Recorder from './Recorder';
-import PitchChart from './PitchChart';
-import AudioPlayer from './AudioPlayer';
-import {Link} from 'react-router-dom';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import Recorder from "./Recorder";
+import PitchChart from "./PitchChart";
+import AudioPlayer from "./AudioPlayer";
 
+const Production = ({ lessonWords, recordingOutput, isQuiz, advance }) => {
+  const [record, setRecord] = useState([]);
+  const [userDataset, setUserDataset] = useState("");
+  const [currentStimuli, setCurrentStimuli] = useState(0);
+  const [allowAdvance, setAllowAdvance] = useState(false);
 
-class Production extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            record: [],
-            userDataset: '',
-            currentStimuli: 0,
-            allowAdvance: false
-        }
-        this.passDataToState = this.passDataToState.bind(this);
-        this.nextWord = this.nextWord.bind(this);
+  async function uploadRecording(dataset) {
+    // TODO Attach username to recording upload
+    const response = await (
+      await fetch("/api/recordings/add/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ dataset }),
+      })
+    ).json();
+    const recordingID = response.recording;
+    const updatedRecord = [...record, recordingID];
+    setRecord(updatedRecord);
+  }
+
+  function passDataToState(dataset) {
+    setUserDataset(dataset);
+    setAllowAdvance(true);
+    if (isQuiz) {
+      uploadRecording(dataset);
     }
+  }
 
-    async uploadRecording(dataset, username){
-        const response = await(await fetch('/api/recordings/add/', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({dataset: dataset})
-        })).json();
-        console.dir(response);
-        const recordingID = response.recording;
-        const updatedRecord = [
-            ...this.state.record,
-            recordingID
-        ];
-        this.setState({record: updatedRecord});
+  function nextWord() {
+    if (allowAdvance) {
+      setCurrentStimuli(currentStimuli + 1);
+      setUserDataset("");
+      setAllowAdvance(false);
+      if (isQuiz) {
+        uploadRecording(userDataset);
+        recordingOutput("activity4", record);
+      }
+    } else {
+      // TODO Add error message, notify user recording was not completed
     }
+  }
 
-    passDataToState(dataset){
-        this.setState({
-            userDataset: dataset,
-            allowAdvance: true
-        });
-        if(this.props.lesson.is_quiz){
-            this.uploadRecording(dataset, this.props.username);
-        }
-    }
+  return (
+    <>
+      {lessonWords && lessonWords[currentStimuli] ? (
+        <>
+          {lessonWords[currentStimuli] && (
+            <p className="stimuliCharacter">
+              {lessonWords[currentStimuli].character}
+            </p>
+          )}
 
-    nextWord(){
-        if(this.state.allowAdvance){
-            this.setState({
-                currentStimuli: this.state.currentStimuli + 1,
-                userDataset: '',
-                allowAdvance: false
-            });
-            if(this.props.lesson.is_quiz){
-                this.uploadRecording(this.state.userDataset);
-                this.props.recordingOutput('activity4', this.state.record);
+          {allowAdvance ? (
+            <AudioPlayer
+              audioFile={`/${lessonWords[currentStimuli].audioFile}`}
+            />
+          ) : (
+            <></>
+          )}
+          <PitchChart
+            dataset={
+              allowAdvance
+                ? [
+                    [
+                      String(lessonWords[currentStimuli].native_recording.data),
+                      "blue",
+                    ],
+                    [String(userDataset), "red"],
+                  ]
+                : [[String(userDataset), "red"]]
             }
-        } else {
-            console.log('Please complete the recording first!');
-        }
-    }
-
-    render(){
-        return(
+          />
+          <Recorder label="Record" outputFunction={passDataToState} />
+          <button onClick={nextWord} type="button">
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+            Next{" "}
+            {lessonWords.length - 1 === currentStimuli ? "Section" : "Word"}
+          </button>
+        </>
+      ) : (
+        <>
+          {isQuiz === "true" ? (
             <>
-                {this.props.lesson && this.props.lesson.words[this.state.currentStimuli]  ?
-                    <>
-                        { this.props.lesson.words[this.state.currentStimuli] && <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>}
-
-                        {this.state.allowAdvance ?
-                            <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
-                        :
-                            <></>
-                        }
-                        <PitchChart 
-                            dataset={this.state.allowAdvance ? [
-                                [String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],
-                                [String(this.state.userDataset), 'red']
-                            ]
-                            :
-                            [
-                                [String(this.state.userDataset), 'red']
-                            ]
-                        }
-                        />
-                        <Recorder label="Record" outputFunction={this.passDataToState} />
-                        <button onClick={this.nextWord}>Next {this.props.lesson.words.length - 1 === this.state.currentStimuli ?
-                            "Section"
-                            :
-                            "Word"
-                        }</button>
-                    </>
-                    :
-                    <>
-                    {this.props.quiz==="true" ?
-                            <>
-                                <p>You've completed this section of the quiz.</p>
-                                <button onClick={this.props.advance(4)}>Continue</button>
-                            </>
-                        :
-                            <div id="score">
-                                <h2>Activity complete!</h2>
-                                <Link to="../">Return to Lessons & Quizzes</Link>
-                            </div>
-                    }
-                    </>
-                }
+              <p>You've completed section of the quiz.</p>
+              <button onClick={advance(4)} type="button">
+                Continue
+              </button>
             </>
-        )
-    }
-}
+          ) : (
+            <div id="score">
+              <h2>Activity complete!</h2>
+              <Link to="../">Return to Lessons & Quizzes</Link>
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+Production.propTypes = {
+  lessonWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  recordingOutput: PropTypes.func.isRequired,
+  isQuiz: PropTypes.bool.isRequired,
+  advance: PropTypes.func.isRequired,
+};
 
 export default Production;

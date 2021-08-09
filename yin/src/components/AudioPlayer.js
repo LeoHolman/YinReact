@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 
-class AudioPlayer extends Component {
+const AudioPlayer = ({ audioFile }) => {
+  useEffect(() => {
+    document.getElementById("audioPlayer").load();
+  }, []);
 
-    componentDidUpdate(prevProps){
-        if(prevProps.audioFile !== this.props.audioFile){
-            document.getElementById('audioPlayer').load();
-        }
-    }
+  return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    <audio className="stimuliAudio" id="audioPlayer" controls>
+      <source src={audioFile} />
+      The audio cannot play.
+    </audio>
+  );
+};
 
-    render(){
-        return(
-            <audio className="stimuliAudio" id="audioPlayer" controls > 
-                <source src={this.props.audioFile} />
-                The audio cannot play.
-            </audio>
-        )
-    }
-}
+AudioPlayer.propTypes = {
+  audioFile: PropTypes.string.isRequired,
+};
 
 export default AudioPlayer;

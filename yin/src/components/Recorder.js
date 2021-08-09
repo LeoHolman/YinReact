@@ -1,102 +1,85 @@
-import React, { Component } from 'react';
+import React, { useState } from "react";
+import { MediaRecorder } from "extendable-media-recorder";
+import PropTypes from "prop-types";
+import registerMediaRecorder from "../helper/recorderService";
 
-class Recorder extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            record: [],
-            button_class: ''
-        }
-        this.addRecordFunction = this.addRecordFunction.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
+function Recorder({ label, outputFunction }) {
+  const [buttonClass, setButtonClass] = useState("");
 
-    componentDidMount(){
-        const recordButton = document.getElementById("__record_button");
-        recordButton.classList.remove('green');
-    }
+  async function processAudio(audioBlob) {
+    return new Promise(async (resolve) => {
+      const formData = new FormData();
+      formData.append("file", audioBlob, "recorder.wav");
+      const result = await fetch("http://localhost:8080/extract_pitch/wav", {
+        method: "POST",
+        body: formData,
+      });
+      resolve(result.text());
+    });
+  }
 
-    async addRecordFunction() {
-        // self.innerHTML = "Recording";
-        this.record("__record_button")
-            .then( blob => {
-                // self.innerHTML = "Done"
-                this.processAudio(blob)
-                    .then( async (csvDataLocation) => {
-                        const start = csvDataLocation.search(/(\*\*\*)/)+5
-                        const end = csvDataLocation.search('&&&')
-                        var url = csvDataLocation.substring(start,end)
-                        url = 'https://yin.rit.edu/' + url;
-                        const data = await this.getDataSet(url);
-                        this.props.outputFunction(data);
-                    })	
-            })
-    }
+  async function record() {
+    return new Promise(async (resolve) => {
+      let audioBlob;
+      let mediaRecorder;
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false,
+      });
 
-    async getDataSet(url){
-        const data = await (await fetch(`${url}`)).text();
-        return data;
-    }
+      mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/wav" });
+      mediaRecorder.start();
+      setButtonClass("red");
+      const audioChunks = [];
 
-    record(buttonId) {
-        return new Promise(resolve => {
-            // var audio;
-            // var audioUrl;
-            var audioBlob;
-            // const recordButton = document.getElementById(buttonId);
-            navigator.mediaDevices.getUserMedia({
-                    audio: true
-                })
-                .then(stream => {
-                    const mediaRecorder = new MediaRecorder(stream);
-                    mediaRecorder.start();
-                    // recordButton.classList.remove("green");
-                    // recordButton.classList.add("red");
-                    this.setState({button_class:'red'});
-    
-                    const audioChunks = [];
-    
-                    mediaRecorder.addEventListener("dataavailable", event => {
-                        audioChunks.push(event.data);
-                    });
-    
-                    mediaRecorder.addEventListener("stop", () => {
-                        audioBlob = new Blob(audioChunks, {
-                            type: 'audio/wav; codecs=MS_PCM'
-                        });
-                        resolve(audioBlob);
-                    });
-    
-                    setTimeout(() => {
-                        mediaRecorder.stop();
-                        // recordButton.classList.remove("red");
-                        // recordButton.classList.add("green");
-                        this.setState({button_class:'green'});
-                    }, 2000);
-                });
-        })
-    };
+      mediaRecorder.addEventListener("dataavailable", (event) => {
+        audioChunks.push(event.data);
+      });
 
-    async processAudio(audioBlob) {
-        return new Promise(resolve => {
-            // var rawResponse;
-            // var csvDataLocation;
-            var formData = new FormData();
-            formData.append("audioData", audioBlob);
-            fetch('https://yin.rit.edu/pages/audioProcessing.php', {
-                method: 'POST', 
-                body: formData,
-            }).then((res) => resolve(res.text()));
+      mediaRecorder.addEventListener("stop", () => {
+        audioBlob = new Blob(audioChunks, {
+          type: "audio/wav",
         });
-    }
+        resolve(audioBlob);
+      });
 
-    render() {
-        return(
-            <>
-                <button onClick={this.addRecordFunction} className={this.state.button_class} id="__record_button">{this.props.label}</button>
-            </>
-        )
-    }
+      setTimeout(() => {
+        mediaRecorder.stop();
+        mediaRecorder = undefined;
+        setButtonClass("green");
+      }, 2000);
+    });
+  }
+
+  async function addRecordFunction() {
+    await registerMediaRecorder();
+    const blob = await record("__record_button");
+    const data = await processAudio(blob);
+
+    // Remove useless header information
+    const lines = data.split("\n");
+    lines.splice(0, 3);
+    // Add useful column labels
+    lines.unshift(["time\tfrequency"]);
+    const splicedData = lines.join("\n");
+    outputFunction(splicedData);
+  }
+
+  return (
+    <button
+      onClick={addRecordFunction}
+      className={buttonClass}
+      id="__record_button"
+      type="button"
+    >
+      {label}
+    </button>
+  );
 }
+
+Recorder.propTypes = {
+  label: PropTypes.string.isRequired,
+  outputFunction: PropTypes.func.isRequired,
+};
 
 export default Recorder;

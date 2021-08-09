@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './css/activities.css';
 import './css/LADirectoryStyle.css';
 import './css/style.css';
@@ -18,37 +18,30 @@ import SignUp from './pages/SignUp';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
+  Route
 } from "react-router-dom";
 
-class App extends React.Component{
+function App() {
+  const [lessonOpen, setLessonOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [baseline, setBaseline] = useState(0);
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [error, setError] = useState('');
 
-  constructor(){
-    super();
-    this.state={
-      "lessonOpen":true,
-      isLoggedIn: false,
-      username: '',
-      baseline: 0,
-      is_teacher: false,
-      error:""
-    }
-    this.toggleLessonActivity = this.toggleLessonActivity.bind(this);
-    this.submitForm = this.submitForm.bind(this);
-    this.setBaseline = this.setBaseline.bind(this);
-    this.checkLogin = this.checkLogin.bind(this);
+  // let history = useHistory();
+
+  useEffect(() =>{
+    checkLogin();
+  }, []);
+
+
+  function toggleLessonActivity(){
+    setLessonOpen(!lessonOpen);
   }
 
-  componentDidMount(){
-    this.checkLogin()
-  }
-
-  toggleLessonActivity(){
-    this.setState({lessonOpen: !this.state.lessonOpen});
-  }
-
-  async setBaseline(value){
-    this.setState({baseline: value});
+  async function storeBaseline(value){
+    setBaseline(value);
     await fetch('/api/user/baseline/add/', {
       method: 'POST',
       headers: {
@@ -61,22 +54,25 @@ class App extends React.Component{
     });
   }
 
-  async checkLogin(){
+  async function checkLogin(){
     const session = await fetch('/api/user/me/');
     if(session.status === 401 || session.status === 404){
       return false;
     } else {
       const isLoggedIn = true;
-      // const baselineResponse = await fetch('/api/user/me/');
       const userdata = await session.json();
-      const is_teacher = userdata.is_teacher;
+      const isTeacher = userdata.is_teacher;
       const username = userdata.username
       const baseline = Number(userdata.baseline);
-      this.setState({username, isLoggedIn, baseline, is_teacher});
+      setUsername(username);
+      setIsLoggedIn(isLoggedIn);
+      setBaseline(baseline);
+      setIsTeacher(isTeacher);
     }
   }
 
-  submitForm(event, username, password) {
+
+  function submitForm(event, username, password) {
         event.preventDefault();
         fetch('/api/login/', {
             method: 'POST',
@@ -91,54 +87,56 @@ class App extends React.Component{
                 }
             )
         }).then( (response) => {
-            if (response.status ===401){
-              this.setState({error:"Username or password is incorrect."});
+            if (response.status === 401){
+              setError('Username or password is incorrect.');
             }else{
               response.text().then( (token) => {
-                this.setState({error:""});
-                this.setState( {isLoggedIn: true});
-                this.setState( {username: username});
+                setError('');
+                setIsLoggedIn(true);
+                setUsername(username);
               })
             }
           })
         
     }
 
-  render(){
-    return (
-      <Router>
-      <Header is_teacher={this.state.is_teacher} isLoggedIn={this.state.isLoggedIn} username={this.state.username} />
-      
-        {this.state.isLoggedIn ? 
-          <> 
-            <Switch>
-              <Route path="/baseline/" component={Baseline} />
+  return (
+    <Router>
+    <Header isTeacher={isTeacher} isLoggedIn={isLoggedIn} username={username} setLoggedIn={setIsLoggedIn} />
+    
+      {isLoggedIn ? 
+        <> 
+          <Switch>
+            <Route path="/baseline/" component={Baseline} />
+            {isTeacher &&
               <Route path="/teacherInterface/" component={TeacherInterface} />
-              <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity baseline={this.state.baseline} {...props} setBaseline={this.setBaseline} user={this.state.username} />} />
-              {/* <Route path="/lessons/:name/" component={LessonShow} /> */}
-              <Route path="/lessons/" component={LessonDirectory} />
-              <Route path="/" component={Home} />
+            }
+            <Route path="/lessons/:name/:activityNumber" render={(props) => <Activity baseline={baseline} {...props} setBaseline={storeBaseline} user={username} />} />
+            {/* <Route path="/lessons/:name/" component={LessonShow} /> */}
+            <Route path="/lessons/" component={LessonDirectory} />
+            <Route path="/" component={Home} />
+          </Switch>
+        </>
+      : 
+        <>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/SignUp">
+                <SignUp />
+              </Route>
+              {/* <Route exact path="/logout">{this.logOut}</Route> */}
+              <Route exact path="*/explanation">
+                <BaselineExplanation/>
+              </Route>
+              <Route exact path="/*">
+                <Login submitForm={submitForm} parentError={error} />
+              </Route>
             </Switch>
           </>
-        : 
-          <>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/SignUp">
-                  <SignUp />
-                </Route>
-                <Route exact path="*/explanation">
-                  <BaselineExplanation/>
-                </Route>
-                <Route exact path="/*">
-                  <Login submitForm={this.submitForm} error={this.state.error} />
-                </Route>
-              </Switch>
-            </>
-          }
-        <Footer />
-      </Router>
-    );
-  }
+        }
+      <Footer />
+    </Router>
+  );
 }
+
 export default App;

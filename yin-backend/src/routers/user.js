@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 import * as argon2 from 'argon2';
+import cookieParser from 'cookie-parser';
 const randomBytes = require('randombytes');
 const mongoose = require('mongoose');
 const {auth, getSafeUser} = require('../middleware/auth');
@@ -13,7 +14,11 @@ router.post('/api/signup/', async (req, res) => {
     if(!nameUnavailable){
         const salt = randomBytes(32);
         const hashedPass = await argon2.hash(req.body.password, {salt});
-        const newUser = new User({ username: req.body.username, password: hashedPass, salt: salt.toString('hex'), baseline: req.body.baseline});
+        const newUser = new User({ username: req.body.username,
+                                   password: hashedPass,
+                                   is_teacher: false,
+                                   salt: salt.toString('hex'),
+                                   baseline: req.body.baseline});
         newUser.save().then( () => {
             res.send(`Hello! ${req.body.username}`)
         });
@@ -21,6 +26,25 @@ router.post('/api/signup/', async (req, res) => {
         res.send('Username taken, please try another.');
     }
 });
+
+router.get('/api/logout', async (req, res, next) =>{
+    try{
+        req.session.destroy(function(){
+            console.log('logged out');
+        });
+        res.redirect('/login');
+        // res.clearCookie('connection.sid');
+        // req.session = null;
+        // res.setHeader('set-cookie', 'connect.sid=; max-age=0');
+        // res.clearCookie('connect.sid');
+        res.status(200).send('logout successful?');
+    } catch {
+        res.status(401).send('Logout unsuccessful');
+        console.log("caught that error in logout");
+    }
+
+})
+
 
 router.post('/api/login/', async (req, res, next) => {
     const username = req.body.username;

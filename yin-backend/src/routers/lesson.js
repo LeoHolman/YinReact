@@ -30,6 +30,7 @@ router.get('/api/lessons/:name/', async (req, res, next) => {
                 res.status(500).send('Something went wrong');
             }
             res.send(_lesson);
+            console.log(_lesson)
         });
     } catch (ex) {
         console.log(ex);
