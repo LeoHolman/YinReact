@@ -18,14 +18,15 @@
     "react-scripts": "^3.4.4"
   },
   "scripts": {
+    "docker": "docker start pitch_extractor",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lintFile": "eslint",
     "lint": "eslint .",
-    "lint fix": "eslint . --fix"
-    },
+    "lint file": "eslint",
+    "format": "eslint . --fix"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
