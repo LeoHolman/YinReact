@@ -26,6 +26,7 @@ class Activity extends Component{
         try{
             const lesson = await (await fetch(`/api/lessons/${this.props.match.params.name}`)).json()
             this.setState({lesson});
+            console.log(lesson)
         } catch (ex) {
             console.log(ex);
         }
@@ -49,10 +50,11 @@ class Activity extends Component{
     render(){
         return(
             <>
+                {console.log(this.state.lesson.quizSections)}
                 {this.state.lesson.words && 
                     <div>
                         <h3>Lesson: {this.props.match.params.name}</h3>
-                        <h2>Activity {this.props.match.params.activityNumber}</h2>
+                        <h2 id='header-activity'>Activity {this.props.match.params.activityNumber}</h2>
                     
                         <Route path={`/lessons/${this.props.match.params.name}/1`}>
                             <ChoiceQuiz stimuli={this.state.lesson.words} choices="2" />
@@ -72,7 +74,7 @@ class Activity extends Component{
                             {Boolean(this.props.baseline) === false ?
                                 <Baseline outputFunction={this.props.setBaseline} />
                             :
-                                <Production lesson={this.state.lesson} />
+                                <Production lessonWords={this.state.lesson.words} />
                             }
                         </Route>
                         <Route path={`/lessons/${this.props.match.params.name}/quiz`}>

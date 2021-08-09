@@ -239,7 +239,11 @@ class ChoiceQuiz extends Component {
                     <>
                     <div className="activity-wrap two-choice">
                         <div className="status">
-                            <p>Question {this.state.currentStimulus+1} out of {this.props.stimuli.length}</p>
+                            <p>Question 
+                                <span id="currentQuestionNumber">{this.state.currentStimulus+1}</span>
+                                 out of
+                                <span id="totalQuestionNumber"> {this.props.stimuli.length}</span>
+                            </p>
                         </div>
                         <div className="stimuli">
                             <audio controls id = "audio-clip" ref="audio" >
