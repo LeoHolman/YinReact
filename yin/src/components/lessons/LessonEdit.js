@@ -25,6 +25,7 @@ class LessonEdit extends Component{
             {this.state.lesson.name &&
                 <LessonForm name={this.state.lesson.name} 
                 description={this.state.lesson.description} 
+                language={this.state.lesson.language}
                 words={this.state.words} 
                 is_quiz={this.state.lesson.is_quiz} 
                 editing={true}

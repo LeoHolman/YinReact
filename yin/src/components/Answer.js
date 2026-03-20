@@ -1,13 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import PropTypes from "prop-types";
+import {userContext} from '../context/userContext.js';
 
-import One from "../assets/images/1_graph.svg";
-import Two from "../assets/images/2_graph.svg";
-import Three from "../assets/images/3_graph.svg";
-import Four from "../assets/images/4_graph.svg";
-import Five from "../assets/images/5_graph.svg";
+var One = require("../assets/images/m1_graph.svg");
+var Two = require("../assets/images/m2_graph.svg");
+var Three = require("../assets/images/m3_graph.svg");
+var Four = require("../assets/images/m4_graph.svg");
+var Five = require("../assets/images/m5_graph.svg");
+var Six = require("../assets/images/c6_graph.svg");
+
+
+
+
 
 const Answer = ({ collectResponse, number }) => {
+  const activeLang = useContext(userContext);
+  switch (activeLang) {
+    case "cantonese":
+      One = require("../assets/images/c1_graph.svg");
+      Two = require("../assets/images/c2_graph.svg");
+      Three = require("../assets/images/c3_graph.svg");
+      Four = require("../assets/images/c4_graph.svg");
+      Five = require("../assets/images/c5_graph.svg");
+      Six = require("../assets/images/c6_graph.svg");
+      break;
+    case "mandarin":
+      One = require("../assets/images/m1_graph.svg");
+      Two = require("../assets/images/m2_graph.svg");
+      Three = require("../assets/images/m3_graph.svg");
+      Four = require("../assets/images/m4_graph.svg");
+      Five = require("../assets/images/m5_graph.svg");
+      Six = require("../assets/images/c6_graph.svg");
+  }
   function chooseImage(num) {
     switch (num) {
       case 1:
@@ -20,6 +44,8 @@ const Answer = ({ collectResponse, number }) => {
         return Four;
       case 5:
         return Five;
+      case 6:
+        return Six;
       default:
         return "Something went wrong";
     }

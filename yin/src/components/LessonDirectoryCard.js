@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz }) => {
+const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz, language }) => {
   const [activityOpen, setActivityOpen] = useState(false);
 
   function toggleActivityList() {
@@ -72,11 +72,13 @@ LessonDirectoryCard.propTypes = {
   lessonName: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   lessonDesc: PropTypes.string,
+  language: PropTypes.string,
   isQuiz: PropTypes.bool.isRequired,
 };
 
 LessonDirectoryCard.defaultProps = {
   lessonDesc: "",
+  language: "",
 };
 
 export default LessonDirectoryCard;

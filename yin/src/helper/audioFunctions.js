@@ -49,7 +49,7 @@ export function processAudio(audioBlob) {
 			var start = rawResponse.indexOf("***") + 3;
 			var end = rawResponse.indexOf("&&&");
 			csvDataLocation = rawResponse.substring(start, end);
-			//console.log(csvDataLocation);
+			console.log(csvDataLocation);
 			resolve(csvDataLocation);
                 }
             };

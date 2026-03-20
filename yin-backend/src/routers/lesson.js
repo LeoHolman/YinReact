@@ -50,9 +50,10 @@ router.post('/api/lessons/add/', (req, res, next) => {
     const name = req.body.name;
     const words = req.body.words;
     const description = req.body.description;
+    const language = req.body.language;
     const is_quiz = req.body.is_quiz;
     const quizSections = req.body.quizSections;
-    const newLesson = new Lesson({name, words, description, is_quiz, quizSections});
+    const newLesson = new Lesson({name, words, description, language, is_quiz, quizSections});
     newLesson.save().then( () => {
         res.send(`${newLesson.name} saved successfully!`);
     });
@@ -63,12 +64,14 @@ router.put('/api/lessons/:name/edit/', async (req, res, next) => {
     const newName = req.body.name;
     const words = req.body.words;
     const description = req.body.description;
+    const language = req.body.language;
     const is_quiz = req.body.is_quiz;
     const quizSections = req.body.quizSections;
     const lessonToUpdate = await Lesson.findOne({name});
     lessonToUpdate.name = newName;
     lessonToUpdate.words = words;
     lessonToUpdate.description = description;
+    lessonToUpdate.language = language;
     lessonToUpdate.is_quiz = is_quiz;
     lessonToUpdate.quizSections = quizSections;
     await lessonToUpdate.save();

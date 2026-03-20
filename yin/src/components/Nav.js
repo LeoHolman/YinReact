@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import hamburger from "../assets/images/hamburger.svg";
 import whiteHamburger from "../assets/images/whiteHamburger.svg";
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import {userContext} from '../context/userContext.js';
+import updateLang from '../App.js';
+import LanguageContext from "../context/LanguageContext.js";
+import { useLocation } from 'react-router-dom';
 
-const Nav = ({ isLoggedIn, isTeacher, username, logout }) => {
+
+const Nav = ({ checkLogin, isLoggedIn, isTeacher, username, logout, activeLang }) => {
   const [open, setOpen] = useState(false);
+  //const [activeLang, setActiveLang] = useState('');
+  const { setActiveLang, handleLanguageChange } = useContext(LanguageContext);
+  
+  const location = useLocation();
+  const isLessonsSubpage = location.pathname.split('/').length === 4;
+  console.log(isLessonsSubpage);
+
+  const handleLanguageClick = (newLanguage) => {
+    setActiveLang(newLanguage);
+    /**try {
+      checkLogin();
+      // Handle successful login (e.g., update state, redirect)
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle login error (e.g., display error message)
+    }*/
+  };
 
   const openMobileNav = () => {
     open ? setOpen(false) : setOpen(true);
@@ -19,10 +42,31 @@ const Nav = ({ isLoggedIn, isTeacher, username, logout }) => {
 
   return (
     <>
+    
       <nav id="main">
+      
         <ul>
+        {isLoggedIn ? (
+        <li>
+          <Dropdown>
+            
+          <Dropdown.Toggle disabled={isLessonsSubpage} variant="success" id="dropdown-basic">
+            {activeLang}
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            
+            <Dropdown.Item onClick={() => handleLanguageClick('mandarin')}>Mandarin</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleLanguageClick('cantonese')}>Cantonese</Dropdown.Item>
+          
+          </Dropdown.Menu>
+        </Dropdown>
+        
+        </li>
+        
+        ):(<></>)}
           <li>
-            <a id="nav-old-yin" href="https://yin.rit.edu">
+            <a id="nav-old-yin" href="/">
               Return to Yin{" "}
             </a>
           </li>
@@ -58,6 +102,7 @@ const Nav = ({ isLoggedIn, isTeacher, username, logout }) => {
             )}
           </>
         </ul>
+       
       </nav>
       <div id="mobile-nav" className={open ? "mobileOpen" : ""}>
         <img

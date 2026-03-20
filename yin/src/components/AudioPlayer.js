@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const AudioPlayer = ({ audioFile }) => {
   useEffect(() => {
     document.getElementById("audioPlayer").load();
-  }, []);
+  });
 
   return (
     // eslint-disable-next-line jsx-a11y/media-has-caption

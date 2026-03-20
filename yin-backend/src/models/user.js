@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     salt: String,
+    activeLang: String,
     is_teacher: {type: Boolean, default: false},
     baseline: Number
 });

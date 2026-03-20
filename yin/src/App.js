@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import './css/activities.css';
 import './css/LADirectoryStyle.css';
 import './css/style.css';
@@ -14,6 +14,9 @@ import LessonDirectory from './pages/LessonDirectory';
 import Activity from './pages/Activity';
 import TeacherInterface from './pages/TeacherInterface';
 import SignUp from './pages/SignUp';
+import {userContext} from './context/userContext.js';
+import LanguageContext from './context/LanguageContext.js';
+
 
 import {
   BrowserRouter as Router,
@@ -22,6 +25,12 @@ import {
 } from "react-router-dom";
 
 function App() {
+  const [activeLang, setActiveLang] = useState('');
+  /**const handleLanguageChange = (newLanguage) => {
+    console.log("asjfajdflksj");
+    setActiveLang(newLanguage);
+    
+  };*/
   const [lessonOpen, setLessonOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -34,7 +43,13 @@ function App() {
   useEffect(() =>{
     checkLogin();
   }, []);
+  useEffect(() =>{
+    if(activeLang!==''){updateLanguageInDatabase(activeLang);}
+  }, [activeLang]);
 
+//  const updateLang = (newLang) => {
+//    setActiveLang(newLang);
+//  }
 
   function toggleLessonActivity(){
     setLessonOpen(!lessonOpen);
@@ -54,7 +69,22 @@ function App() {
     });
   }
 
+  
+  async function updateLanguageInDatabase(value){
+    await fetch('/api/user/activeLang/add/', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        activeLang: value
+      })
+    });
+  }
+
   async function checkLogin(){
+   
     const session = await fetch('/api/user/me/');
     if(session.status === 401 || session.status === 404){
       return false;
@@ -62,12 +92,19 @@ function App() {
       const isLoggedIn = true;
       const userdata = await session.json();
       const isTeacher = userdata.is_teacher;
-      const username = userdata.username
+      const username = userdata.username;
+      const userLang = userdata.activeLang;
+      //console.log(userLang);
+      console.log("incredible testing stuff");
+      
       const baseline = Number(userdata.baseline);
       setUsername(username);
+      setActiveLang(userLang);
       setIsLoggedIn(isLoggedIn);
       setBaseline(baseline);
       setIsTeacher(isTeacher);
+      //console.log(activeLang);
+      //console.log(setActiveLang);
     }
   }
 
@@ -94,6 +131,7 @@ function App() {
                 setError('');
                 setIsLoggedIn(true);
                 setUsername(username);
+                setActiveLang(activeLang);
               })
             }
           })
@@ -101,8 +139,11 @@ function App() {
     }
 
   return (
+    <LanguageContext.Provider value={{ activeLang, setActiveLang }}>
+    <userContext.Provider value={activeLang}>
+    
     <Router>
-    <Header isTeacher={isTeacher} isLoggedIn={isLoggedIn} username={username} setLoggedIn={setIsLoggedIn} />
+    <Header checkLogin={checkLogin} isTeacher={isTeacher} isLoggedIn={isLoggedIn} username={username} setLoggedIn={setIsLoggedIn} activeLang={activeLang} />
     
       {isLoggedIn ? 
         <> 
@@ -136,6 +177,8 @@ function App() {
         }
       <Footer />
     </Router>
+    </userContext.Provider>
+    </LanguageContext.Provider>
   );
 }
 

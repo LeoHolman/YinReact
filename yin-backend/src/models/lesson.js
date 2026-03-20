@@ -7,6 +7,7 @@ const lessonSchema = new mongoose.Schema({
         ref: 'Word'
     }],
     description: String,
+    language: String,
     is_quiz: Boolean,
     quizSections:[{type:Number}]
 });

@@ -1,0 +1,11 @@
+<svg width="177" height="151" viewBox="0 0 177 151" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="177" height="151" fill="white"/>
+<path opacity="0.2" d="M67 28L159 28" stroke="black" stroke-linecap="round"/>
+<path d="M67 28L67 120" stroke="black" stroke-width="3" stroke-linecap="round"/>
+<path d="M67 120H159" stroke="black" stroke-width="3" stroke-linecap="round"/>
+<path d="M75 28H155" stroke="#F68E21" stroke-width="3" stroke-linecap="round"/>
+<path opacity="0.2" d="M67 50L159 50" stroke="black" stroke-linecap="round"/>
+<path opacity="0.2" d="M67 73L159 73" stroke="black" stroke-linecap="round"/>
+<path opacity="0.2" d="M67 96L159 96" stroke="black" stroke-linecap="round"/>
+<path d="M17.5938 89.9473L25.9727 85.8594H26.8105V114.932C26.8105 116.861 26.8867 118.063 27.0391 118.537C27.2083 119.011 27.5469 119.375 28.0547 119.629C28.5625 119.883 29.5951 120.027 31.1523 120.061V121H18.2031V120.061C19.8281 120.027 20.8776 119.891 21.3516 119.654C21.8255 119.4 22.1556 119.07 22.3418 118.664C22.528 118.241 22.6211 116.997 22.6211 114.932V96.3457C22.6211 93.8405 22.5365 92.2324 22.3672 91.5215C22.2487 90.9798 22.0286 90.582 21.707 90.3281C21.4023 90.0742 21.0299 89.9473 20.5898 89.9473C19.9635 89.9473 19.0918 90.2096 17.9746 90.7344L17.5938 89.9473Z" fill="black"/>
+</svg>

@@ -23,85 +23,112 @@ Dark blue - #245484 (sufficient contrast with white text)
     color: orange;
 }
 
-.classroom #img-container{
-    /* background-image: url(../assets/images/WalkingJoJo.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    padding-bottom:50vh;
-    opacity:.1;
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100vw;
-    height:20vh;
-    z-index:-100; */
-}
+
 
 .classroom h2{
-    text-align:center;
-    margin-bottom:2em;
+    text-align:left;
     font-weight:500;
-    font-size:2em;
+    font-size:5em;
+    line-height: 1.5;
+    width: 33.333vw;
 }
 
+@media only screen and (min-width: 600px) {
+    .classroom h2 {
+        font-size: 3em; /* Adjust font size for larger screens */
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .classroom h2 {
+        font-size: 4em; /* Adjust font size for even larger screens */
+    }
+}
+
+
+.jojo-image {
+    position: absolute;
+    top: auto; 
+    right: 0;
+    transform: rotate(-90deg);
+    width: 33.333vw;
+    height: 100hv;
+    
+  }
+
 .classroom #summary{
-    margin-bottom:3em;
+    text-align: left;
+    
+    max-width: 33.337vw;
 }
 
 .classroom .intro{
     display:grid;
     grid-template-columns:1fr 1fr;
-    grid-column-gap:10vw;
-    max-width:1000px;
-    margin:0 auto;
-}
+    grid-column-gap:1vw;
+    max-width:100px;
 
-.classroom #students, .classroom #teachers{
-    /* border:1px solid #464646; */
-    background-color:rgb(255,255,255,.7);
-    box-shadow:2px 2px 3px lightgray;
-    border:3px solid black;
-    margin-top:-3px;
-}
-
-
-.classroom .intro p{
-    padding:20px;
-    margin-top:0;
-}
-
-.classroom .intro h3{
-    color:white;
-    font-family:'Open Sans', sans-serif;
-    font-weight:500;
-    padding:.5em;
-    text-align:center;
-    margin-top:1em;
-    margin-bottom:0;
-    font-size:1.75em;
-}
-
-.classroom .intro #students h3{
-    color:#db7a13;
-}
-
-.classroom .intro #teachers h3{
-    color:#9A2D04; 
-}
-
-.classroom .intro img{
-    width:100%;
 }
 
 button{
-    margin:1em auto;
+    /*margin:1em auto;
     display:block;
     padding:0 2em;
+    */
+    background-color: #db7a13;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #222222;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+}
+button:disabled{
+    background-color: grey;
+    cursor: default;
+    color: #222222;
 }
 
-a button{
-    text-decoration: none;;
+.dropdown-menu {
+    display: none;
 }
+
+.dropdown-item {
+    background-color: grey;
+    border: 1;
+    clear: both;
+    color: var(--bs-dropdown-link-color);
+    display: block;
+    white-space: nowrap;
+    padding-top:10%;
+    padding-bottom:10%;
+    width: 100%;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+
+/*a button{
+    text-decoration: none;
+}
+*/
 
 @media only screen and (max-width:550px){
     .classroom .intro{

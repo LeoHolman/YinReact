@@ -16,6 +16,7 @@ router.post('/api/signup/', async (req, res) => {
         const hashedPass = await argon2.hash(req.body.password, {salt});
         const newUser = new User({ username: req.body.username,
                                    password: hashedPass,
+                                   activeLang: 'mandarin',
                                    is_teacher: false,
                                    salt: salt.toString('hex'),
                                    baseline: req.body.baseline});
@@ -77,5 +78,14 @@ router.post('/api/user/baseline/add/', auth, async (req, res, next) => {
     user.save();
     res.sendStatus(204);
 });
+
+
+router.post('/api/user/activeLang/add/', auth, async (req, res, next) => {
+    const user = req.user;
+    user.activeLang = req.body.activeLang;
+    user.save();
+    res.sendStatus(204);
+});
+//this works now!! i think
 
 module.exports = router;

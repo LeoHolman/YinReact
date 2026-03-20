@@ -24,6 +24,7 @@ const auth = async (req, res, next) => {
 const getSafeUser = async (req, res, next) => {
     req.user = {
         username: req.user.username, 
+        activeLang: req.user.activeLang,
         is_teacher: req.user.is_teacher || false,
         baseline: req.user.baseline || null
     };

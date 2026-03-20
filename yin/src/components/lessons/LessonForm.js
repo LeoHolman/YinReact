@@ -13,6 +13,7 @@ class LessonForm extends Component{
         this.state = {
             name: props.name || '',
             description: props.description || '',
+            language: props.language || '',
             words: props.words || [],
             wordKeys: [],
             is_quiz: props.is_quiz || false,
@@ -128,6 +129,7 @@ class LessonForm extends Component{
             body: JSON.stringify({
                 name: this.state.name,
                 description: this.state.description,
+                language: this.state.language,
                 words: this.state.wordKeys,
                 is_quiz: this.state.is_quiz,
                 quizSections: this.state.quiz_sections
@@ -204,6 +206,16 @@ class LessonForm extends Component{
                                     type="text"
                                     name="description"
                                     value={this.state.description}
+                                    onChange={this.handleInputChange}
+                                />
+                                <label htmlFor="language">
+                                Language:
+                            </label>
+                                <input 
+                                    id="language"
+                                    type="text"
+                                    name="language"
+                                    value={this.state.language}
                                     onChange={this.handleInputChange}
                                 />
                             <label htmlFor="words">

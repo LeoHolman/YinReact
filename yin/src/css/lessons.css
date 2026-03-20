@@ -13,6 +13,7 @@ Dark blue - #245484 (sufficient contrast with white text)
     background-color:white;
     margin:1em;
     box-shadow:lightgray 2px 2px 3px;
+    border-radius: 1rem;
 }
 
 .lessonCard:hover{
@@ -36,7 +37,7 @@ ul.activityList a{
     text-decoration: none;
     font-size:3em;
     font-weight:600;
-    color:white;
+    color:black;
 }
 
 ul.activityList a:hover{
@@ -44,8 +45,9 @@ ul.activityList a:hover{
 }
 
 .lessonCard .sub{
-    background-color:#245484;
-    color:white;
+    background-color:#FAFAFA;
+    color:black;
+    border-radius: 0rem 0rem 1rem 1rem;
 }
 
 .lessonCard.sub h3{
