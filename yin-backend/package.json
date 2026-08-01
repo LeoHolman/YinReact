@@ -5,32 +5,33 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon --exec npx babel-node src/server.js"
+    "start": "npx nodemon --exec \"node -r @babel/register\" src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.28.2",
-    "body-parser": "^1.19.0",
-    "connect-mongo": "^3.2.0",
-    "cookie-parser": "^1.4.4",
-    "cors": "^2.8.5",
-    "d3": "^5.15.0",
-    "express": "^4.17.1",
-    "express-fileupload": "^1.1.6",
-    "express-session": "^1.17.0",
-    "form-data": "^3.0.0",
-    "joi": "^14.3.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.6",
-    "node-fetch": "^2.6.1",
+    "argon2": "^0.45.1",
+    "body-parser": "^2.3.0",
+    "connect-mongo": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "d3": "^7.9.0",
+    "express": "^5.2.1",
+    "express-fileupload": "^1.5.2",
+    "express-session": "^1.19.0",
+    "form-data": "^4.0.6",
+    "joi": "^18.2.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.1",
+    "node-fetch": "^3.3.2",
     "randombytes": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/node": "^7.7.4",
-    "@babel/preset-env": "^7.7.6",
-    "nodemon": "^2.0.2"
+    "@babel/core": "^8.0.1",
+    "@babel/node": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/register": "^8.0.1",
+    "nodemon": "^3.1.14"
   }
 }
