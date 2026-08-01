@@ -6,7 +6,8 @@ const fileUpload = require('express-fileupload');
 const d3 = require('d3');
 const session = require('express-session');
 const SESSION_KEY = 'keyboardcatfire99999999';
-const MongoStore = require('connect-mongo')(session);
+const _connectMongoPkg = require('connect-mongo');
+const MongoStore = _connectMongoPkg && _connectMongoPkg.default ? _connectMongoPkg.default : _connectMongoPkg;
 const cookieParser = require('cookie-parser');
 const https = require('https');
 const fs = require('fs');
@@ -14,7 +15,7 @@ const path = require('path');
 const port = 8000;
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/yin', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/yin');
 
 const wordRouter = require('./routers/word');
 const lessonRouter = require('./routers/lesson');
@@ -42,13 +43,13 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser());
 app.use(session({
     'secret': SESSION_KEY,
-    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/yin' }),
     resave: false,
     saveUninitialized: true,
     httpOnly: false,
     cookie: { maxAge: 30 * 60 * 1000},//sameSite: false
 }));
-app.get('/*', (req, res, next) =>{
+app.get(/.*/, (req, res, next) =>{
     next();
 });
 app.use(userRouter);
@@ -81,7 +82,7 @@ app.get('/sessions/', (req, res, next) => {
     }
 })
 
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));
 })
 //Start application
