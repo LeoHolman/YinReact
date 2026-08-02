@@ -50,7 +50,6 @@ class LessonShow extends Component {
                             })}
                         </ul>
                     </>
-                  )
         ) : (
           <p>This is a lesson, not a quiz.</p>
         )}

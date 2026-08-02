@@ -61,7 +61,7 @@ class AudioUpload extends Component {
     return (
           <>
               {this.state.form_complete ? 
-                  <Redirect to='/teacherInterface/words/' />
+                  (<Redirect to='/teacherInterface/words/' />
         ) : (
                     <form onSubmit={this.handleSubmit} className="audioForm">
                   <label htmlFor="audioFileInput">

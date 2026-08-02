@@ -170,15 +170,15 @@ class LessonForm extends Component {
 
   render() {
     return (
-          <>
-              {this.state.form_complete ?
-                  <Redirect to='/teacherInterface/' />
+      <>
+        {this.state.form_complete ?
+              (<Redirect to='/teacherInterface/' />
         ) : (
           <>
-                      {this.props.editing ?
-                          <h1>
-Editing{this.props.name}</h1>
+            {this.props.editing ?
+                (<h1>Editing{this.props.name}</h1>
             ) : (
+              <>
               <h1>New lesson</h1>
                       <form onSubmit={this.handleSubmit}>
                           <label htmlFor="name">
@@ -221,7 +221,7 @@ Editing{this.props.name}</h1>
                                   value={this.state.words}
                                   onChange={this.handleSelectChange}
                                   size="7"
-              >
+              />
                                   {this.state.all_words && this.state.all_words.map( (word) => {
                     return (
                       <option
@@ -283,14 +283,12 @@ Editing{this.props.name}</h1>
                                         value="4"
                                         onChange={() => this.handleSectionChange(4)}
                                     />
-
-                                </>
-                              )
-              ) : (
-                <></>
-              )}
+                              </>
+                              ) : ( <></>)}
                           <input type="submit" value="Submit" />
             </form>
+                              </>
+              )}
           </>
         )}
       </>

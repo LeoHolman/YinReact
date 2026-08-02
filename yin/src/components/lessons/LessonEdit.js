@@ -36,7 +36,6 @@ class LessonEdit extends Component {
                   editing
                   quiz_sections={this.state.lesson.quizSections}
                 />
-          />
         )}
       </>
     );

@@ -13,8 +13,6 @@ class TeacherNav extends Component {
                     </Link>
                     <h1>Lessons | <Link to={'/teacherInterface/words'}>Words </Link></h1>
                 </>
-              )
-          </>
         ) : (
           <>
             <Link to={"/teacherInterface/words/add"} id="addLessonLink">
@@ -22,7 +20,6 @@ class TeacherNav extends Component {
             </Link>
                   <h1>
 <Link to={'/teacherInterface/lessons'}>Lessons</Link> | Words</h1>
-            </h1>
           </>
         )}
       </div>

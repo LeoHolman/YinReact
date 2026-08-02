@@ -116,7 +116,6 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
       <>
           <h3>You've already taken this quiz.</h3>
           <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
-      </p>
     </>
   );
 
@@ -175,7 +174,6 @@ Your combined score on the multiple choice sections is<br/>
 {' '}
 <br />Your teacher will grade your recordings.</p>
                     </div>)
-      );
     }
     return null;
   }

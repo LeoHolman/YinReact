@@ -288,7 +288,7 @@ class ChoiceQuiz extends Component {
                     </div>
                     </>
                   )
-            ) : (
+             : (
               <>
                           {this.props.quiz==="true" ? (
                             <>

@@ -35,7 +35,7 @@ class TeacherLessonDirectory extends Component {
                     to={`/teacherInterface/lessons/${lesson.name}/`}
                     key={lesson.name}
                     props={lesson}
-                    className="teacherCardLink"
+                    className="teacherCardLink">
                                   <div className="teacherCard lessonCard">
                                       <div className="meta" onClick={this.toggleActivityList}>
                                           <h2>
@@ -43,10 +43,8 @@ class TeacherLessonDirectory extends Component {
                                           <p>{lesson.description}</p>
                                           <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherEditLink">Edit Lesson</Link>
                                           <Link to={`/teacherInterface/lessons/${lesson.name}/delete/`} key={`delete${lesson.name}`} className="teacherDeleteLink">Delete Lesson</Link>
-                        >
                           Delete Lesson
-                        </Link>
-                                       </Link>
+                          </div>
                     </div>
                   </Link>
                 );

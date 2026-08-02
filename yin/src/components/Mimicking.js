@@ -75,7 +75,7 @@ class Mimicking extends Component {
                             "Word"
                         }</button>
                     </>
-                  )
+                  
         ) : (
           <>
                       {this.props.quiz==="true" ? (
@@ -83,13 +83,12 @@ class Mimicking extends Component {
                                 <p>You've completed this section of the quiz.</p>
                                 <button onClick={this.props.advance(3)}>Continue</button>
                             </>
-                          )
+                          
             ) : (
               <div id="score">
                               <h2>Activity complete!</h2>
                               <Link to="../">Return to Lessons & Quizzes</Link>
                               <Link to="./4"><button>Next activity</button></Link>
-                </Link>
               </div>
             )}
           </>
