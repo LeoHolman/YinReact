@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 import PropTypes from "prop-types";
 
-const PitchChart = ({ dataset }) => {
+function PitchChart({ dataset }) {
   function drawPitchChart(divID, width, height) {
     d3.select(`#${divID}`)
       .append("svg")
@@ -68,12 +68,8 @@ const PitchChart = ({ dataset }) => {
     });
   });
 
-  return (
-    <>
-      <div id="__visualization" />
-    </>
-  );
-};
+  return <div id="__visualization" />;
+}
 
 PitchChart.propTypes = {
   dataset: PropTypes.string.isRequired,

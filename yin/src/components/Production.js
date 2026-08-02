@@ -5,7 +5,7 @@ import Recorder from "./Recorder";
 import PitchChart from "./PitchChart";
 import AudioPlayer from "./AudioPlayer";
 
-const Production = ({ lessonWords, recordingOutput, isQuiz, advance }) => {
+function Production({ lessonWords, recordingOutput, isQuiz, advance }) {
   const [record, setRecord] = useState([]);
   const [userDataset, setUserDataset] = useState("");
   const [currentStimuli, setCurrentStimuli] = useState(0);
@@ -105,7 +105,7 @@ const Production = ({ lessonWords, recordingOutput, isQuiz, advance }) => {
       )}
     </>
   );
-};
+}
 
 Production.propTypes = {
   lessonWords: PropTypes.arrayOf(PropTypes.object).isRequired,

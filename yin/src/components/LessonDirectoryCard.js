@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz, language }) => {
+function LessonDirectoryCard({
+  lessonName,
+  link,
+  lessonDesc,
+  isQuiz,
+  language,
+}) {
   const [activityOpen, setActivityOpen] = useState(false);
 
   function toggleActivityList() {
@@ -15,7 +21,10 @@ const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz, language })
         <Link to={`${link}quiz`} style={{ textDecoration: "none" }}>
           <div className="meta quiz" onClick={toggleActivityList}>
             <h2>
-              <span id="no-underline">Quiz: {lessonName}</span>
+              <span id="no-underline">
+                Quiz:
+                {lessonName}
+              </span>
             </h2>
             <p>{lessonDesc}</p>
           </div>
@@ -38,25 +47,29 @@ const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz, language })
             <ul className="activityList">
               <li>
                 <Link id="link-activity1" to={`${link}1`}>
-                  1<br />
+                  1
+                  <br />
                 </Link>
                 <span>Distinguishing</span>
               </li>
               <li>
                 <Link id="link-activity2" to={`${link}2`}>
-                  2<br />
+                  2
+                  <br />
                 </Link>
                 <span>Identifying</span>
               </li>
               <li>
                 <Link id="link-activity3" to={`${link}3`}>
-                  3<br />
+                  3
+                  <br />
                 </Link>
                 <span>Mimicking</span>
               </li>
               <li>
                 <Link id="link-activity4" to={`${link}4`}>
-                  4<br />
+                  4
+                  <br />
                 </Link>
                 <span>Producing</span>
               </li>
@@ -66,7 +79,7 @@ const LessonDirectoryCard = ({ lessonName, link, lessonDesc, isQuiz, language })
       )}
     </div>
   );
-};
+}
 
 LessonDirectoryCard.propTypes = {
   lessonName: PropTypes.string.isRequired,

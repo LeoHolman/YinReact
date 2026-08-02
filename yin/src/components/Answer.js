@@ -1,19 +1,15 @@
 import React, { useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import {userContext} from '../context/userContext.js';
+import { userContext } from "../context/userContext.js";
 
-var One = require("../assets/images/m1_graph.svg");
-var Two = require("../assets/images/m2_graph.svg");
-var Three = require("../assets/images/m3_graph.svg");
-var Four = require("../assets/images/m4_graph.svg");
-var Five = require("../assets/images/m5_graph.svg");
-var Six = require("../assets/images/c6_graph.svg");
+let One = require("../assets/images/m1_graph.svg");
+let Two = require("../assets/images/m2_graph.svg");
+let Three = require("../assets/images/m3_graph.svg");
+let Four = require("../assets/images/m4_graph.svg");
+let Five = require("../assets/images/m5_graph.svg");
+let Six = require("../assets/images/c6_graph.svg");
 
-
-
-
-
-const Answer = ({ collectResponse, number }) => {
+function Answer({ collectResponse, number }) {
   const activeLang = useContext(userContext);
   switch (activeLang) {
     case "cantonese":
@@ -90,7 +86,7 @@ const Answer = ({ collectResponse, number }) => {
       )}
     </>
   );
-};
+}
 
 Answer.propTypes = {
   collectResponse: PropTypes.func.isRequired,

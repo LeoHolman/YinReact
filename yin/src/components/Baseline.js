@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import PropTypes from "prop-types";
 import Recorder from "./Recorder";
 
-const Baseline = ({ outputFunction }) => {
+function Baseline({ outputFunction }) {
   // constructor(props){
   //     super(props);
   //     this.setBaseline = this.setBaseline.bind(this);
@@ -46,7 +46,7 @@ const Baseline = ({ outputFunction }) => {
       </p>
     </div>
   );
-};
+}
 
 Baseline.propTypes = {
   outputFunction: PropTypes.func.isRequired,
