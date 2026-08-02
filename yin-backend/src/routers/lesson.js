@@ -7,6 +7,7 @@ const router = new express.Router();
 router.get('/api/lessons/all/', async (req, res, next) => {
     try {
         const allLessons = await Lesson.find({}).populate('words');
+        console.log(allLessons);
         res.send(allLessons);
     } catch (ex) {
         res.status(500).send('Something went wrong');

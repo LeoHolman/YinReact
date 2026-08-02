@@ -1,50 +1,44 @@
 import React, { useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { userContext } from "../context/userContext.js";
+import { userContext } from "../context/userContext";
+import m1Graph from "../assets/images/m1_graph.svg";
+import m2Graph from "../assets/images/m2_graph.svg";
+import m3Graph from "../assets/images/m3_graph.svg";
+import m4Graph from "../assets/images/m4_graph.svg";
+import m5Graph from "../assets/images/m5_graph.svg";
+import c6Graph from "../assets/images/c6_graph.svg";
+import c1Graph from "../assets/images/c1_graph.svg";
+import c2Graph from "../assets/images/c2_graph.svg";
+import c3Graph from "../assets/images/c3_graph.svg";
+import c4Graph from "../assets/images/c4_graph.svg";
+import c5Graph from "../assets/images/c5_graph.svg";
 
-let One = require("../assets/images/m1_graph.svg");
-let Two = require("../assets/images/m2_graph.svg");
-let Three = require("../assets/images/m3_graph.svg");
-let Four = require("../assets/images/m4_graph.svg");
-let Five = require("../assets/images/m5_graph.svg");
-let Six = require("../assets/images/c6_graph.svg");
+const imagesByLanguage = {
+  mandarin: {
+    1: m1Graph,
+    2: m2Graph,
+    3: m3Graph,
+    4: m4Graph,
+    5: m5Graph,
+    6: c6Graph,
+  },
+  cantonese: {
+    1: c1Graph,
+    2: c2Graph,
+    3: c3Graph,
+    4: c4Graph,
+    5: c5Graph,
+    6: c6Graph,
+  },
+};
 
 function Answer({ collectResponse, number }) {
   const activeLang = useContext(userContext);
-  switch (activeLang) {
-    case "cantonese":
-      One = require("../assets/images/c1_graph.svg");
-      Two = require("../assets/images/c2_graph.svg");
-      Three = require("../assets/images/c3_graph.svg");
-      Four = require("../assets/images/c4_graph.svg");
-      Five = require("../assets/images/c5_graph.svg");
-      Six = require("../assets/images/c6_graph.svg");
-      break;
-    case "mandarin":
-      One = require("../assets/images/m1_graph.svg");
-      Two = require("../assets/images/m2_graph.svg");
-      Three = require("../assets/images/m3_graph.svg");
-      Four = require("../assets/images/m4_graph.svg");
-      Five = require("../assets/images/m5_graph.svg");
-      Six = require("../assets/images/c6_graph.svg");
-  }
+  const languageImages =
+    imagesByLanguage[activeLang] || imagesByLanguage.mandarin;
+
   function chooseImage(num) {
-    switch (num) {
-      case 1:
-        return One;
-      case 2:
-        return Two;
-      case 3:
-        return Three;
-      case 4:
-        return Four;
-      case 5:
-        return Five;
-      case 6:
-        return Six;
-      default:
-        return "Something went wrong";
-    }
+    return languageImages[num] || "";
   }
 
   useEffect(() => {
@@ -58,6 +52,7 @@ function Answer({ collectResponse, number }) {
   }, []);
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {number && (
         <div
@@ -90,6 +85,7 @@ function Answer({ collectResponse, number }) {
 
 Answer.propTypes = {
   collectResponse: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   number: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
