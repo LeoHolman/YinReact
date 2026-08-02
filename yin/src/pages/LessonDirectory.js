@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import LessonDirectoryCard from "../components/LessonDirectoryCard";
-import { userContext } from "../context/userContext.js";
+import { userContext } from "../context/userContext";
 // import {
 //     BrowserRouter as Router,
 //     Switch,
@@ -35,11 +35,7 @@ function LessonDirectory() {
   useEffect(() => {
     fetch(`/api/lessons/all/`).then((response) =>
       response.json().then((result) => {
-        // console.log(result.filter((s) => s.language === "mandarin"));
-
-        console.log(result);
-        console.log(activeLang);
-        setAllLessons(result.filter((s) => s.language == activeLang));
+        setAllLessons(result.filter((s) => s.language === activeLang));
       })
     );
   }, [activeLang]);
@@ -52,13 +48,15 @@ function LessonDirectory() {
     <div>
       <ul>
         {allLessons.map((lesson) => {
+          const { _id: lessonId, name, description } = lesson;
+          const isQuiz = lesson.is_quiz;
           return (
             <LessonDirectoryCard
-              lessonName={lesson.name}
-              lessonDesc={lesson.description}
-              isQuiz={lesson.is_quiz}
-              link={`/lessons/${lesson.name}/`}
-              key={`${lesson._id}`}
+              lessonName={name}
+              lessonDesc={description}
+              isQuiz={isQuiz}
+              link={`/lessons/${name}/`}
+              key={lessonId}
             />
           );
         })}
