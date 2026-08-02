@@ -1,35 +1,37 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-class LessonShow extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            lesson:  {}
-        }
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.fetchLesson = this.fetchLesson.bind(this);
+class LessonShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lesson: {},
+    };
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.fetchLesson = this.fetchLesson.bind(this);
+  }
+
+  async componentDidMount() {
+    if (!!this.state.lesson) {
+      this.fetchLesson();
     }
+  }
 
-    async componentDidMount() {
-        if(!!this.state.lesson){
-            this.fetchLesson();
-        }
-    }
+  async fetchLesson() {
+    const lesson = await (
+      await fetch(`/api/lessons/${this.props.match.params.name}`)
+    ).json();
+    this.setState({ lesson });
+  }
 
-    async fetchLesson(){
-        const lesson = await (await fetch(`/api/lessons/${this.props.match.params.name}`)).json();
-        this.setState({lesson});
-    }
-
-    render(){
-        return(
-            <div className ="lesson show">
-                <Link to={`/teacherInterface/lessons/${this.state.lesson.name}/edit/`} key={this.state.lesson.name} className="teacherEditLink">Edit Lesson</Link>
-                <h2>{this.state.lesson.name}</h2>
-                <h3>Description:</h3>
-                <p>{this.state.lesson.description}</p>
-                {this.state.lesson.words &&
+  render() {
+    return (
+          <div className="lesson show">
+              <Link to={`/teacherInterface/lessons/${this.state.lesson.name}/edit/`} key={this.state.lesson.name} className="teacherEditLink">Edit Lesson</Link>
+              <h2>{this.state.lesson.name}</h2>
+              <h3>Description:</h3>
+              <p>{this.state.lesson.description}</p>
+              {this.state.lesson.words && (
                     <>
                         <h3>Words:</h3>
                         <ul>
@@ -38,8 +40,8 @@ class LessonShow extends Component{
                             })}
                         </ul>
                     </>
-                }
-                {this.state.lesson.is_quiz ? 
+                  )}
+              {this.state.lesson.is_quiz ? (
                     <>
                         <p id="is_quiz">This lesson is a quiz, containing the following activities:</p>
                         <ul>
@@ -48,12 +50,13 @@ class LessonShow extends Component{
                             })}
                         </ul>
                     </>
-                :
-                    <p>This is a lesson, not a quiz.</p>
-                }
-            </div>
-        )
-    }
+                  )
+        ) : (
+          <p>This is a lesson, not a quiz.</p>
+        )}
+      </div>
+    );
+  }
 }
 
 export default LessonShow;

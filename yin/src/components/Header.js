@@ -5,7 +5,14 @@ import PropTypes from "prop-types";
 import Nav from "./Nav";
 import Logo from "../assets/images/Yin_Classroom_logo@4x.png";
 
-const Header = ({ checkLogin, isTeacher, isLoggedIn, username, setLoggedIn, activeLang }) => {
+function Header({
+  checkLogin,
+  isTeacher,
+  isLoggedIn,
+  username,
+  setLoggedIn,
+  activeLang,
+}) {
   const history = useHistory();
   function logOut() {
     fetch("/api/logout", {
@@ -42,7 +49,7 @@ const Header = ({ checkLogin, isTeacher, isLoggedIn, username, setLoggedIn, acti
       />
     </div>
   );
-};
+}
 
 Header.propTypes = {
   isTeacher: PropTypes.bool.isRequired,

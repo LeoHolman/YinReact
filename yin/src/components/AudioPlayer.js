@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-const AudioPlayer = ({ audioFile }) => {
+function AudioPlayer({ audioFile }) {
   useEffect(() => {
     document.getElementById("audioPlayer").load();
   });
@@ -13,7 +13,7 @@ const AudioPlayer = ({ audioFile }) => {
       The audio cannot play.
     </audio>
   );
-};
+}
 
 AudioPlayer.propTypes = {
   audioFile: PropTypes.string.isRequired,

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // import {Link} from 'react-router-dom';
 import "../css/login.css";
 
-const Login = ({ submitForm, parentError }) => {
+function Login({ submitForm, parentError }) {
   const [fUsername, setFUsername] = useState("");
   const [fPassword, setFPassword] = useState("");
   const [error, setError] = useState("");
@@ -64,13 +64,15 @@ const Login = ({ submitForm, parentError }) => {
         />
         <input id="submit-button" type="submit" value="Submit" />
         <p>
-          {parentError} {error}
+          {parentError} 
+{' '}
+{error}
         </p>
       </form>
       {/* <Link to="/SignUp">Don't have an account? Sign up.</Link> */}
     </>
   );
-};
+}
 
 Login.propTypes = {
   submitForm: PropTypes.func.isRequired,
