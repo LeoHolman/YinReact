@@ -35,7 +35,9 @@ function LessonDirectory() {
   useEffect(() => {
     fetch(`/api/lessons/all/`).then((response) =>
       response.json().then((result) => {
-        setAllLessons(result.filter((s) => s.language === activeLang));
+        console.log(result);
+        // setAllLessons(result.filter((s) => s.language === activeLang));
+        setAllLessons(result);
       })
     );
   }, [activeLang]);

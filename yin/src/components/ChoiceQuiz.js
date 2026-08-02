@@ -137,7 +137,9 @@ class ChoiceQuiz extends Component {
   }
 
   randomize(a) {
-    let j; var x; var i;
+    let j;
+    var x;
+    var i;
     for (i = a.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
       x = a[i];
@@ -163,14 +165,14 @@ class ChoiceQuiz extends Component {
         if (i === correctPos) {
           option.push(inputArr[i]);
         } else if (shuffled[i] === inputArr[i]) {
-            if (i === inputArr.length - 1) {
-              option.push(shuffled[0]);
-            } else {
-              option.push(shuffled[i + 1]);
-            }
+          if (i === inputArr.length - 1) {
+            option.push(shuffled[0]);
           } else {
-            option.push(shuffled[i]);
+            option.push(shuffled[i + 1]);
           }
+        } else {
+          option.push(shuffled[i]);
+        }
       }
     }
     return option;
@@ -180,9 +182,8 @@ class ChoiceQuiz extends Component {
     let newOption = this.selectRandomOption(correctArr, correctPos);
     if (checkForArrayInArrayOfArrays(allOptions, newOption)) {
       return this.getWrongOption(correctArr, correctPos, allOptions);
-    } 
-      return newOption;
-    
+    }
+    return newOption;
   }
 
   selectOptions() {
@@ -252,72 +253,98 @@ class ChoiceQuiz extends Component {
   }
 
   render() {
+    const { stimuli, quiz, choices } = this.props;
+    const {
+      currentStimulus,
+      options,
+      status,
+      feedback_heading,
+      feedback,
+      error,
+      score,
+    } = this.state;
+
     return (
       <>
-        {this.props.stimuli && (
+        {stimuli && stimuli.length > currentStimulus ? (
+          <>
+            <div className="activity-wrap two-choice">
+              <div className="status">
+                <p>
+                  Question{" "}
+                  <span id="currentQuestionNumber">{currentStimulus + 1}</span>{" "}
+                  out of
+                  <span id="totalQuestionNumber"> {stimuli.length}</span>
+                </p>
+              </div>
+              <div className="stimuli">
+                <audio controls id="audio-clip" ref="audio">
+                  <source
+                    id="audioSource"
+                    src={`/${stimuli[currentStimulus].audioFile}`}
+                    type="audio/mpeg"
+                  />
+                  Audio not working!
+                </audio>
+                {/* <p>word: {stimuli[currentStimulus].character}</p> */}
+              </div>
+              <div className="answers">
+                {options.map((opt) => (
+                  <Answer
+                    number={opt}
+                    key={opt}
+                    collectResponse={this.collectResponse}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="feedbackContainer">
+              <button onClick={this.handleSubmit} id="submitAnswer">
+                Submit
+              </button>
+              <button
+                onClick={this.nextQuestion}
+                className="hide"
+                id="nextQuestion"
+              >
+                Next
+              </button>
+              <FeedbackBox
+                status={status}
+                heading={feedback_heading}
+                content={feedback}
+              />
+              <p id="error">{error}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            {quiz === "true" ? (
               <>
-                      { this.props.stimuli.length > this.state.currentStimulus ? (
-                    <>
-                    <div className="activity-wrap two-choice">
-                        <div className="status">
-                            <p>Question 
-                                <span id="currentQuestionNumber">{this.state.currentStimulus+1}</span>
-                                 out of
-                                <span id="totalQuestionNumber"> {this.props.stimuli.length}</span>
-                            </p>
-                        </div>
-                        <div className="stimuli">
-                            <audio controls id = "audio-clip" ref="audio" >
-                                <source id="audioSource" src={`/${this.props.stimuli[this.state.currentStimulus].audioFile}`} type="audio/mpeg" />
-                                Audio not working!
-                            </audio>
-                            {/* <p>word:  {this.props.stimuli[this.state.currentStimulus].character}</p> */}
-                        
-                        </div>
-                        <div className = "answers">
-                            {this.state.options.map( (opt) => {
-                                return <Answer number = {opt} key ={opt} collectResponse={this.collectResponse} />
-                            })}
-                        </div>
-                    </div>
-                    <div className="feedbackContainer">
-                        <button onClick={this.handleSubmit} id="submitAnswer">Submit</button>
-                        <button onClick={this.nextQuestion} className="hide" id="nextQuestion">Next</button>
-                        <FeedbackBox status = {this.state.status} heading={this.state.feedback_heading} content={this.state.feedback}/>
-                        <p id="error">{this.state.error}</p>
-                    </div>
-                    </>
-                  )
-            ) : (
-              <>
-                          {this.props.quiz==="true" ? (
-                            <>
-                            <p>You've completed this section of the quiz.</p>
-                            <button onClick={this.reportScore}>Continue</button>
-                            </>
-                          )
-                ) : (
-                            <div id="score">
-                          <h2>Activity complete!</h2>
-                          <p>
-Your score is:{this.state.score}
-{' '}
-out of{this.props.stimuli.length}</p>
-                          <Link to="../">Return to Lessons & Quizzes</Link>
-                          {this.props.choices==='2' ? <Link to="./2"><button>Next activity</button></Link>
-                      </Link>
-                    ) : (
-                      <Link to="./3">
-                        <button>Next activity</button>
-                      </Link>
-                    )}
-                  </div>
-                )}
+                <p>You've completed this section of the quiz.</p>
+                <button onClick={this.reportScore}>Continue</button>
               </>
+            ) : (
+              <div id="score">
+                <h2>Activity complete!</h2>
+                <p>
+                  Your score is: {score} out of {stimuli ? stimuli.length : 0}
+                </p>
+                <Link to="../">Return to Lessons & Quizzes</Link>
+                {choices === "2" ? (
+                  <Link to="./2">
+                    <button>Next activity</button>
+                  </Link>
+                ) : (
+                  <Link to="./3">
+                    <button>Next activity</button>
+                  </Link>
+                )}
+              </div>
             )}
           </>
         )}
-          </>
+      </>
     );
   }
 }

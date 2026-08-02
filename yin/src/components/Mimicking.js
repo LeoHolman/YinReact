@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom';
-import Recorder from './Recorder';
-import PitchChart from './PitchChart';
-import AudioPlayer from './AudioPlayer';
-
+import { Link } from "react-router-dom";
+import Recorder from "./Recorder";
+import PitchChart from "./PitchChart";
+import AudioPlayer from "./AudioPlayer";
 
 class Mimicking extends Component {
   constructor(props) {
@@ -59,36 +58,60 @@ class Mimicking extends Component {
 
   render() {
     return (
+      <>
+        {this.props.lesson &&
+        this.props.lesson.words &&
+        this.props.lesson.words[this.state.currentStimuli] ? (
           <>
-              {this.props.lesson && this.props.lesson.words && this.props.lesson.words[this.state.currentStimuli] ? (
-                    <>
-                        <p className="stimuliCharacter">{this.props.lesson.words[this.state.currentStimuli].character}</p>
+            <p className="stimuliCharacter">
+              {this.props.lesson.words[this.state.currentStimuli].character}
+            </p>
 
-                        <AudioPlayer audioFile={`/${this.props.lesson.words[this.state.currentStimuli].audioFile}`} />
-                        {this.props.lesson.words[this.state.currentStimuli].native_recording && 
-                            <PitchChart dataset={[[String(this.props.lesson.words[this.state.currentStimuli].native_recording.data), 'blue'],[String(this.state.userDataset), 'red']]} />
-                        }
-                        <Recorder label="Record" outputFunction={this.passDataToState} key={Math.random()} />
-                        <button onClick={this.nextWord}>Next {this.props.lesson.words.length - 1 === this.state.currentStimuli ?
-                            "Section"
-                            :
-                            "Word"
-                        }</button>
-                    </>
-                  )
+            <AudioPlayer
+              audioFile={`/${
+                this.props.lesson.words[this.state.currentStimuli].audioFile
+              }`}
+            />
+            {this.props.lesson.words[this.state.currentStimuli]
+              .native_recording && (
+              <PitchChart
+                dataset={[
+                  [
+                    String(
+                      this.props.lesson.words[this.state.currentStimuli]
+                        .native_recording.data
+                    ),
+                    "blue",
+                  ],
+                  [String(this.state.userDataset), "red"],
+                ]}
+              />
+            )}
+            <Recorder
+              label="Record"
+              outputFunction={this.passDataToState}
+              key={Math.random()}
+            />
+            <button onClick={this.nextWord}>
+              Next{" "}
+              {this.props.lesson.words.length - 1 === this.state.currentStimuli
+                ? "Section"
+                : "Word"}
+            </button>
+          </>
         ) : (
           <>
-                      {this.props.quiz==="true" ? (
-                            <>
-                                <p>You've completed this section of the quiz.</p>
-                                <button onClick={this.props.advance(3)}>Continue</button>
-                            </>
-                          )
+            {this.props.quiz === "true" ? (
+              <>
+                <p>You've completed this section of the quiz.</p>
+                <button onClick={this.props.advance(3)}>Continue</button>
+              </>
             ) : (
               <div id="score">
-                              <h2>Activity complete!</h2>
-                              <Link to="../">Return to Lessons & Quizzes</Link>
-                              <Link to="./4"><button>Next activity</button></Link>
+                <h2>Activity complete!</h2>
+                <Link to="../">Return to Lessons & Quizzes</Link>
+                <Link to="./4">
+                  <button>Next activity</button>
                 </Link>
               </div>
             )}
