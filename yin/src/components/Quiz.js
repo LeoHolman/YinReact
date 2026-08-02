@@ -113,9 +113,12 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
   //need to lift state up from quizzes to here; when a quiz is finished, score needs to come up, and current needs to be updated to the next activity in this.props.activities (might not be the next sequentially)
 
   const blocker = (
-      <>
-          <h3>You've already taken this quiz.</h3>
-          <p>You cannot take a quiz you've already taken. For more practice, explore the lessons. For re-takes, please speak with your teacher.</p>
+    <>
+      <h3>You've already taken this quiz.</h3>
+      <p>
+        You cannot take a quiz you've already taken. For more practice, explore
+        the lessons. For re-takes, please speak with your teacher.
+      </p>
     </>
   );
 
@@ -164,24 +167,22 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
     } else if (current == 5) {
       return (
         <div id="score">
-              <h3>You've completed this quiz!</h3>
-              <p>
-Your combined score on the multiple choice sections is<br/>
-{sumScore} out of 
-{' '}
-{sumTotalScore} (
-{toPercent(sumScore, sumTotalScore)}%). 
-{' '}
-<br />Your teacher will grade your recordings.</p>
-                    </div>)
+          <h3>You've completed this quiz!</h3>
+          <p>
+            Your combined score on the multiple choice sections is
+            <br />
+            {sumScore} out of {sumTotalScore} (
+            {toPercent(sumScore, sumTotalScore)}%). <br />
+            Your teacher will grade your recordings.
+          </p>
+        </div>
+      );
     }
     return null;
   }
 
   return (
-      <>
-          {(prev === true && current !== 5) ? blocker : activitySwitch(current)} 
-        </>
+    <>{prev === true && current !== 5 ? blocker : activitySwitch(current)}</>
   );
 }
 

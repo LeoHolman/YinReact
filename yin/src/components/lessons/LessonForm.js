@@ -171,124 +171,125 @@ class LessonForm extends Component {
   render() {
     return (
       <>
-        {this.state.form_complete ?
-              (<Redirect to='/teacherInterface/' />
+        {this.state.form_complete ? (
+          <Redirect to="/teacherInterface/" />
         ) : (
           <>
-            {this.props.editing ?
-                (<h1>Editing{this.props.name}</h1>
+            {this.props.editing ? (
+              <h1>Editing{this.props.name}</h1>
             ) : (
               <>
-              <h1>New lesson</h1>
-                      <form onSubmit={this.handleSubmit}>
-                          <label htmlFor="name">
-                              Name:
-                            </label>
-                          <input 
-                                  id="name"
-                                  type="text"
-                                  name="name"
-                                  value={this.state.name}
-                                  onChange={this.handleInputChange}
-              />
-                          <label htmlFor="description">
-                              Description:
-                            </label>
-                          <input 
-                                  id="description"
-                                  type="text"
-                                  name="description"
-                                  value={this.state.description}
-                                  onChange={this.handleInputChange}
-              />
-                          <label htmlFor="language">
-                                  Language:
-                            </label>
-                          <input 
-                                  id="language"
-                                  type="text"
-                                  name="language"
-                                  value={this.state.language}
-                                  onChange={this.handleInputChange}
-              />
-                          <label htmlFor="words">
-                              Words
-                            </label>
-                          <select
-                                  id="words"
-                                  multiple
-                                  name="words"
-                                  value={this.state.words}
-                                  onChange={this.handleSelectChange}
-                                  size="7"
-              />
-                                  {this.state.all_words && this.state.all_words.map( (word) => {
-                    return (
-                      <option
-                        key={word._id}
-                        id={word._id}
-                        value={word.character}
-                      >
-                        {word.character}
-                      </option>
-                    );
-                  })}
-                          <label htmlFor="is_quiz">
-                              Is this lesson a quiz?:
-                            </label>
-                          <input 
-                              id="is_quiz"
-                              checked={!!this.state.is_quiz}
-                              type="checkbox"
-                              name="is_quiz"
-                              value={this.state.is_quiz}
-                              onChange={this.handleCheckboxChange}
-              />
-                          {this.state.is_quiz ? (
-                                <>
-                                    <h3>Which activities would you like in this quiz?</h3>
-                                    <label htmlFor="sec_one">Activity 1: Distinguishing (2-choice quiz)</label>
-                                    <input 
-                                        id="sec_one"
-                                        checked={this.is_checked(1)}
-                                        type="checkbox"
-                                        name="sec_one"
-                                        value="1"
-                                        onClick={() => this.handleSectionChange(1)}
-                                    />
-                                    <label htmlFor="sec_two">Activity 2: Identifying (4-choice quiz)</label>
-                                    <input 
-                                        id="sec_two"
-                                        checked={this.is_checked(2)}
-                                        type="checkbox"
-                                        name="sec_two"
-                                        value="2"
-                                        onChange={() => this.handleSectionChange(2)}
-                                    />
-                                    <label htmlFor="sec_three">Activity 3: Mimicking (record with teacher example)</label>
-                                    <input 
-                                        id="sec_three"
-                                        checked={this.is_checked(3)}
-                                        type="checkbox"
-                                        name="sec_three"
-                                        value="3"
-                                        onChange={() => this.handleSectionChange(3)}
-                                    />
-                                    <label htmlFor="sec_four">Activity 4: Producing (record without teacher example)</label>
-                                    <input 
-                                        id="sec_four"
-                                        checked={this.is_checked(4)}
-                                        type="checkbox"
-                                        name="sec_four"
-                                        value="4"
-                                        onChange={() => this.handleSectionChange(4)}
-                                    />
-                              </>
-                              ) : ( <></>)}
-                          <input type="submit" value="Submit" />
-            </form>
-                              </>
-              )}
+                <h1>New lesson</h1>
+                <form onSubmit={this.handleSubmit}>
+                  <label htmlFor="name">Name:</label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    value={this.state.name}
+                    onChange={this.handleInputChange}
+                  />
+                  <label htmlFor="description">Description:</label>
+                  <input
+                    id="description"
+                    type="text"
+                    name="description"
+                    value={this.state.description}
+                    onChange={this.handleInputChange}
+                  />
+                  <label htmlFor="language">Language:</label>
+                  <input
+                    id="language"
+                    type="text"
+                    name="language"
+                    value={this.state.language}
+                    onChange={this.handleInputChange}
+                  />
+                  <label htmlFor="words">Words</label>
+                  <select
+                    id="words"
+                    multiple
+                    name="words"
+                    value={this.state.words}
+                    onChange={this.handleSelectChange}
+                    size="7"
+                  />
+                  {this.state.all_words &&
+                    this.state.all_words.map((word) => {
+                      return (
+                        <option
+                          key={word._id}
+                          id={word._id}
+                          value={word.character}
+                        >
+                          {word.character}
+                        </option>
+                      );
+                    })}
+                  <label htmlFor="is_quiz">Is this lesson a quiz?:</label>
+                  <input
+                    id="is_quiz"
+                    checked={!!this.state.is_quiz}
+                    type="checkbox"
+                    name="is_quiz"
+                    value={this.state.is_quiz}
+                    onChange={this.handleCheckboxChange}
+                  />
+                  {this.state.is_quiz ? (
+                    <>
+                      <h3>Which activities would you like in this quiz?</h3>
+                      <label htmlFor="sec_one">
+                        Activity 1: Distinguishing (2-choice quiz)
+                      </label>
+                      <input
+                        id="sec_one"
+                        checked={this.is_checked(1)}
+                        type="checkbox"
+                        name="sec_one"
+                        value="1"
+                        onClick={() => this.handleSectionChange(1)}
+                      />
+                      <label htmlFor="sec_two">
+                        Activity 2: Identifying (4-choice quiz)
+                      </label>
+                      <input
+                        id="sec_two"
+                        checked={this.is_checked(2)}
+                        type="checkbox"
+                        name="sec_two"
+                        value="2"
+                        onChange={() => this.handleSectionChange(2)}
+                      />
+                      <label htmlFor="sec_three">
+                        Activity 3: Mimicking (record with teacher example)
+                      </label>
+                      <input
+                        id="sec_three"
+                        checked={this.is_checked(3)}
+                        type="checkbox"
+                        name="sec_three"
+                        value="3"
+                        onChange={() => this.handleSectionChange(3)}
+                      />
+                      <label htmlFor="sec_four">
+                        Activity 4: Producing (record without teacher example)
+                      </label>
+                      <input
+                        id="sec_four"
+                        checked={this.is_checked(4)}
+                        type="checkbox"
+                        name="sec_four"
+                        value="4"
+                        onChange={() => this.handleSectionChange(4)}
+                      />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <input type="submit" value="Submit" />
+                </form>
+              </>
+            )}
           </>
         )}
       </>

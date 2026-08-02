@@ -6,8 +6,7 @@ function BaselineExplanation() {
       <p>
         Since pitch is relative to a speaker's voice, we need to know what your
         natural voice sounds like so that we can calibrate the curve
-        accoridngly.
-{" "}
+        accoridngly.{" "}
       </p>
     </div>
   );

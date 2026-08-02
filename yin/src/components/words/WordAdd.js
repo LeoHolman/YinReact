@@ -59,54 +59,39 @@ class AudioUpload extends Component {
 
   render() {
     return (
-          <>
-              {this.state.form_complete ? 
-                  (<Redirect to='/teacherInterface/words/' />
+      <>
+        {this.state.form_complete ? (
+          <Redirect to="/teacherInterface/words/" />
         ) : (
-                    <form onSubmit={this.handleSubmit} className="audioForm">
-                  <label htmlFor="audioFileInput">
-                      Audio File:
-                    </label>
-                  <input 
-                      id="audioFileInput"
-                      type="file" 
-                      name="audioFile"
-                    />
-                  <label htmlFor ="character">
-                      Character
-                    </label>
-                  <input 
-                      id="character"
-                      type="text" 
-                      name="character"
-                      value={this.state.character}
-                      onChange={this.handleInputChange}
-                    />
-                  <label htmlFor ="pinyin">
-                      Pinyin
-                    </label>
-                  <input 
-                      id="pinyin"
-                      type="text" 
-                      name="pinyin"
-                      value={this.state.pinyin}
-                      onChange={this.handleInputChange}
-                    />
-                  <label htmlFor="tone">
-                      Correct Tone:
-                    </label>
-                  <input 
-                      id="tone"
-                      type="text"
-                      name="correct"
-                      value={this.state.correct}
-                      onChange={this.handleInputChange}
-                    />
-                  <label id="submitButton">
-                      <input
-                          type="submit"
-                          value="Submit"
-                        />
+          <form onSubmit={this.handleSubmit} className="audioForm">
+            <label htmlFor="audioFileInput">Audio File:</label>
+            <input id="audioFileInput" type="file" name="audioFile" />
+            <label htmlFor="character">Character</label>
+            <input
+              id="character"
+              type="text"
+              name="character"
+              value={this.state.character}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="pinyin">Pinyin</label>
+            <input
+              id="pinyin"
+              type="text"
+              name="pinyin"
+              value={this.state.pinyin}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="tone">Correct Tone:</label>
+            <input
+              id="tone"
+              type="text"
+              name="correct"
+              value={this.state.correct}
+              onChange={this.handleInputChange}
+            />
+            <label id="submitButton">
+              <input type="submit" value="Submit" />
             </label>
           </form>
         )}

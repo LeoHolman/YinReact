@@ -25,20 +25,17 @@ class LessonDelete extends Component {
 
   render() {
     return (
-          <div className="lesson delete"> 
-              {this.state.deleted ? (
-                    <>
-                    <p>{this.state.response}</p>
-                    <Link to="../../">Back to lessons</Link>
-                    </>
-                  ) : (
-                    <p>D</p>
-                  )}
-            <h3>
-Are you sure you want to delete{this.props.match.params.name}
-?
-</h3>
-                      <button onClick={this.delete}>Delete</button>
+      <div className="lesson delete">
+        {this.state.deleted ? (
+          <>
+            <p>{this.state.response}</p>
+            <Link to="../../">Back to lessons</Link>
+          </>
+        ) : (
+          <p>D</p>
+        )}
+        <h3>Are you sure you want to delete{this.props.match.params.name}?</h3>
+        <button onClick={this.delete}>Delete</button>
       </div>
     );
   }

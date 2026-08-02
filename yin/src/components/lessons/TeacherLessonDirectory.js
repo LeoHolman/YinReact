@@ -22,29 +22,44 @@ class TeacherLessonDirectory extends Component {
     return (
       <>
         {this.state.lessons && (
-              <>
+          <>
             {/* <Link to={'/teacherInterface/lessons/add'} id="addLessonLink">
                             + &emsp;Add a Lesson
                         </Link>
                         <h1>Lessons:</h1> */}
-                      <TeacherNav view="lessons"/>
-                      <ul>
-                          {this.state.lessons.map( (lesson) => {
+            <TeacherNav view="lessons" />
+            <ul>
+              {this.state.lessons.map((lesson) => {
                 return (
                   <Link
                     to={`/teacherInterface/lessons/${lesson.name}/`}
                     key={lesson.name}
                     props={lesson}
-                    className="teacherCardLink">
-                                  <div className="teacherCard lessonCard">
-                                      <div className="meta" onClick={this.toggleActivityList}>
-                                          <h2>
-{lesson.is_quiz ? 'Quiz: ' : 'Lesson: '}{lesson.name}</h2>
-                                          <p>{lesson.description}</p>
-                                          <Link to={`/teacherInterface/lessons/${lesson.name}/edit/`} key={lesson.name} className="teacherEditLink">Edit Lesson</Link>
-                                          <Link to={`/teacherInterface/lessons/${lesson.name}/delete/`} key={`delete${lesson.name}`} className="teacherDeleteLink">Delete Lesson</Link>
+                    className="teacherCardLink"
+                  >
+                    <div className="teacherCard lessonCard">
+                      <div className="meta" onClick={this.toggleActivityList}>
+                        <h2>
+                          {lesson.is_quiz ? "Quiz: " : "Lesson: "}
+                          {lesson.name}
+                        </h2>
+                        <p>{lesson.description}</p>
+                        <Link
+                          to={`/teacherInterface/lessons/${lesson.name}/edit/`}
+                          key={lesson.name}
+                          className="teacherEditLink"
+                        >
+                          Edit Lesson
+                        </Link>
+                        <Link
+                          to={`/teacherInterface/lessons/${lesson.name}/delete/`}
+                          key={`delete${lesson.name}`}
+                          className="teacherDeleteLink"
+                        >
                           Delete Lesson
-                          </div>
+                        </Link>
+                        Delete Lesson
+                      </div>
                     </div>
                   </Link>
                 );
@@ -52,7 +67,7 @@ class TeacherLessonDirectory extends Component {
             </ul>
           </>
         )}
-          </>
+      </>
     );
   }
 }
