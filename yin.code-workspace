@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "yin"
+		},
+		{
+			"path": "../pitch_extractor"
+		},
+		{
+			"path": "yin-backend"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
