@@ -12,7 +12,7 @@ npm run dev:start
 
 This script will:
 
-- Build (or reuse) the `pitch_extractor` Docker image and start its container on port `8080`
+- Build (or reuse) the `pitch_extractor`(https://github.com/LeoHolman/pitch_extractor) Docker image and start its container on port `8080`
 - Start a MongoDB Docker container (`yin-mongo`) on port `27017`
 - Restore the database dump from `database/yin-1-2-3-4-5/yin` into database `yin`
 - Install dependencies in `yin` and `yin-backend` when `node_modules` is missing
