@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import { MediaRecorder } from "extendable-media-recorder";
 import PropTypes from "prop-types";
 import registerMediaRecorder from "../helper/recorderService";
+import extractPitchFromAudioBlob from "../helper/extractPitch";
 
 function Recorder({ label, outputFunction }) {
   const [buttonClass, setButtonClass] = useState("");
 
   async function processAudio(audioBlob) {
-    return new Promise(async (resolve) => {
-      const formData = new FormData();
-      formData.append("file", audioBlob, "recorder.wav");
-      const result = await fetch("http://localhost:8080/extract_pitch/wav", {
-        method: "POST",
-        body: formData,
-      });
-      resolve(result.text());
-    });
+    const result = await extractPitchFromAudioBlob(audioBlob);
+    if (!result) {
+      return "";
+    }
+    return result;
   }
 
   async function record() {
@@ -52,17 +49,24 @@ function Recorder({ label, outputFunction }) {
   }
 
   async function addRecordFunction() {
-    await registerMediaRecorder();
-    const blob = await record("__record_button");
-    const data = await processAudio(blob);
+    try {
+      await registerMediaRecorder();
+      const blob = await record("__record_button");
+      const data = await processAudio(blob);
 
-    // Remove useless header information
-    const lines = data.split("\n");
-    lines.splice(0, 3);
-    // Add useful column labels
-    lines.unshift(["time\tfrequency"]);
-    const splicedData = lines.join("\n");
-    outputFunction(splicedData);
+      if (!data) {
+        return;
+      }
+
+      const lines = data.split("\n");
+      lines.splice(0, 3);
+      lines.unshift("time\tfrequency");
+      const splicedData = lines.join("\n");
+      outputFunction(splicedData);
+    } catch (error) {
+      console.error("Recording failed:", error);
+      outputFunction("");
+    }
   }
 
   return (
