@@ -7,9 +7,8 @@ export default async function extractPitchFromAudioBlob(audioBlob) {
   formData.append("file", audioBlob, "recorder.wav");
 
   try {
-    const response = await fetch("http://localhost:8080/extract_pitch/wav", {
+    const response = await fetch("/api/pitch/extract/", {
       method: "POST",
-      mode: "cors",
       body: formData,
     });
 

@@ -70,6 +70,7 @@ class SignUp extends Component {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           username,
           password,
@@ -77,12 +78,25 @@ class SignUp extends Component {
           is_teacher: isTeacher,
         }),
       }).then(async (response) => {
-        const message = await response.text();
-        if (message === "Username taken, please try another.") {
+        const { onSignupSuccess } = this.props;
+
+        if (response.status === 409) {
+          const message = await response.text();
           this.setState({ errorMessage: message });
-        } else {
-          this.setState({ formComplete: true });
+          return;
         }
+
+        if (!response.ok) {
+          this.setState({ errorMessage: "Sign up failed. Please try again." });
+          return;
+        }
+
+        if (onSignupSuccess) {
+          await onSignupSuccess();
+        }
+
+        sessionStorage.setItem("signupSuccessToast", "1");
+        this.setState({ formComplete: true });
       });
     } else {
       this.setState((prevState) => ({
@@ -152,10 +166,12 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   editing: PropTypes.bool,
+  onSignupSuccess: PropTypes.func,
 };
 
 SignUp.defaultProps = {
   editing: false,
+  onSignupSuccess: null,
 };
 
 export default SignUp;

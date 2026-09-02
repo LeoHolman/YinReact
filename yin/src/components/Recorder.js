@@ -57,12 +57,7 @@ function Recorder({ label, outputFunction }) {
       if (!data) {
         return;
       }
-
-      const lines = data.split("\n");
-      lines.splice(0, 3);
-      lines.unshift("time\tfrequency");
-      const splicedData = lines.join("\n");
-      outputFunction(splicedData);
+      outputFunction(data);
     } catch (error) {
       console.error("Recording failed:", error);
       outputFunction("");

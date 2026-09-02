@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docker": "docker start pitch_extractor",
     "dev:start": "powershell -ExecutionPolicy Bypass -File ./scripts/start-dev.ps1"
   },
   "repository": {

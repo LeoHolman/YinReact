@@ -82,11 +82,18 @@ function Nav({ isLoggedIn, isTeacher, username, logout, activeLang }) {
               </Link>
             </>
           ) : (
-            <li>
-              <Link to="/login/" id="nav-login">
-                Login &emsp;|
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/login/" id="nav-login">
+                  Login &emsp;|
+                </Link>
+              </li>
+              <li>
+                <Link to="/SignUp" id="nav-signup">
+                  Sign Up &emsp;|
+                </Link>
+              </li>
+            </>
           )}
           {isTeacher && (
             <li>
@@ -131,9 +138,14 @@ function Nav({ isLoggedIn, isTeacher, username, logout, activeLang }) {
               </Link>
             </>
           ) : (
-            <Link to="/login/" id="nav-mobile-logout">
-              Login
-            </Link>
+            <>
+              <Link to="/login/" id="nav-mobile-logout">
+                Login
+              </Link>
+              <Link to="/SignUp" id="nav-mobile-signup">
+                Sign Up
+              </Link>
+            </>
           )}
         </div>
       </div>

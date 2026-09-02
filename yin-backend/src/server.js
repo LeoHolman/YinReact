@@ -12,9 +12,10 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const path = require('path');
 const port = 8000;
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/yin';
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/yin');
+mongoose.connect(mongoUrl);
 
 const wordRouter = require('./routers/word');
 const lessonRouter = require('./routers/lesson');
@@ -22,6 +23,7 @@ const userRouter = require('./routers/user');
 const recordingRouter = require('./routers/recording');
 const quizScoreRouter = require('./routers/quiz_score');
 const nativeRecordingRouter = require('./routers/native_recording');
+const pitchRouter = require('./routers/pitch');
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -37,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser());
 app.use(session({
     'secret': SESSION_KEY,
-    store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/yin' }),
+    store: MongoStore.create({ mongoUrl }),
     resave: false,
     saveUninitialized: true,
     httpOnly: false,
@@ -52,6 +54,7 @@ app.use(lessonRouter);
 app.use(recordingRouter);
 app.use(quizScoreRouter);
 app.use(nativeRecordingRouter);
+app.use(pitchRouter);
 
 app.get('/hello/', (req, res, next) => {
     res.send('success!');

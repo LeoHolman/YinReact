@@ -21,10 +21,14 @@ router.post('/api/signup/', async (req, res) => {
                                    salt: salt.toString('hex'),
                                    baseline: req.body.baseline});
         newUser.save().then( () => {
-            res.send(`Hello! ${req.body.username}`)
+            req.session.user = newUser._id;
+            res.status(201).json({
+                message: `Hello! ${req.body.username}`,
+                username: req.body.username,
+            });
         });
     } else {
-        res.send('Username taken, please try another.');
+        res.status(409).send('Username taken, please try another.');
     }
 });
 

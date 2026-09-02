@@ -12,16 +12,36 @@ npm run dev:start
 
 This script will:
 
-- Build (or reuse) the `pitch_extractor`(https://github.com/LeoHolman/pitch_extractor) Docker image and start its container on port `8080`
+- Kill stale processes using ports `3000` and `8000` before startup
 - Start a MongoDB Docker container (`yin-mongo`) on port `27017`
 - Restore the database dump from `database/yin-1-2-3-4-5/yin` into database `yin`
-- Install dependencies in `yin` and `yin-backend` when `node_modules` is missing
-- Open two terminals and run the backend (`yin-backend`) and frontend (`yin`)
+- Build and run backend in Docker (`yin-backend`) on port `8000`
+- Install dependencies in `yin` when `node_modules` is missing
+- Open one terminal and run the frontend (`yin`)
+- Run pitch extraction inside `yin-backend` (no separate pitch extraction container)
 
 Optional flags:
 
 ```powershell
 ./scripts/start-dev.ps1 -SkipRestore
-./scripts/start-dev.ps1 -RebuildPitchExtractor
 ./scripts/start-dev.ps1 -SkipInstall
+./scripts/start-dev.ps1 -SkipPortGuard
+```
+
+You can also run the guard directly:
+
+```powershell
+./scripts/guard-dev-ports.ps1
+```
+
+## Backend Container
+
+The backend container includes all pitch extraction dependencies (`python3`, `librosa`, `soundfile`, `numpy`, `ffmpeg`, `libsndfile1`) so local Python package setup is no longer required.
+
+Manual backend build/run (optional):
+
+```powershell
+cd yin-backend
+docker build -t yin-backend .
+docker run --rm -p 8000:8000 -e MONGO_URL=mongodb://host.docker.internal:27017/yin yin-backend
 ```

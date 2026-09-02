@@ -1,7 +1,7 @@
 param(
 	[switch]$SkipRestore,
-	[switch]$RebuildPitchExtractor,
-	[switch]$SkipInstall
+	[switch]$SkipInstall,
+	[switch]$SkipPortGuard
 )
 
 $ErrorActionPreference = 'Stop'
@@ -84,6 +84,41 @@ function Ensure-ContainerRunning {
 	}
 }
 
+function Ensure-BackendContainerRunning {
+	param(
+		[string]$ContainerName,
+		[string]$ImageName,
+		[string]$BackendRoot,
+		[string]$MongoUrl
+	)
+
+	$uploadsPath = Join-Path $BackendRoot 'src\uploads'
+	if (-not (Test-Path $uploadsPath)) {
+		New-Item -Path $uploadsPath -ItemType Directory -Force | Out-Null
+	}
+
+	$uploadsPathForDocker = $uploadsPath -replace '\\', '/'
+
+	Write-Host "Building backend image '$ImageName'..." -ForegroundColor Cyan
+	Invoke-ExternalCommand -File 'docker' -Arguments @('build', '-t', $ImageName, '.') -WorkingDirectory $BackendRoot
+
+	$exists = (docker ps -a --filter "name=^$ContainerName$" --format '{{.Names}}') -eq $ContainerName
+	if ($exists) {
+		Write-Host "Removing existing backend container '$ContainerName'..." -ForegroundColor Cyan
+		Invoke-ExternalCommand -File 'docker' -Arguments @('rm', '-f', $ContainerName)
+	}
+
+	Write-Host "Starting backend container '$ContainerName' on port 8000..." -ForegroundColor Cyan
+	Invoke-ExternalCommand -File 'docker' -Arguments @(
+		'run', '-d',
+		'--name', $ContainerName,
+		'-p', '8000:8000',
+		'-e', "MONGO_URL=$MongoUrl",
+		'-v', "${uploadsPathForDocker}:/app/src/uploads",
+		$ImageName
+	)
+}
+
 function Wait-ForMongo {
 	param([string]$ContainerName)
 
@@ -137,15 +172,10 @@ Assert-Command -Name 'npm'
 
 $yinRoot = Split-Path -Parent $PSScriptRoot
 $projectsRoot = Split-Path -Parent $yinRoot
-$pitchExtractorRoot = Join-Path $projectsRoot 'pitch_extractor'
 
 $frontendRoot = Join-Path $yinRoot 'yin'
 $backendRoot = Join-Path $yinRoot 'yin-backend'
 $dumpRoot = Join-Path $yinRoot 'database\yin-1-2-3-4-5'
-
-if (-not (Test-Path $pitchExtractorRoot)) {
-	throw "pitch_extractor directory was not found at: $pitchExtractorRoot"
-}
 
 if (-not (Test-Path $frontendRoot)) {
 	throw "Frontend directory was not found at: $frontendRoot"
@@ -159,19 +189,21 @@ if (-not (Test-Path $dumpRoot)) {
 	throw "Database dump directory was not found at: $dumpRoot"
 }
 
-Write-Host 'Checking Docker daemon...' -ForegroundColor Cyan
-Invoke-ExternalCommand -File 'docker' -Arguments @('info')
+if (-not $SkipPortGuard) {
+	$portGuardScript = Join-Path $PSScriptRoot 'guard-dev-ports.ps1'
+	if (-not (Test-Path $portGuardScript)) {
+		throw "Port guard script was not found at: $portGuardScript"
+	}
 
-$pitchImage = docker images --format '{{.Repository}}:{{.Tag}}' | Where-Object { $_ -like 'pitch_extractor:*' } | Select-Object -First 1
-if ($RebuildPitchExtractor -or -not $pitchImage) {
-	Write-Host 'Building pitch_extractor Docker image...' -ForegroundColor Cyan
-	Invoke-ExternalCommand -File 'docker' -Arguments @('build', '-t', 'pitch_extractor', '.') -WorkingDirectory $pitchExtractorRoot
+	Write-Host 'Clearing stale dev listeners on ports 3000 and 8000...' -ForegroundColor Cyan
+	& $portGuardScript -Ports @(3000, 8000)
 }
 else {
-	Write-Host 'pitch_extractor image already exists. Skipping build.' -ForegroundColor DarkGreen
+	Write-Host 'Skipping port guard because -SkipPortGuard was passed.' -ForegroundColor Yellow
 }
 
-Ensure-ContainerRunning -ContainerName 'pitch_extractor' -ImageName 'pitch_extractor' -RunArguments @('-p', '8080:8080')
+Write-Host 'Checking Docker daemon...' -ForegroundColor Cyan
+Invoke-ExternalCommand -File 'docker' -Arguments @('info')
 Ensure-ContainerRunning -ContainerName 'yin-mongo' -ImageName 'mongo:7' -RunArguments @('-p', '27017:27017')
 
 Wait-ForMongo -ContainerName 'yin-mongo'
@@ -185,15 +217,16 @@ else {
 
 if (-not $SkipInstall) {
 	Ensure-NodeModules -ProjectPath $frontendRoot
-	Ensure-NodeModules -ProjectPath $backendRoot
 }
 
-Start-NpmScriptInNewWindow -ProjectPath $backendRoot -ScriptName 'start' -Title 'yin-backend'
+$mongoUrlForBackendContainer = 'mongodb://host.docker.internal:27017/yin'
+Ensure-BackendContainerRunning -ContainerName 'yin-backend' -ImageName 'yin-backend' -BackendRoot $backendRoot -MongoUrl $mongoUrlForBackendContainer
+
 Start-NpmScriptInNewWindow -ProjectPath $frontendRoot -ScriptName 'start' -Title 'yin frontend'
 
 Write-Host ''
 Write-Host 'Development environment is starting.' -ForegroundColor Green
 Write-Host 'Frontend: https://localhost:3000' -ForegroundColor Green
 Write-Host 'Backend:  https://localhost:8000' -ForegroundColor Green
-Write-Host 'Pitch API: http://localhost:8080' -ForegroundColor Green
+Write-Host 'Backend container: yin-backend' -ForegroundColor Green
 Write-Host 'MongoDB:   mongodb://localhost:27017/yin' -ForegroundColor Green

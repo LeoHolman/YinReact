@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Toast, ToastContainer } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/activities.css";
 import "./css/LADirectoryStyle.css";
 import "./css/style.css";
@@ -25,6 +27,7 @@ function App() {
   const [baseline, setBaseline] = useState(0);
   const [isTeacher, setIsTeacher] = useState(false);
   const [error, setError] = useState("");
+  const [showSignupToast, setShowSignupToast] = useState(false);
 
   const contextValue = useMemo(
     () => ({
@@ -138,10 +141,37 @@ function App() {
     }
   }, [activeLang, updateLanguageInDatabase]);
 
+  useEffect(() => {
+    if (isLoggedIn && sessionStorage.getItem("signupSuccessToast") === "1") {
+      setShowSignupToast(true);
+      sessionStorage.removeItem("signupSuccessToast");
+    }
+  }, [isLoggedIn]);
+
   return (
     <LanguageContext.Provider value={contextValue}>
       <UserContext.Provider value={activeLang}>
         <Router>
+          <ToastContainer
+            position="top-end"
+            className="p-3"
+            style={{ zIndex: 1080 }}
+          >
+            <Toast
+              bg="success"
+              onClose={() => setShowSignupToast(false)}
+              show={showSignupToast}
+              autohide
+              delay={3500}
+            >
+              <Toast.Header closeButton>
+                <strong className="me-auto">Welcome</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                Sign up complete. You are now logged in.
+              </Toast.Body>
+            </Toast>
+          </ToastContainer>
           <Header
             checkLogin={checkLogin}
             isTeacher={isTeacher}
@@ -168,7 +198,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/SignUp">
-                <SignUp />
+                <SignUp onSignupSuccess={checkLogin} />
               </Route>
               {/* <Route exact path="/logout">{this.logOut}</Route> */}
               <Route exact path="*/explanation">
