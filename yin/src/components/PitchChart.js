@@ -37,20 +37,30 @@ function PitchChart({ dataset }) {
     height,
     { color = "red", chartID = "__visualization" } = {}
   ) {
-    const datarecord = [];
     const parsedData = d3.tsvParse(rawDataset);
-    parsedData.map((__data) => {
-      // let zScore = stats.calcZScore(baseline,data.frequency,standardDeviation);
-      // if(isNaN(zScore)){
-      // 	zScore = 0;
-      // }
-      const point = { time: __data.time, frequency: __data.frequency };
-      datarecord.push(point);
-      // var zScore = 0;
-      const x = __data.time * (width / 2);
-      const y = height - (height / 2 + (__data.frequency - height / 2));
-      return d3
-        .select(`#${chartID} svg`)
+    const points = parsedData
+      .map((row) => ({
+        time: Number(row.time),
+        frequency: Number(row.frequency),
+      }))
+      .filter(
+        (point) => Number.isFinite(point.time) && Number.isFinite(point.frequency)
+      );
+
+    if (points.length === 0) {
+      return;
+    }
+
+    const [minTime, maxTime] = d3.extent(points, (point) => point.time);
+    const xScale =
+      minTime === maxTime
+        ? () => width / 2
+        : d3.scaleLinear().domain([minTime, maxTime]).range([10, width - 10]);
+
+    points.forEach((point) => {
+      const x = xScale(point.time);
+      const y = height - (height / 2 + (point.frequency - height / 2));
+      d3.select(`#${chartID} svg`)
         .append("circle")
         .attr("cx", x)
         .attr("cy", y)
@@ -66,13 +76,13 @@ function PitchChart({ dataset }) {
     dataset.map((curve) => {
       return drawPitchCurve(curve[0], 1100, 500, { color: curve[1] });
     });
-  });
+  }, [dataset]);
 
   return <div id="__visualization" />;
 }
 
 PitchChart.propTypes = {
-  dataset: PropTypes.string.isRequired,
+  dataset: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default PitchChart;

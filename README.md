@@ -36,7 +36,14 @@ You can also run the guard directly:
 
 ## Backend Container
 
-The backend container includes all pitch extraction dependencies (`python3`, `librosa`, `soundfile`, `numpy`, `ffmpeg`, `libsndfile1`) so local Python package setup is no longer required.
+The backend container includes all pitch extraction dependencies (`python3`, `praat`, `ffmpeg`, `libsndfile1`) so local Python package setup is no longer required.
+
+Pitch extraction now runs through the native Praat CLI script pipeline in the backend container using the legacy script text verbatim:
+
+- `Read from file`
+- `To Manipulation: 0.01, 75, 600`
+- `Extract pitch tier`
+- `Save as PitchTier spreadsheet file`
 
 Manual backend build/run (optional):
 
