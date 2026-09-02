@@ -48,23 +48,35 @@ router.get('/api/logout', async (req, res, next) =>{
 
 
 router.post('/api/login/', async (req, res, next) => {
-    const username = req.body.username;
-    const userRecord = await User.findOne({username});
-    if(!userRecord){
+    const username = String(req.body.username || '').trim();
+    const userRecord = await User.findOne({ username });
+
+    if (!userRecord) {
         res.status(401).send('Username/password incorrect');
-        console.log("Not found");
-    } else {
-        const userSalt = userRecord.salt;
-        const incomingPassword = req.body.password;
-        const hashedIncomingPassword = await argon2.hash(incomingPassword, {userSalt}); 
-        const correctPassword = await argon2.verify(userRecord.password, incomingPassword);
-        if (correctPassword){
-            req.session.user = userRecord._id;
-            res.status(204).send();
-        } else {
-            res.status(401).send('Username/password incorrect.');
-        }
+        return;
     }
+
+    const incomingPassword = String(req.body.password || '');
+    let correctPassword = false;
+
+    try {
+        if (typeof userRecord.password === 'string' && userRecord.password.startsWith('$')) {
+            correctPassword = await argon2.verify(userRecord.password, incomingPassword);
+        } else {
+            correctPassword = userRecord.password === incomingPassword;
+        }
+    } catch (ex) {
+        console.log(ex);
+        correctPassword = userRecord.password === incomingPassword;
+    }
+
+    if (correctPassword) {
+        req.session.user = userRecord._id;
+        res.status(204).send();
+        return;
+    }
+
+    res.status(401).send('Username/password incorrect.');
 });
 
 router.get('/api/user/me/', [auth, getSafeUser], async (req, res, next) => {

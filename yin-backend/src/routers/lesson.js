@@ -15,24 +15,21 @@ router.get('/api/lessons/all/', async (req, res, next) => {
 });
 
 router.get('/api/lessons/:name/', async (req, res, next) => {
-    const name = req.params.name; 
+    const name = req.params.name;
     try {
-        // const lesson = await (await )
-        Lesson.findOne({name})
-        .populate({
-            path:'words', 
+        const lesson = await Lesson.findOne({ name }).populate({
+            path: 'words',
             populate: {
                 path: 'native_recording'
             }
-        })
-        .exec( (err, _lesson) => {
-            if (err){
-                console.log(err);
-                res.status(500).send('Something went wrong');
-            }
-            res.send(_lesson);
-            console.log(_lesson)
         });
+
+        if (!lesson) {
+            res.status(404).send('Lesson not found');
+            return;
+        }
+
+        res.send(lesson);
     } catch (ex) {
         console.log(ex);
         res.status(500).send('Something went wrong');

@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../pitch_extractor"
+		}
+	],
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"npm run build": true
+		}
+	}
+}

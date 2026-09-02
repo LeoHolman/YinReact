@@ -4,9 +4,9 @@ function BaselineExplanation() {
   return (
     <div id="baseline-explanation">
       <p>
-        Since pitch is relative to a speaker's voice, we need to know what your
+        Since pitch is relative to a speaker&apos;s voice, we need to know what your
         natural voice sounds like so that we can calibrate the curve
-        accoridngly.{" "}
+        accordingly.
       </p>
     </div>
   );

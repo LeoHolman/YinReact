@@ -49,8 +49,8 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
   }
 
   async function recordScore() {
-    var sumScore = null;
-    var sumTotalScore = null;
+    let sumScore = null;
+    let sumTotalScore = null;
     if (includes(1) && includes(2)) {
       sumScore = activity1.score + activity2.score;
       sumTotalScore = activity1.maxScore + activity2.max_score;
@@ -63,15 +63,15 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
     }
     setSumScore(sumScore);
     setSumTotalScore(sumTotalScore);
-    var array1 = activity3.recordings;
-    var allRecordings = array1.concat(activity4.recordings);
+    const array1 = activity3.recordings;
+    const allRecordings = array1.concat(activity4.recordings);
     sendScore(sumScore, sumTotalScore, allRecordings);
   }
 
-  //advance is broken, fix advance
+  // advance is broken, fix advance
   function advance(num) {
-    for (var i = num; i < 5; i++) {
-      var next = i + 1;
+    for (let i = num; i < 5; i++) {
+      const next = i + 1;
       if (activities.includes(next)) {
         setCurrent(next);
         break;
@@ -86,13 +86,13 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
     const activity = choices === "2" ? "activity1" : "activity2";
     if (activity == "activity1") {
       setActivity1({
-        score: score,
-        maxScore: maxScore,
+        score,
+        maxScore,
       });
     } else if (activity == "activity2") {
       setActivity2({
-        score: score,
-        maxScore: maxScore,
+        score,
+        maxScore,
       });
     }
     advance(current);
@@ -106,11 +106,11 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
   }
 
   function toPercent(num1, num2) {
-    var percent = (num1 / num2) * 100;
+    const percent = (num1 / num2) * 100;
     return percent;
   }
-  //to-do
-  //need to lift state up from quizzes to here; when a quiz is finished, score needs to come up, and current needs to be updated to the next activity in this.props.activities (might not be the next sequentially)
+  // to-do
+  // need to lift state up from quizzes to here; when a quiz is finished, score needs to come up, and current needs to be updated to the next activity in this.props.activities (might not be the next sequentially)
 
   const blocker = (
     <>
@@ -171,8 +171,10 @@ function Quiz({ activities, lesson, sendScore, stimuli, username }) {
           <p>
             Your combined score on the multiple choice sections is
             <br />
-            {sumScore} out of {sumTotalScore} (
-            {toPercent(sumScore, sumTotalScore)}%). <br />
+            {sumScore} out of{sumTotalScore} (
+            {toPercent(sumScore, sumTotalScore)}
+            %).
+            <br />
             Your teacher will grade your recordings.
           </p>
         </div>

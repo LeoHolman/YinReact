@@ -18,9 +18,9 @@ class AudioUpload extends Component {
   }
 
   handleInputChange(event) {
-    const target = event.target;
+    const { target } = event;
     const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+    const { name } = target;
 
     this.setState({
       [name]: value,
@@ -38,7 +38,7 @@ class AudioUpload extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append(
       "audioFile",
       document.getElementById("audioFileInput").files[0]

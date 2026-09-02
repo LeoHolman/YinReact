@@ -3,6 +3,12 @@
         "browser": true,
         "es6": true
     },
+    "ignorePatterns": [
+        "yin/src/**",
+        "yin-backend/src/**",
+        "**/build/**",
+        "**/node_modules/**"
+    ],
     "extends": [
         "plugin:react/recommended",
         "plugin:prettier/recommended",

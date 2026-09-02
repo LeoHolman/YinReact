@@ -49,20 +49,20 @@ class LessonForm extends Component {
   }
 
   handleInputChange(event) {
-    var attribute = event.target.name;
-    var value = event.target.value;
+    const attribute = event.target.name;
+    const { value } = event.target;
     this.setState({ [attribute]: value });
   }
 
   handleCheckboxChange() {
-    var prevState = this.state.is_quiz;
+    const prevState = this.state.is_quiz;
     this.setState({ is_quiz: !prevState });
   }
 
   handleSectionChange(num) {
     console.log(this.state.quiz_sections);
-    var array = this.state.quiz_sections;
-    var index = null;
+    const array = this.state.quiz_sections;
+    let index = null;
     if (this.is_checked(num)) {
       index = array.indexOf(num);
       // delete array[index];
@@ -75,9 +75,9 @@ class LessonForm extends Component {
   }
 
   handleSelectChange(event) {
-    const options = event.target.options;
-    var selected = [];
-    var selected_keys = [];
+    const { options } = event.target;
+    const selected = [];
+    const selected_keys = [];
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected) {
         selected.push(options[i].value);
@@ -93,7 +93,7 @@ class LessonForm extends Component {
     const url = `/api/lessons/${this.props.name}/delete`;
 
     fetch(url, {
-      method: method,
+      method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -108,8 +108,8 @@ class LessonForm extends Component {
   handleSubmit(event) {
     console.log("in handle");
     event.preventDefault();
-    var method = this.props.editing ? "PUT" : "POST";
-    var url = "/api/lessons/add/";
+    let method = this.props.editing ? "PUT" : "POST";
+    let url = "/api/lessons/add/";
     if (this.props.editing && this.state.name === this.props.name) {
       url = `/api/lessons/${this.state.name}/edit`;
     } else if (this.props.editing && this.state.name !== this.props.name) {
@@ -118,7 +118,7 @@ class LessonForm extends Component {
     }
     console.log(url);
     fetch(url, {
-      method: method,
+      method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -146,20 +146,19 @@ class LessonForm extends Component {
   }
 
   matchWord(word) {
-    for (var i = 0; i < this.state.words.length; i++) {
+    for (let i = 0; i < this.state.words.length; i++) {
       if (this.state.words[i]._id === word) {
         console.log(true);
         return true;
-      } else {
-        console.log(false);
-        return false;
       }
+      console.log(false);
+      return false;
     }
   }
 
   is_checked(num) {
     if (this.props.quiz_sections || this.state.quiz_sections) {
-      for (var i = 0; i < this.state.quiz_sections.length; i++) {
+      for (let i = 0; i < this.state.quiz_sections.length; i++) {
         if (this.state.quiz_sections[i] === num) {
           return true;
         }
@@ -176,7 +175,10 @@ class LessonForm extends Component {
         ) : (
           <>
             {this.props.editing ? (
-              <h1>Editing{this.props.name}</h1>
+              <h1>
+                Editing
+                {this.props.name}
+              </h1>
             ) : (
               <>
                 <h1>New lesson</h1>

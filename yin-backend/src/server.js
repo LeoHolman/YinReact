@@ -9,8 +9,7 @@ const SESSION_KEY = 'keyboardcatfire99999999';
 const _connectMongoPkg = require('connect-mongo');
 const MongoStore = _connectMongoPkg && _connectMongoPkg.default ? _connectMongoPkg.default : _connectMongoPkg;
 const cookieParser = require('cookie-parser');
-const https = require('https');
-const fs = require('fs');
+const http = require('http');
 const path = require('path');
 const port = 8000;
 
@@ -28,11 +27,6 @@ const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
     optionsSuccessStatus: 200
-}
-
-const httpsOptions = {
-    key: fs.readFileSync('./src/security/cert.key'),
-    cert: fs.readFileSync('./src/security/cert.pem')
 }
 
 const app = express();
@@ -88,6 +82,6 @@ app.get(/.*/, (req, res) => {
 //Start application
 // app.listen(8000, () => console.log('Listening on port 8000'));
 console.log(path.join(__dirname, 'uploads'));
-const server = https.createServer(httpsOptions, app).listen(port, () => {
+const server = http.createServer(app).listen(port, () => {
     console.log('Running on port '+ port);
 })

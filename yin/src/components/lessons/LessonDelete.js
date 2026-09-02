@@ -34,7 +34,10 @@ class LessonDelete extends Component {
         ) : (
           <p>D</p>
         )}
-        <h3>Are you sure you want to delete{this.props.match.params.name}?</h3>
+        <h3>
+Are you sure you want to delete{this.props.match.params.name}
+?
+</h3>
         <button onClick={this.delete}>Delete</button>
       </div>
     );

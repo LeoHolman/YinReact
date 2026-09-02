@@ -12,7 +12,7 @@ import { userContext } from "../context/userContext";
 function LessonDirectory() {
   const [allLessons, setAllLessons] = useState([]);
   const activeLang = useContext(userContext);
-  /** 
+  /**
     constructor(props){
         super(props)
         this.state = {
@@ -20,7 +20,7 @@ function LessonDirectory() {
         }
     }
 */
-  /** 
+  /**
     async componentDidMount() {
         fetch('/api/lessons/all')
             .then( (response) => response.json()
@@ -35,9 +35,25 @@ function LessonDirectory() {
   useEffect(() => {
     fetch(`/api/lessons/all/`).then((response) =>
       response.json().then((result) => {
-        console.log(result);
-        // setAllLessons(result.filter((s) => s.language === activeLang));
-        setAllLessons(result);
+        const lessons = Array.isArray(result) ? result : [];
+        const normalizedActive = String(activeLang || "").trim().toLowerCase();
+
+        const safeLessons = lessons.filter((lesson) => {
+          if (!lesson || typeof lesson !== "object") {
+            return false;
+          }
+
+          const lessonLanguage =
+            typeof lesson.language === "string" ? lesson.language.trim() : "";
+
+          if (lessonLanguage === "" || normalizedActive === "") {
+            return true;
+          }
+
+          return lessonLanguage.toLowerCase() === normalizedActive;
+        });
+
+        setAllLessons(safeLessons.length > 0 ? safeLessons : lessons);
       })
     );
   }, [activeLang]);

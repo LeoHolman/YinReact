@@ -92,12 +92,10 @@ router.get('/api/words/all/', async (req, res, next) => {
 router.get('/api/words/:character/', async (req, res, next) => {
     const character = req.params.character;
     try {
-        const word = await Word.find({character})
-        .populate('native_recording')
-        .exec( (err, _word) => {
-            res.send(_word);
-        });
+        const words = await Word.find({ character }).populate('native_recording');
+        res.send(words);
     } catch (ex) {
+        console.log(ex);
         res.status(500).send('Something went wrong');
     }
 });

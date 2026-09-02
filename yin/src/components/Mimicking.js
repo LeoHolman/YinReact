@@ -24,7 +24,7 @@ class Mimicking extends Component {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dataset: dataset }),
+        body: JSON.stringify({ dataset }),
       })
     ).json();
     console.dir(response);

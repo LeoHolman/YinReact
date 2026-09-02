@@ -48,8 +48,11 @@ function App() {
   }, []);
 
   const checkLogin = useCallback(async () => {
-    const session = await fetch("/api/user/me/");
+    const session = await fetch("/api/user/me/", {
+      credentials: "include",
+    });
     if (session.status === 401 || session.status === 404) {
+      setIsLoggedIn(false);
       return false;
     }
 
@@ -59,7 +62,7 @@ function App() {
     const userLang = userdata.activeLang;
     const baselineNumber = Number(userdata.baseline);
     setUsername(usernameValue);
-    setActiveLang(userLang);
+    setActiveLang(userLang || "");
     setIsLoggedIn(true);
     setBaseline(baselineNumber);
     setIsTeacher(isTeacherValue);
@@ -79,20 +82,21 @@ function App() {
           username: usernameValue,
           password,
         }),
-      }).then((response) => {
+      }).then(async (response) => {
         if (response.status === 401) {
           setError("Username or password is incorrect.");
-        } else {
-          response.text().then(() => {
-            setError("");
-            setIsLoggedIn(true);
-            setUsername(usernameValue);
-            setActiveLang(activeLang);
-          });
+          return;
+        }
+
+        setError("");
+        setUsername(usernameValue);
+        const loggedIn = await checkLogin();
+        if (loggedIn) {
+          setIsLoggedIn(true);
         }
       });
     },
-    [activeLang]
+    [checkLogin]
   );
 
   const storeBaseline = useCallback(async (value) => {
@@ -112,6 +116,7 @@ function App() {
   const renderActivity = useCallback(
     ({ match, location, history }) => (
       <Activity
+        activeLang={activeLang}
         baseline={baseline}
         history={history}
         location={location}
@@ -120,7 +125,7 @@ function App() {
         user={username}
       />
     ),
-    [baseline, storeBaseline, username]
+    [activeLang, baseline, storeBaseline, username]
   );
 
   useEffect(() => {

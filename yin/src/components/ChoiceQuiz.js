@@ -55,7 +55,7 @@ class ChoiceQuiz extends Component {
     document.getElementById("submitAnswer").classList.remove("hide");
     document.getElementById("feedback-box").style.visibility = "hidden";
 
-    let responses = document.getElementsByClassName("response");
+    const responses = document.getElementsByClassName("response");
     for (let x = 0; x < responses.length; x++) {
       responses[x].classList.remove("active");
       responses[x].classList.remove("postive");
@@ -75,7 +75,7 @@ class ChoiceQuiz extends Component {
     // if(!Array.isArray(this.state.active) || !this.state.active.length){
     if (this.state.active !== undefined && this.state.active.length !== 0) {
       this.setState({ submitted: true });
-      let responses = document.getElementsByClassName("response");
+      const responses = document.getElementsByClassName("response");
       for (let x = 0; x < responses.length; x++) {
         responses[x].classList.remove("active");
       }
@@ -128,7 +128,7 @@ class ChoiceQuiz extends Component {
       const questionLabel = `question${this.state.currentStimulus}`;
       this.setState({ answers: [questionLabel, div.id] });
       this.setState({ active: div.id.split(",").map((item) => Number(item)) });
-      let responses = document.getElementsByClassName("response");
+      const responses = document.getElementsByClassName("response");
       for (let x = 0; x < responses.length; x++) {
         responses[x].classList.remove("active");
       }
@@ -138,8 +138,8 @@ class ChoiceQuiz extends Component {
 
   randomize(a) {
     let j;
-    var x;
-    var i;
+    let x;
+    let i;
     for (i = a.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
       x = a[i];
@@ -179,7 +179,7 @@ class ChoiceQuiz extends Component {
   }
 
   getWrongOption(correctArr, correctPos, allOptions) {
-    let newOption = this.selectRandomOption(correctArr, correctPos);
+    const newOption = this.selectRandomOption(correctArr, correctPos);
     if (checkForArrayInArrayOfArrays(allOptions, newOption)) {
       return this.getWrongOption(correctArr, correctPos, allOptions);
     }
@@ -202,7 +202,7 @@ class ChoiceQuiz extends Component {
       }
     }
     if (this.state.options === undefined || this.state.options.length < 1) {
-      let shuffledOptions = this.randomize(allOptions);
+      const shuffledOptions = this.randomize(allOptions);
       this.setState({ options: shuffledOptions });
     }
   }

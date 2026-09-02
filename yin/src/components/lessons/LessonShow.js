@@ -12,7 +12,7 @@ class LessonShow extends Component {
   }
 
   async componentDidMount() {
-    if (!!this.state.lesson) {
+    if (this.state.lesson) {
       this.fetchLesson();
     }
   }
